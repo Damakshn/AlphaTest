@@ -2,12 +2,12 @@
 
 namespace AlphaTest.Core.Tests.TestSettings.TestFlow
 {
-    public class NavigationMode: Enumeration
+    public class NavigationMode: Enumeration<NavigationMode>
     {
         #region Опции
-        public static NavigationMode SEQUENTIONAL = new NavigationMode(1, "Последовательный");
+        public static readonly NavigationMode SEQUENTIONAL = new(1, "Последовательный");
 
-        public static NavigationMode FREE = new NavigationMode(1, "Произвольный");
+        public static readonly NavigationMode FREE = new(1, "Произвольный");
         #endregion
 
         public NavigationMode(int id, string name) : base(id, name) { }
