@@ -57,7 +57,7 @@ namespace AlphaTest.Core.Tests
         
         public ScoreDistributionMethod ScoreDistributionMethod { get; private set; } = ScoreDistributionMethod.AUTOMATIC;
 
-        public int ScorePerQuestion { get; private set; } = QuestionScoreMustBeInRange.MIN_SCORE;
+        public uint ScorePerQuestion { get; private set; } = QuestionScoreMustBeInRange.MIN_SCORE;
         #endregion
 
         #region Конструкторы
@@ -129,7 +129,7 @@ namespace AlphaTest.Core.Tests
             ScoreDistributionMethod = scoreDistributionMethod;
         }
 
-        public void ChangeScorePerQuestion(int scorePerQuestion)
+        public void ChangeScorePerQuestion(uint scorePerQuestion)
         {
             // ToDo допустимо только при автоматическом распределении
             // ToDo перезапись баллов всех вопросов
