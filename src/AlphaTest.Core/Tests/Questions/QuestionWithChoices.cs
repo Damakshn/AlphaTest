@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AlphaTest.Core.Tests.Questions.Rules;
 
 namespace AlphaTest.Core.Tests.Questions
 {
@@ -8,9 +9,23 @@ namespace AlphaTest.Core.Tests.Questions
         
         protected QuestionWithChoices(): base() { }
 
-        internal QuestionWithChoices(string text, uint number, uint score) : base(text, number, score) { }
+        protected QuestionWithChoices(string text, uint number, uint score, List<QuestionOption> options) : base(text, number, score) 
+        {
+            CheckRule(new NumberOfOptionsForQiestionCannotBeToBig(options));
+            CheckSpecificRulesForOptions(options);
+            Options = options;
+        }
 
-        internal abstract void ChangeAttributes(string text, uint score, List<QuestionOption> options);
+        internal void ChangeAttributes(string text, uint score, List<QuestionOption> options)
+        {
+            CheckRulesForTextAndScore(text, score);
+            CheckSpecificRulesForOptions(options);
+            Text = text;
+            Score = score;
+            Options = options;
+        }
+
+        protected abstract void CheckSpecificRulesForOptions(List<QuestionOption> options);
 
     }
 }

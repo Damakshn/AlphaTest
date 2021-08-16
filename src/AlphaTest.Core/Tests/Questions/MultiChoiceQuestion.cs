@@ -1,5 +1,4 @@
 ﻿using AlphaTest.Core.Tests.Questions.Rules;
-using AlphaTest.Core.Tests.Rules;
 using System.Collections.Generic;
 
 namespace AlphaTest.Core.Tests.Questions
@@ -9,19 +8,11 @@ namespace AlphaTest.Core.Tests.Questions
         private MultiChoiceQuestion() : base() { }
 
         internal MultiChoiceQuestion(string text, uint number, uint score, List<QuestionOption> options) :
-            base(text, number, score)
-        {
-            CheckRule(new AtLeastOneQuestionOptionMustBeRight(options));
-            Options = options;
-        }
+            base(text, number, score, options){ }
 
-        internal override void ChangeAttributes(string text, uint score, List<QuestionOption> options)
+        protected override void CheckSpecificRulesForOptions(List<QuestionOption> options)
         {
-            CheckRulesForTextAndScore(text, score);
             CheckRule(new AtLeastOneQuestionOptionMustBeRight(options));
-            Text = text;
-            Score = score;
-            Options = options;
         }
     }
 }
