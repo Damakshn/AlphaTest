@@ -19,7 +19,7 @@ namespace AlphaTest.Core.Tests.Questions
         #region Конструкторы
         protected Question(){}
 
-        public Question(string text, uint number, uint score)
+        protected Question(string text, uint number, uint score)
         {
             CheckRulesForTextAndScore(text, score);
             Text = text;

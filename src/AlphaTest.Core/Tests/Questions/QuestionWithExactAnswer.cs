@@ -1,7 +1,23 @@
 ﻿namespace AlphaTest.Core.Tests.Questions
 {
-    public class QuestionWithExactAnswer<T>: Question
+    public abstract class QuestionWithExactAnswer<TDecimalOrString>: Question
     {
-        public T RightAnswer { get; private set; }
+        public static string AnswerType => typeof(TDecimalOrString).ToString();
+
+        public TDecimalOrString RightAnswer { get; private set; }
+
+        protected QuestionWithExactAnswer() { }
+
+        protected QuestionWithExactAnswer(string text, uint number, uint score, TDecimalOrString rightAnswer):
+            base(text, number, score)
+        {
+            RightAnswer = rightAnswer;
+        }
+
+        internal void ChangeAttributes(string text, uint score, TDecimalOrString rightAnswer)
+        {
+            CheckRulesForTextAndScore(text, score);
+            RightAnswer = rightAnswer;
+        }
     }
 }
