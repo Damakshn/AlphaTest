@@ -1,21 +1,45 @@
 ﻿using AlphaTest.Core.Common.Abstractions;
+using AlphaTest.Core.Tests.Rules;
+using AlphaTest.Core.Tests.Questions.Rules;
 
 namespace AlphaTest.Core.Tests.Questions
 {
     public abstract class Question: Entity
     {
+        #region Свойства
         public int ID { get; init; }
 
-        public string Text { get; set; }
+        public string Text { get; protected set; }
 
-        public int Number { get; set; }
+        public uint Number { get; protected set; }
 
-        public uint Score { get; set; }
+        public uint Score { get; protected set; }
+        #endregion
 
-        public Question()
+        #region Конструкторы
+        protected Question(){}
+
+        public Question(string text, uint number, uint score)
         {
-
+            CheckRulesForTextAndScore(text, score);
+            Text = text;
+            Number = number;
+            Score = score;
         }
+        #endregion
+
+        #region Методы
+        internal void ChangeNumber(uint number)
+        {
+            Number = number;
+        }
+
+        protected void CheckRulesForTextAndScore(string text, uint score)
+        {
+            CheckRule(new QuestionScoreMustBeInRange(score));
+            CheckRule(new QuestionTextLengthCannotBeTooLongRule(text));
+        }
+        #endregion
 
     }
 }
