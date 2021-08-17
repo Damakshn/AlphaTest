@@ -4,11 +4,11 @@ using AlphaTest.Core.Common;
 
 namespace AlphaTest.Core.Tests.Questions.Rules
 {
-    public class AtLeastOneQuestionOptionMustBeRight : IBusinessRule
+    public class AtLeastOneQuestionOptionMustBeRightRule : IBusinessRule
     {
         private IEnumerable<QuestionOption> _options;
 
-        public AtLeastOneQuestionOptionMustBeRight(IEnumerable<QuestionOption> options)
+        public AtLeastOneQuestionOptionMustBeRightRule(IEnumerable<QuestionOption> options)
         {
             _options = options;
         }
