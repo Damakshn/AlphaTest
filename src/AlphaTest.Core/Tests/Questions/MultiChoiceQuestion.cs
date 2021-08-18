@@ -12,7 +12,7 @@ namespace AlphaTest.Core.Tests.Questions
 
         protected override void CheckSpecificRulesForOptions(List<QuestionOption> options)
         {
-            CheckRule(new AtLeastOneQuestionOptionMustBeRight(options));
+            CheckRule(new AtLeastOneQuestionOptionMustBeRightRule(options));
         }
     }
 }

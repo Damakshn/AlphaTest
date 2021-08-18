@@ -5,13 +5,13 @@ using AlphaTest.Core.Common;
 
 namespace AlphaTest.Core.Tests.Questions.Rules
 {
-    public class NumberOfOptionsForQiestionCannotBeToBig : IBusinessRule
+    public class NumberOfOptionsForQiestionCannotBeToBigRule : IBusinessRule
     {
         public static readonly int MAX_OPTIONS = 20;
 
         private readonly IEnumerable<QuestionOption> _options;
 
-        public NumberOfOptionsForQiestionCannotBeToBig(IEnumerable<QuestionOption> options)
+        public NumberOfOptionsForQiestionCannotBeToBigRule(IEnumerable<QuestionOption> options)
         {
             _options = options;
         }
