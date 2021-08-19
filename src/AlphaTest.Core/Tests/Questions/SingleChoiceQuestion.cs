@@ -8,8 +8,8 @@ namespace AlphaTest.Core.Tests.Questions
     {
         private SingleChoiceQuestion() : base() { }
 
-        internal SingleChoiceQuestion(string text, uint number, uint score, List<QuestionOption> options):
-            base(text, number, score, options){ }
+        internal SingleChoiceQuestion(int testID, string text, uint number, uint score, List<QuestionOption> options):
+            base(testID, text, number, score, options){ }
 
         protected override void CheckSpecificRulesForOptions(List<QuestionOption> options)
         {

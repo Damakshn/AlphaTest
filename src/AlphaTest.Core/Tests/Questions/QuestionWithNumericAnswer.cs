@@ -4,7 +4,7 @@
     {
         private QuestionWithNumericAnswer() { }
 
-        internal QuestionWithNumericAnswer(string text, uint number, uint score, decimal rightAnswer) :
-            base(text, number, score, rightAnswer) { }
+        internal QuestionWithNumericAnswer(int testID, string text, uint number, uint score, decimal rightAnswer) :
+            base(testID, text, number, score, rightAnswer) { }
     }
 }

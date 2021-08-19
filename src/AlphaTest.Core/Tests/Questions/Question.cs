@@ -9,6 +9,8 @@ namespace AlphaTest.Core.Tests.Questions
         #region Свойства
         public int ID { get; init; }
 
+        public int TestID { get; init; }
+
         public string Text { get; protected set; }
 
         public uint Number { get; protected set; }
@@ -19,9 +21,10 @@ namespace AlphaTest.Core.Tests.Questions
         #region Конструкторы
         protected Question(){}
 
-        protected Question(string text, uint number, uint score)
+        protected Question(int testID, string text, uint number, uint score)
         {
             CheckRulesForTextAndScore(text, score);
+            TestID = testID;
             Text = text;
             Number = number;
             Score = score;

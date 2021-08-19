@@ -9,7 +9,8 @@ namespace AlphaTest.Core.Tests.Questions
         
         protected QuestionWithChoices(): base() { }
 
-        protected QuestionWithChoices(string text, uint number, uint score, List<QuestionOption> options) : base(text, number, score) 
+        protected QuestionWithChoices(int testID, string text, uint number, uint score, List<QuestionOption> options) 
+            : base(testID, text, number, score)
         {
             CheckRule(new NumberOfOptionsForQiestionCannotBeToBigRule(options));
             CheckSpecificRulesForOptions(options);

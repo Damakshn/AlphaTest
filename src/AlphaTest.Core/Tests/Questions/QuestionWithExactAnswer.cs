@@ -8,8 +8,8 @@
 
         protected QuestionWithExactAnswer() { }
 
-        protected QuestionWithExactAnswer(string text, uint number, uint score, TDecimalOrString rightAnswer):
-            base(text, number, score)
+        protected QuestionWithExactAnswer(int testID, string text, uint number, uint score, TDecimalOrString rightAnswer):
+            base(testID, text, number, score)
         {
             RightAnswer = rightAnswer;
         }
