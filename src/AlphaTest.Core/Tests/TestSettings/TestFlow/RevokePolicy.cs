@@ -13,7 +13,7 @@ namespace AlphaTest.Core.Tests.TestSettings.TestFlow
 
         private RevokePolicy() {}
 
-        public RevokePolicy(bool revokeEnabled, uint retriesLimit = 1, bool infiniteRetriesEnabled = false)
+        public RevokePolicy(bool revokeEnabled, uint retriesLimit = 0, bool infiniteRetriesEnabled = false)
         {
             CheckRule(new RevokeMustBeAllowedIfLimitIsGreaterThanZeroRule(
                 revokeEnabled, 
