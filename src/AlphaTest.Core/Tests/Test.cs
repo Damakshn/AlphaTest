@@ -31,9 +31,7 @@ namespace AlphaTest.Core.Tests
         // ToDo Cannot edit if not Draft
         public TestStatus Status { get; private set; }
 
-        // ToDo AddQuestion, DeleteQuestion, MoveQuestion, ModifyQuestion
-        public List<Question> Questions { get; private set; }
-
+        // ToDo AddQuestion, DeleteQuestion, MoveQuestion
         #endregion
 
         #region Настройки процедуры тестирования
@@ -76,6 +74,7 @@ namespace AlphaTest.Core.Tests
 
         #region Методы
 
+        #region Изменение настроек
         public void ChangeTitleAndTopic(string title, string topic, ITestCounter counter)
         {
             // TBD Конструктор - правило похожее, но ошибка другая
@@ -111,9 +110,9 @@ namespace AlphaTest.Core.Tests
             CheckingPolicy = checkingPolicy;
         }
 
-        public void ChangeWorkCheckingMethod(WorkCheckingMethod workCheckingMethod)
+        public void ChangeWorkCheckingMethod(WorkCheckingMethod workCheckingMethod, IEnumerable<Question> questionsInTest)
         {
-            CheckRule(new QuestionsWithDetailedAnswersCannotBeCheckedAutomaticallyRule(workCheckingMethod, Questions));
+            CheckRule(new AutomatedCheckCannotBeAppliedToQuestionsWithDetailedAnswerRule(workCheckingMethod, questionsInTest));
             WorkCheckingMethod = workCheckingMethod;
         }
 
@@ -136,6 +135,36 @@ namespace AlphaTest.Core.Tests
             CheckRule(new QuestionScoreMustBeInRange(scorePerQuestion));
             ScorePerQuestion = scorePerQuestion;
         }
+        #endregion
+
+        #region Работа с вопросами
+        public SingleChoiceQuestion AddSingleChoiceQuestion(string text, uint score, List<QuestionOption> options, IQuestionCounter questionCounter)
+        {
+            uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
+            // ToDo score from test
+            SingleChoiceQuestion question = new(this.ID, text, questionNumber, score, options);
+            return question;
+        }
+
+        public MultiChoiceQuestion AddMultiChoiceQuestion(string text, uint score, List<QuestionOption> options, IQuestionCounter questionCounter)
+        {
+            uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
+            // ToDo score from test
+            MultiChoiceQuestion question = new(this.ID, text, questionNumber, score, options);
+            return question;
+        }
+
+        public QuestionWithDetailedAnswer AddQuestionWithDetailedAnswer(string text, uint score, IQuestionCounter questionCounter)
+        {
+            CheckRule(new QuestionsWithDetailedAnswersNotAllowedWithAutomatedCheckRule(WorkCheckingMethod));
+            uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
+            // ToDo score from test
+            QuestionWithDetailedAnswer question = new(this.ID, text, questionNumber, score);
+            return question;
+        }
+        #endregion
+
+
         #endregion
     }
 }
