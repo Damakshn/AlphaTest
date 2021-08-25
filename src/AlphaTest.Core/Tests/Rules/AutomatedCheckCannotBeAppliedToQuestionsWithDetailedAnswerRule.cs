@@ -6,13 +6,13 @@ using AlphaTest.Core.Tests.Questions;
 
 namespace AlphaTest.Core.Tests.Rules
 {
-    public class QuestionsWithDetailedAnswersCannotBeCheckedAutomaticallyRule : IBusinessRule
+    // TBD логика дублируется в QuestionsWithDetailedAnswersNotAllowedWithAutomatedCheckRule
+    public class AutomatedCheckCannotBeAppliedToQuestionsWithDetailedAnswerRule : IBusinessRule
     {
         private readonly WorkCheckingMethod _checkingMethod;
         private readonly IEnumerable<Question> _questionsInTest;
-
-        // ToDo Too long
-        public QuestionsWithDetailedAnswersCannotBeCheckedAutomaticallyRule(
+        
+        public AutomatedCheckCannotBeAppliedToQuestionsWithDetailedAnswerRule(
             WorkCheckingMethod checkingMethod,
             IEnumerable<Question> questionsInTest)
         {

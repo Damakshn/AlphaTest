@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\AlphaTest.Core\AlphaTest.Core.csproj" />
+    <ProjectReference Include="..\AlphaTest.TestingHelpers\AlphaTest.TestingHelpers.csproj" />
   </ItemGroup>
 
 </Project>

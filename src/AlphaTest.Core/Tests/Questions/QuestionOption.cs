@@ -2,17 +2,24 @@
 {
     public class QuestionOption
     {
-        public int ID { get; init; }
+        public int ID { get; private set; }
 
-        public uint Number { get; set; }
+        public uint Number { get; private set; }
 
-        public string Text { get; set; }
+        public string Text { get; private set; }
 
-        public bool IsRight { get; set; }
+        public bool IsRight { get; private set; }
 
-        public QuestionOption()
+        private QuestionOption()
         {
 
+        }
+
+        public QuestionOption(string text, uint number, bool isRight)
+        {
+            Text = text;
+            Number = number;
+            IsRight = isRight;
         }
     }
 }

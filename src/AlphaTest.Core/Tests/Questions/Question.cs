@@ -7,9 +7,9 @@ namespace AlphaTest.Core.Tests.Questions
     public abstract class Question: Entity
     {
         #region Свойства
-        public int ID { get; init; }
+        public int ID { get; protected set; }
 
-        public int TestID { get; init; }
+        public int TestID { get; protected set; }
 
         public string Text { get; protected set; }
 
