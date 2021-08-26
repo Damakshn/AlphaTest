@@ -4,11 +4,12 @@ using Moq;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Common.Exceptions;
 using AlphaTest.Core.Tests.Rules;
+using AlphaTest.Core.UnitTests.Common;
 
 namespace AlphaTest.Core.UnitTests.Testmaking
 {
     // ToDo проверка сообщений об ошибках
-    public class TestmakingTests
+    public class TestmakingTests: UnitTestBase
     {
         [Fact]
         public void When_TestCreated_Expect_TestHasVersionOne()

@@ -8,10 +8,11 @@ using AlphaTest.Core.Tests.TestSettings.Checking;
 using AlphaTest.Core.Tests.Rules;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.TestingHelpers;
+using AlphaTest.Core.UnitTests.Common;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 {
-    public class QuestionTests
+    public class QuestionTests: UnitTestBase
     {
         [Theory]
         [MemberData(nameof(QuestionOptionsNoneRight))]
