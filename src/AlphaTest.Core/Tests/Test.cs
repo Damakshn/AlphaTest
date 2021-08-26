@@ -162,6 +162,24 @@ namespace AlphaTest.Core.Tests
             QuestionWithDetailedAnswer question = new(this.ID, text, questionNumber, score);
             return question;
         }
+
+        public QuestionWithTextualAnswer AddQuestionWithTextualAnswer(string text,
+            uint score, string rightAnswer, IQuestionCounter questionCounter)
+        {
+            uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
+            // ToDo score from test
+            QuestionWithTextualAnswer question = new(this.ID, text, questionNumber, score, rightAnswer);
+            return question;
+        }
+
+        public QuestionWithNumericAnswer AddQuestionWithNumericAnswer(string text,
+            uint score, decimal rightAnswer, IQuestionCounter questionCounter)
+        {
+            uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
+            // ToDo score from test
+            QuestionWithNumericAnswer question = new(this.ID, text, questionNumber, score, rightAnswer);
+            return question;
+        }
         #endregion
 
 

@@ -4,14 +4,14 @@ namespace AlphaTest.Core.Common.Exceptions
 {
     public class BusinessException: AlphaTestException
     {
-        private IBusinessRule _brokenRule;
+        public IBusinessRule BrokenRule { get; }
 
         public BusinessException(IBusinessRule brokenRule): base(brokenRule.Message)
         {
-            _brokenRule = brokenRule;
+            BrokenRule = brokenRule;
         }
 
-        public override string ToString() => $"{_brokenRule.GetType().FullName}: {_brokenRule.Message}";
+        public override string ToString() => $"{BrokenRule.GetType().FullName}: {BrokenRule.Message}";
 
     }
 }
