@@ -22,7 +22,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             // arrange
             Test test = MakeDefaultTest();
             string questionText = "Кто проживает на дне океана?";
-            uint score = QuestionScoreMustBeInRange.MIN_SCORE;
+            uint score = QuestionScoreMustBeInRangeRule.MIN_SCORE;
             var questionCounterMock = new Mock<IQuestionCounter>();
             questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
 
@@ -40,7 +40,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             // arrange
             Test test = MakeDefaultTest();
             string questionText = "This game has no name";
-            uint score = QuestionScoreMustBeInRange.MIN_SCORE;
+            uint score = QuestionScoreMustBeInRangeRule.MIN_SCORE;
             var questionCounterMock = new Mock<IQuestionCounter>();
             questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
 
@@ -58,7 +58,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             Test test = MakeDefaultTest();
             test.ChangeWorkCheckingMethod(WorkCheckingMethod.AUTOMATIC, new List<Question>());
             string questionText = "Расскажите, как вы провели лето";
-            uint score = QuestionScoreMustBeInRange.MIN_SCORE;
+            uint score = QuestionScoreMustBeInRangeRule.MIN_SCORE;
             var questionCounterMock = new Mock<IQuestionCounter>();
             questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
 

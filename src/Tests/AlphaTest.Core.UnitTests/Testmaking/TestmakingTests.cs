@@ -123,8 +123,8 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             Test t = MakeDefaultTest();
 
             // act
-            uint tooBigScore = QuestionScoreMustBeInRange.MAX_SCORE + 1;
-            uint tooSmallScore = QuestionScoreMustBeInRange.MIN_SCORE - 1;
+            uint tooBigScore = QuestionScoreMustBeInRangeRule.MAX_SCORE + 1;
+            uint tooSmallScore = QuestionScoreMustBeInRangeRule.MIN_SCORE - 1;
             Action setTooBig = () => t.ChangeScorePerQuestion(tooBigScore);
             Action setTooSmall = () => t.ChangeScorePerQuestion(tooSmallScore);
 

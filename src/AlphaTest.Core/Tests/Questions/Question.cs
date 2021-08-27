@@ -39,8 +39,8 @@ namespace AlphaTest.Core.Tests.Questions
 
         protected void CheckRulesForTextAndScore(string text, uint score)
         {
-            CheckRule(new QuestionScoreMustBeInRange(score));
-            CheckRule(new QuestionTextLengthCannotBeTooLongRule(text));
+            CheckRule(new QuestionScoreMustBeInRangeRule(score));
+            CheckRule(new QuestionTextLengthMustBeInRangeRule(text));
         }
         #endregion
 
