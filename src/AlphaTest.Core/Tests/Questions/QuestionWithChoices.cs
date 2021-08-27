@@ -12,7 +12,7 @@ namespace AlphaTest.Core.Tests.Questions
         protected QuestionWithChoices(int testID, string text, uint number, uint score, List<QuestionOption> options) 
             : base(testID, text, number, score)
         {
-            CheckRule(new NumberOfOptionsForQiestionCannotBeToBigRule(options));
+            CheckRule(new NumberOfOptionsForQiestionMustBeInRangeRule(options));
             CheckSpecificRulesForOptions(options);
             Options = options;
         }

@@ -2,7 +2,7 @@
 
 namespace AlphaTest.Core.Tests.Rules
 {
-    public class QuestionScoreMustBeInRange : IBusinessRule
+    public class QuestionScoreMustBeInRangeRule : IBusinessRule
     {
         public static readonly uint MIN_SCORE = 1;
 
@@ -10,7 +10,7 @@ namespace AlphaTest.Core.Tests.Rules
 
         private readonly uint _score;
 
-        public QuestionScoreMustBeInRange(uint score)
+        public QuestionScoreMustBeInRangeRule(uint score)
         {
             _score = score;
         }
