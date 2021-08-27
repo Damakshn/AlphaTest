@@ -4,7 +4,7 @@ using AlphaTest.TestingHelpers;
 using Moq;
 using System.Linq;
 using System.Collections.Generic;
-
+using AlphaTest.Core.Tests.TestSettings.Checking;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 {
@@ -38,6 +38,12 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
                 new object[] { QuestionOptionsMedium },
                 new object[] { QuestionOptionsMaximum }
             };
+
+        public static IEnumerable<object[]> NonAutomaticCheckingMethods =>
+            WorkCheckingMethod.All
+            .Where(m => m != WorkCheckingMethod.AUTOMATIC)
+            .Select(m => new object[] { m })
+            .ToList();
 
         // ToDo вынести в другой класс, так как эти тестовые данные - про вопросы, а не про тесты
         public static Test GetDefaultTest()
