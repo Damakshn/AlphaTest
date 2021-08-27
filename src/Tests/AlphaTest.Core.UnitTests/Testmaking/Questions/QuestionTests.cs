@@ -14,43 +14,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 {
     public class QuestionTests: UnitTestBase
     {
-        [Theory]
-        [MemberData(nameof(QuestionOptionsNoneRight))]
-        [MemberData(nameof(QuestionOptionsManyRight))]
-        public void CreatingSingleChoiceQuestion_WithNoneOrMultipleRightOptions_IsNotPossible(List<QuestionOption> options)
-        {
-            // arrange
-            Test test = MakeDefaultTest();
-            string questionText = "Кто проживает на дне океана?";
-            uint score = QuestionScoreMustBeInRangeRule.MIN_SCORE;
-            var questionCounterMock = new Mock<IQuestionCounter>();
-            questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
-
-            // act
-            Action act = () => test.AddSingleChoiceQuestion(questionText, score, options, questionCounterMock.Object);
-
-            // assert
-            Assert.Throws<BusinessException>(act);
-        }
-
-        [Theory]
-        [MemberData(nameof(QuestionOptionsNoneRight))]
-        public void CreatingMultiChoiceQuestion_WithNoneRightOptions_IsNotPossible(List<QuestionOption> options)
-        {
-            // arrange
-            Test test = MakeDefaultTest();
-            string questionText = "This game has no name";
-            uint score = QuestionScoreMustBeInRangeRule.MIN_SCORE;
-            var questionCounterMock = new Mock<IQuestionCounter>();
-            questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
-
-            // act
-            Action act = () => test.AddMultiChoiceQuestion(questionText, score, options, questionCounterMock.Object);
-
-            // assert
-            Assert.Throws<BusinessException>(act);
-        }
-
+        
         [Fact]
         public void AddingQuestionWithDetailedAnswer_WhenCheckingMethodIsAutomatic_IsNotPossible()
         {

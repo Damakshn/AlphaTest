@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using Xunit;
 using Moq;
 using AlphaTest.Core.Tests;
-using AlphaTest.Core.Tests.TestSettings.Checking;
 using AlphaTest.Core.Tests.Rules;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Tests.Questions.Rules;
 using AlphaTest.Core.UnitTests.Common;
-using static System.Formats.Asn1.AsnWriter;
+
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 {

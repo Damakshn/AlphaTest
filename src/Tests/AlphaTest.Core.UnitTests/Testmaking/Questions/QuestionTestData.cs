@@ -17,6 +17,13 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
                 new object[] { QuestionOptionsNoneRight}
             };
 
+        public static IEnumerable<object[]> Options_OneOrManyRight =>
+            new List<object[]>
+            {
+                new object[]{QuestionOptionsOneRight},
+                new object[]{QuestionOptionsManyRight}
+            };
+
         public static IEnumerable<object[]> Options_QuantityOutOfRange =>
             new List<object[]>
             {
@@ -32,6 +39,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
                 new object[] { QuestionOptionsMaximum }
             };
 
+        // ToDo вынести в другой класс, так как эти тестовые данные - про вопросы, а не про тесты
         public static Test GetDefaultTest()
         {
             string title = It.IsAny<string>();
@@ -74,7 +82,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
                 new QuestionOption("Третий вариант", 3, false),
             };
 
-        private static List<QuestionOption> QuestionOptionsManyRight =>
+        public static List<QuestionOption> QuestionOptionsManyRight =>
             new List<QuestionOption>
             {
                 new QuestionOption("Первый вариант", 1, true),
@@ -82,7 +90,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
                 new QuestionOption("Третий вариант", 3, false),
             };
 
-        private static List<QuestionOption> QuestionOptionsNoneRight =>
+        public static List<QuestionOption> QuestionOptionsNoneRight =>
             new List<QuestionOption>
             {
                 new QuestionOption("Первый вариант", 1, false),
