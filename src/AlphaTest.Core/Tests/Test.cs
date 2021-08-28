@@ -156,7 +156,7 @@ namespace AlphaTest.Core.Tests
 
         public QuestionWithDetailedAnswer AddQuestionWithDetailedAnswer(string text, uint score, IQuestionCounter questionCounter)
         {
-            CheckRule(new QuestionsWithDetailedAnswersNotAllowedWithAutomatedCheckRule(WorkCheckingMethod));
+            CheckRule(new QuestionsWithDetailedAnswersNotAllowedWithAutomatedCheckRule(this.WorkCheckingMethod));
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
             // ToDo score from test
             QuestionWithDetailedAnswer question = new(this.ID, text, questionNumber, score);

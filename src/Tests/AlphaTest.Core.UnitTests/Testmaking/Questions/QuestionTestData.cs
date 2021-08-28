@@ -4,7 +4,7 @@ using AlphaTest.TestingHelpers;
 using Moq;
 using System.Linq;
 using System.Collections.Generic;
-
+using AlphaTest.Core.Tests.TestSettings.Checking;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 {
@@ -15,6 +15,13 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             {
                 new object[] { QuestionOptionsManyRight},
                 new object[] { QuestionOptionsNoneRight}
+            };
+
+        public static IEnumerable<object[]> Options_OneOrManyRight =>
+            new List<object[]>
+            {
+                new object[]{QuestionOptionsOneRight},
+                new object[]{QuestionOptionsManyRight}
             };
 
         public static IEnumerable<object[]> Options_QuantityOutOfRange =>
@@ -32,6 +39,13 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
                 new object[] { QuestionOptionsMaximum }
             };
 
+        public static IEnumerable<object[]> NonAutomaticCheckingMethods =>
+            WorkCheckingMethod.All
+            .Where(m => m != WorkCheckingMethod.AUTOMATIC)
+            .Select(m => new object[] { m })
+            .ToList();
+
+        // ToDo вынести в другой класс, так как эти тестовые данные - про вопросы, а не про тесты
         public static Test GetDefaultTest()
         {
             string title = It.IsAny<string>();
@@ -74,7 +88,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
                 new QuestionOption("Третий вариант", 3, false),
             };
 
-        private static List<QuestionOption> QuestionOptionsManyRight =>
+        public static List<QuestionOption> QuestionOptionsManyRight =>
             new List<QuestionOption>
             {
                 new QuestionOption("Первый вариант", 1, true),
@@ -82,7 +96,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
                 new QuestionOption("Третий вариант", 3, false),
             };
 
-        private static List<QuestionOption> QuestionOptionsNoneRight =>
+        public static List<QuestionOption> QuestionOptionsNoneRight =>
             new List<QuestionOption>
             {
                 new QuestionOption("Первый вариант", 1, false),
