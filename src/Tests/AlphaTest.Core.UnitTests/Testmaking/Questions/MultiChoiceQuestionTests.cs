@@ -19,7 +19,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             // arrange
             // ToDo плюс-минус один и тот же набор данных для вопроса, надо придумать, как убрать это во имя DRY
             Test test = QuestionTestData.GetDefaultTest();
-            string questionText = "Что говорить, когда нечего говорить?";
+            QuestionText questionText = new("Что говорить, когда нечего говорить?");
             QuestionScore score = new(1);
             var counterMock = new Mock<IQuestionCounter>();
             counterMock.Setup(c => c.GetNumberOfQuestionsInTest(test.ID)).Returns(0);
@@ -38,7 +38,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         {
             // arrange
             Test test = QuestionTestData.GetDefaultTest();
-            string questionText = "Что говорить, когда нечего говорить?";
+            QuestionText questionText = new("Что говорить, когда нечего говорить?");
             QuestionScore score = new(1);
             var counterMock = new Mock<IQuestionCounter>();
             counterMock.Setup(c => c.GetNumberOfQuestionsInTest(test.ID)).Returns(0);
@@ -58,7 +58,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         {
             // arrange
             Test test = QuestionTestData.GetDefaultTest();
-            string questionText = "Что говорить, когда нечего говорить?";
+            QuestionText questionText = new("Что говорить, когда нечего говорить?");
             QuestionScore score = new(1);
             var counterMock = new Mock<IQuestionCounter>();
             counterMock.Setup(c => c.GetNumberOfQuestionsInTest(test.ID)).Returns(0);
@@ -76,7 +76,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         {
             // arrange
             Test test = QuestionTestData.GetDefaultTest();
-            string questionText = "Что говорить, когда нечего говорить?";
+            QuestionText questionText = new("Что говорить, когда нечего говорить?");
             QuestionScore score = new(1);
             var counterMock = new Mock<IQuestionCounter>();
             counterMock.Setup(c => c.GetNumberOfQuestionsInTest(test.ID)).Returns(0);
@@ -87,44 +87,6 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             // assert
             Assert.Equal(test.ID, question.TestID);
             Assert.Equal(options.Count, question.Options.Count);
-        }
-
-        // MAYBE сделать специальный тип QuestionText и тестировать его валидацию?
-        [Theory]
-        [MemberData(nameof(QuestionTestData.QuestionTexts_LengthOutOfRange), MemberType = typeof(QuestionTestData))]
-        public void CreateMultiChoiceQuestion_WithTooLongOrToShortText_IsNotPossible(string questionText)
-        {
-            // arrange
-            Test test = QuestionTestData.GetDefaultTest();
-            var counterMock = new Mock<IQuestionCounter>();
-            QuestionScore score = new(1);
-            counterMock.Setup(c => c.GetNumberOfQuestionsInTest(test.ID)).Returns(0);
-            List<QuestionOption> options = QuestionTestData.QuestionOptionsManyRight;
-
-            // act
-            Action act = () => test.AddMultiChoiceQuestion(questionText, score, options, counterMock.Object);
-
-            // assert
-            AssertBrokenRule<QuestionTextLengthMustBeInRangeRule>(act);
-        }
-
-        [Theory]
-        [MemberData(nameof(QuestionTestData.QuestionTexts_LengthWithinRange), MemberType = typeof(QuestionTestData))]
-        public void CreateMultiChoiceQuestion_WhenTextLengthWithinRange_IsOk(string questionText)
-        {
-            // arrange
-            Test test = QuestionTestData.GetDefaultTest();
-            var counterMock = new Mock<IQuestionCounter>();
-            QuestionScore score = new(1);
-            counterMock.Setup(c => c.GetNumberOfQuestionsInTest(test.ID)).Returns(0);
-            List<QuestionOption> options = QuestionTestData.QuestionOptionsManyRight;
-
-            // act
-            MultiChoiceQuestion question =  test.AddMultiChoiceQuestion(questionText, score, options, counterMock.Object);
-
-            // assert
-            Assert.Equal(test.ID, question.TestID);
-            Assert.Equal(questionText, question.Text);
         }
     }
 }

@@ -62,24 +62,6 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             return defaultTest;
         }
 
-        public static IEnumerable<object[]> QuestionTexts_LengthOutOfRange =>
-            new List<object[]>
-            {
-                new object[] {""},
-                new object[] {"a"},
-                new object[] {new string('a',5)},
-                new object[] {new string('a',9)},
-                new object[] {new string('a',5001)}
-            };
-
-        public static IEnumerable<object[]> QuestionTexts_LengthWithinRange =>
-            new List<object[]>
-            {   
-                new object[] {new string('a',10)},
-                new object[] {new string('a',250)},
-                new object[] {new string('a',5000)}
-            };
-
         public static List<QuestionOption> QuestionOptionsOneRight =>
             new List<QuestionOption>
             {
