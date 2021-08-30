@@ -9,7 +9,7 @@ namespace AlphaTest.Core.Tests.Questions
         
         protected QuestionWithChoices(): base() { }
 
-        protected QuestionWithChoices(int testID, string text, uint number, uint score, List<QuestionOption> options) 
+        protected QuestionWithChoices(int testID, string text, uint number, QuestionScore score, List<QuestionOption> options) 
             : base(testID, text, number, score)
         {
             CheckRule(new NumberOfOptionsForQiestionMustBeInRangeRule(options));
@@ -17,9 +17,9 @@ namespace AlphaTest.Core.Tests.Questions
             Options = options;
         }
 
-        internal void ChangeAttributes(string text, uint score, List<QuestionOption> options)
+        internal void ChangeAttributes(string text, QuestionScore score, List<QuestionOption> options)
         {
-            CheckRulesForTextAndScore(text, score);
+            CheckCommonRules(text);
             CheckSpecificRulesForOptions(options);
             Text = text;
             Score = score;

@@ -138,7 +138,7 @@ namespace AlphaTest.Core.Tests
         #endregion
 
         #region Работа с вопросами
-        public SingleChoiceQuestion AddSingleChoiceQuestion(string text, uint score, List<QuestionOption> options, IQuestionCounter questionCounter)
+        public SingleChoiceQuestion AddSingleChoiceQuestion(string text, QuestionScore score, List<QuestionOption> options, IQuestionCounter questionCounter)
         {
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
             // ToDo score from test
@@ -146,7 +146,7 @@ namespace AlphaTest.Core.Tests
             return question;
         }
 
-        public MultiChoiceQuestion AddMultiChoiceQuestion(string text, uint score, List<QuestionOption> options, IQuestionCounter questionCounter)
+        public MultiChoiceQuestion AddMultiChoiceQuestion(string text, QuestionScore score, List<QuestionOption> options, IQuestionCounter questionCounter)
         {
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
             // ToDo score from test
@@ -154,7 +154,7 @@ namespace AlphaTest.Core.Tests
             return question;
         }
 
-        public QuestionWithDetailedAnswer AddQuestionWithDetailedAnswer(string text, uint score, IQuestionCounter questionCounter)
+        public QuestionWithDetailedAnswer AddQuestionWithDetailedAnswer(string text, QuestionScore score, IQuestionCounter questionCounter)
         {
             CheckRule(new QuestionsWithDetailedAnswersNotAllowedWithAutomatedCheckRule(this.WorkCheckingMethod));
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
@@ -164,7 +164,7 @@ namespace AlphaTest.Core.Tests
         }
 
         public QuestionWithTextualAnswer AddQuestionWithTextualAnswer(string text,
-            uint score, string rightAnswer, IQuestionCounter questionCounter)
+            QuestionScore score, string rightAnswer, IQuestionCounter questionCounter)
         {
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
             // ToDo score from test
@@ -173,7 +173,7 @@ namespace AlphaTest.Core.Tests
         }
 
         public QuestionWithNumericAnswer AddQuestionWithNumericAnswer(string text,
-            uint score, decimal rightAnswer, IQuestionCounter questionCounter)
+            QuestionScore score, decimal rightAnswer, IQuestionCounter questionCounter)
         {
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
             // ToDo score from test

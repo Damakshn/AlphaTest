@@ -15,15 +15,15 @@ namespace AlphaTest.Core.Tests.Questions
 
         public uint Number { get; protected set; }
 
-        public uint Score { get; protected set; }
+        public QuestionScore Score { get; protected set; }
         #endregion
 
         #region Конструкторы
         protected Question(){}
 
-        protected Question(int testID, string text, uint number, uint score)
+        protected Question(int testID, string text, uint number, QuestionScore score)
         {
-            CheckRulesForTextAndScore(text, score);
+            CheckCommonRules(text);
             TestID = testID;
             Text = text;
             Number = number;
@@ -37,9 +37,8 @@ namespace AlphaTest.Core.Tests.Questions
             Number = number;
         }
 
-        protected void CheckRulesForTextAndScore(string text, uint score)
+        protected void CheckCommonRules(string text)
         {
-            CheckRule(new QuestionScoreMustBeInRangeRule(score));
             CheckRule(new QuestionTextLengthMustBeInRangeRule(text));
         }
         #endregion

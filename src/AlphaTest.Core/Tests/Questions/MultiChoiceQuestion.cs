@@ -7,7 +7,7 @@ namespace AlphaTest.Core.Tests.Questions
     {
         private MultiChoiceQuestion() : base() { }
 
-        internal MultiChoiceQuestion(int testID, string text, uint number, uint score, List<QuestionOption> options) :
+        internal MultiChoiceQuestion(int testID, string text, uint number, QuestionScore score, List<QuestionOption> options) :
             base(testID, text, number, score, options){ }
 
         protected override void CheckSpecificRulesForOptions(List<QuestionOption> options)
