@@ -1,5 +1,4 @@
 ﻿using AlphaTest.Core.Common.Abstractions;
-using AlphaTest.Core.Tests.Rules;
 using AlphaTest.Core.Tests.Questions.Rules;
 
 namespace AlphaTest.Core.Tests.Questions
@@ -11,7 +10,7 @@ namespace AlphaTest.Core.Tests.Questions
 
         public int TestID { get; protected set; }
 
-        public string Text { get; protected set; }
+        public QuestionText Text { get; protected set; }
 
         public uint Number { get; protected set; }
 
@@ -21,9 +20,8 @@ namespace AlphaTest.Core.Tests.Questions
         #region Конструкторы
         protected Question(){}
 
-        protected Question(int testID, string text, uint number, QuestionScore score)
-        {
-            CheckCommonRules(text);
+        protected Question(int testID, QuestionText text, uint number, QuestionScore score)
+        {   
             TestID = testID;
             Text = text;
             Number = number;
@@ -35,11 +33,6 @@ namespace AlphaTest.Core.Tests.Questions
         internal void ChangeNumber(uint number)
         {
             Number = number;
-        }
-
-        protected void CheckCommonRules(string text)
-        {
-            CheckRule(new QuestionTextLengthMustBeInRangeRule(text));
         }
         #endregion
 

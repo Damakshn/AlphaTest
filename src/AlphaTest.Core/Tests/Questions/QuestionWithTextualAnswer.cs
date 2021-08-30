@@ -4,7 +4,7 @@
     {
         private QuestionWithTextualAnswer() { }
 
-        internal QuestionWithTextualAnswer(int testID, string text, uint number, QuestionScore score, string rightAnswer) :
+        internal QuestionWithTextualAnswer(int testID, QuestionText text, uint number, QuestionScore score, string rightAnswer) :
             base(testID, text, number, score, rightAnswer){ }
 
     }
