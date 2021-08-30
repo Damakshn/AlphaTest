@@ -17,7 +17,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         {
             // arrange
             Test test = QuestionTestData.GetDefaultTest();
-            uint score = 1;
+            QuestionScore score = new(1);
             var counterMock = new Mock<IQuestionCounter>();
             string rightAnswer = "Правильный ответ";
             counterMock.Setup(c => c.GetNumberOfQuestionsInTest(test.ID)).Returns(0);
@@ -35,7 +35,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         {
             // arrange
             Test test = QuestionTestData.GetDefaultTest();
-            uint score = 1;
+            QuestionScore score = new(1);
             var counterMock = new Mock<IQuestionCounter>();
             string rightAnswer = "Правильный ответ";
             counterMock.Setup(c => c.GetNumberOfQuestionsInTest(test.ID)).Returns(0);
@@ -46,47 +46,6 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             // assert
             Assert.Equal(test.ID, question.TestID);
             Assert.Equal(questionText, question.Text);
-        }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(101)]
-        public void CreateQuestionWithTextualAnswer_WhenScoreOutOfRange_IsNotPossible(uint score)
-        {
-            // arrange
-            Test test = QuestionTestData.GetDefaultTest();
-            var counterMock = new Mock<IQuestionCounter>();
-            string questionText = "Текст вопроса";
-            string rightAnswer = "Правильный ответ";
-            counterMock.Setup(c => c.GetNumberOfQuestionsInTest(test.ID)).Returns(0);
-
-            // act
-            Action act = () => test.AddQuestionWithTextualAnswer(questionText, score, rightAnswer, counterMock.Object);
-
-            // assert
-            AssertBrokenRule<QuestionScoreMustBeInRangeRule>(act);
-        }
-
-        [Theory]
-        [InlineData(1)]
-        [InlineData(10)]
-        [InlineData(85)]
-        [InlineData(100)]
-        public void CreateQuestionWithTextualAnswer_WhenScoreWithinRange_IsOk(uint score)
-        {
-            // arrange
-            Test test = QuestionTestData.GetDefaultTest();
-            var counterMock = new Mock<IQuestionCounter>();
-            string questionText = "Текст вопроса";
-            string rightAnswer = "Правильный ответ";
-            counterMock.Setup(c => c.GetNumberOfQuestionsInTest(test.ID)).Returns(0);
-
-            // act
-            QuestionWithTextualAnswer question = test.AddQuestionWithTextualAnswer(questionText, score, rightAnswer, counterMock.Object);
-
-            // assert
-            Assert.Equal(test.ID, question.TestID);
-            Assert.Equal(score, question.Score);
         }
     }
 }
