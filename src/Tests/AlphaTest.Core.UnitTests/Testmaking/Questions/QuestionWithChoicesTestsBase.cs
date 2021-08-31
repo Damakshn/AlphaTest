@@ -1,14 +1,10 @@
-﻿using AlphaTest.Core.Tests;
+﻿using System.Collections.Generic;
 using AlphaTest.Core.Tests.Questions;
-using AlphaTest.TestingHelpers;
-using Moq;
 using System.Linq;
-using System.Collections.Generic;
-using AlphaTest.Core.Tests.TestSettings.Checking;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 {
-    public class QuestionTestData
+    public abstract class QuestionWithChoicesTestsBase: QuestionTestsBase
     {
         public static IEnumerable<object[]> Options_NoneOrManyRight =>
             new List<object[]>
@@ -38,29 +34,6 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
                 new object[] { QuestionOptionsMedium },
                 new object[] { QuestionOptionsMaximum }
             };
-
-        public static IEnumerable<object[]> NonAutomaticCheckingMethods =>
-            WorkCheckingMethod.All
-            .Where(m => m != WorkCheckingMethod.AUTOMATIC)
-            .Select(m => new object[] { m })
-            .ToList();
-
-        // ToDo вынести в другой класс, так как эти тестовые данные - про вопросы, а не про тесты
-        public static Test GetDefaultTest()
-        {
-            string title = It.IsAny<string>();
-            string topic = It.IsAny<string>();
-            int authorID = It.IsAny<int>();
-            var testCounterMock = new Mock<ITestCounter>();
-            testCounterMock
-                .Setup(
-                    c => c.GetQuantityOfTests(title, topic, Test.INITIAL_VERSION, authorID)
-                )
-                .Returns(0);
-            Test defaultTest = new(title, topic, authorID, testCounterMock.Object);
-            EntityIDSetter.SetIDTo(defaultTest, 1);
-            return defaultTest;
-        }
 
         public static List<QuestionOption> QuestionOptionsOneRight =>
             new List<QuestionOption>
@@ -94,7 +67,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         private static List<QuestionOption> QuestionOptionsTooFew =>
             new List<QuestionOption>
             {
-                new QuestionOption("Единственный вариант", 1, false)                
+                new QuestionOption("Единственный вариант", 1, false)
             };
 
         private static List<QuestionOption> QuestionOptionsMinimum =>
@@ -113,5 +86,10 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             Enumerable.Range(1, 20)
                 .Select(x => new QuestionOption($"{x}-й вариант", (uint)x, x == 1))
                 .ToList();
+
+        protected class QuestionWithChoicesTestData: QuestionTestData
+        {
+            internal List<QuestionOption> Options { get; set; }
+        }
     }
 }

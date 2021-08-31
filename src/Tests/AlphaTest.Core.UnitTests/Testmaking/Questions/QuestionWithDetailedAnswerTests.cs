@@ -17,7 +17,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         public void CreateQuestionWithDetailedAnswer_WhenCheckingMethodIsAutomatic_IsNotPossible()
         {
             // arrange
-            Test test = QuestionTestData.GetDefaultTest();
+            Test test = QuestionTestSamples.GetDefaultTest();
             test.ChangeWorkCheckingMethod(WorkCheckingMethod.AUTOMATIC, new List<Question>());
             var counterMock = new Mock<IQuestionCounter>();
             QuestionText questionText = new("Текст вопроса");
@@ -32,11 +32,11 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         }
 
         [Theory]
-        [MemberData(nameof(QuestionTestData.NonAutomaticCheckingMethods), MemberType = typeof(QuestionTestData))]
+        [MemberData(nameof(QuestionTestSamples.NonAutomaticCheckingMethods), MemberType = typeof(QuestionTestSamples))]
         public void CreateQuestionWithDetailedAnswer_WhenCheckingMethodNotAutomatic_IsOk(WorkCheckingMethod checkingMethod)
         {
             // arrange
-            Test test = QuestionTestData.GetDefaultTest();
+            Test test = QuestionTestSamples.GetDefaultTest();
             test.ChangeWorkCheckingMethod(checkingMethod, new List<Question>());
             var counterMock = new Mock<IQuestionCounter>();
             QuestionText questionText = new("Текст вопроса");

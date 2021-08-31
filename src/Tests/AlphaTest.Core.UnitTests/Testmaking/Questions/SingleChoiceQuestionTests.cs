@@ -1,127 +1,73 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using Xunit;
-using Moq;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.TestSettings.Checking;
-using AlphaTest.Core.Tests.Rules;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Tests.Questions.Rules;
-using AlphaTest.Core.UnitTests.Common;
-
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 {
-    public class SingleChoiceQuestionTests: UnitTestBase
+    public class SingleChoiceQuestionTests: QuestionWithChoicesTestsBase
     {
         [Theory]
-        [MemberData(nameof(QuestionTestData.Options_NoneOrManyRight), MemberType = typeof(QuestionTestData))]
+        [MemberData(nameof(Options_NoneOrManyRight))]
         public void CreateSingleChoiceQuestion_WithNoneOrMultipleRightOptions_IsNotPossible(List<QuestionOption> options)
-        {
-            // arrange
-            Test t = QuestionTestData.GetDefaultTest();
-            QuestionText questionText = new("Кто проживает на дне океана?");
-            QuestionScore score = GetRandomScore();
-            var questionCounterMock = new Mock<IQuestionCounter>();
-            questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
-
-            // act
-            Action act = () => t.AddSingleChoiceQuestion(questionText, score, options, questionCounterMock.Object);
-
-            // assert
-            AssertBrokenRule<ForSingleChoiceQuestionMustBeExactlyOneRightOptionRule>(act);
+        {            
+            QuestionWithChoicesTestData data = new() { Options = options };
+            
+            AssertBrokenRule<ForSingleChoiceQuestionMustBeExactlyOneRightOptionRule>(() =>
+                data.Test.AddSingleChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object)
+            );
         }
 
         [Fact]
         public void CreateSingleChoiceQuestion_WithExactlyOneRightOption_IsOk()
         {
-            // arrange
-            Test t = QuestionTestData.GetDefaultTest();
-            QuestionText questionText = new("Кто проживает на дне океана?");
-            QuestionScore score = GetRandomScore();
-            var questionCounterMock = new Mock<IQuestionCounter>();
-            List<QuestionOption> options = QuestionTestData.QuestionOptionsOneRight;
-            questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
+            QuestionWithChoicesTestData data = new() { Options = QuestionOptionsOneRight };
 
-            // act
-            SingleChoiceQuestion question = t.AddSingleChoiceQuestion(questionText, score, options, questionCounterMock.Object);
+            SingleChoiceQuestion question = data.Test.AddSingleChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object);
 
-            // assert
             Assert.Equal(1, question.Options.Count(o => o.IsRight));
-            Assert.Equal(score, question.Score);
+            Assert.Equal(data.Score, question.Score);
         }
 
         [Theory]
-        [MemberData(nameof(QuestionTestData.Options_QuantityOutOfRange), MemberType = typeof(QuestionTestData))]
+        [MemberData(nameof(Options_QuantityOutOfRange))]
         public void CreateSingleChoiceQuestion_WhenOptionsLimitIsBroken_IsNotPossible(List<QuestionOption> options)
         {
-            // arrange
-            Test t = QuestionTestData.GetDefaultTest();
-            QuestionText questionText = new("Кто проживает на дне океана?");
-            QuestionScore score = GetRandomScore();
-            var questionCounterMock = new Mock<IQuestionCounter>();
-            questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
+            QuestionWithChoicesTestData data = new() { Options = options };
 
-            // act
-            Action act = () => t.AddSingleChoiceQuestion(questionText, score, options, questionCounterMock.Object);
-
-            // assert
-            AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(act);
+            AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(() =>
+                data.Test.AddSingleChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object)
+            );
         }
 
         [Theory]
-        [MemberData(nameof(QuestionTestData.Options_QuantityWithinRange), MemberType = typeof(QuestionTestData))]
+        [MemberData(nameof(Options_QuantityWithinRange))]
         public void CreateSingleChoiceQuestion_WhenOptionsLimitIsNotBroken_IsOk(List<QuestionOption> options)
         {
-            // arrange
-            Test t = QuestionTestData.GetDefaultTest();
-            QuestionText questionText = new("Кто проживает на дне океана?");
-            QuestionScore score = GetRandomScore();
-            var questionCounterMock = new Mock<IQuestionCounter>();
-            questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
+            QuestionWithChoicesTestData data = new() { Options = options };
 
-            // act
-            SingleChoiceQuestion question = t.AddSingleChoiceQuestion(questionText, score, options, questionCounterMock.Object);
+            SingleChoiceQuestion question = data.Test.AddSingleChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object);
 
-            // assert
             Assert.Equal(question.Options.Count, options.Count);
-            Assert.Equal(score, question.Score);
+            Assert.Equal(data.Score, question.Score);
         }
 
         [Fact]
         public void WhenCreateSingleChoiceQuestion_WithUnifiedScore_ScoreFromUserIsIgnored()
         {
-            // arrange
-            Test t = QuestionTestData.GetDefaultTest();
             QuestionScore unifiedScore = new(10);
-            t.ChangeScoreDistributionMethod(ScoreDistributionMethod.UNIFIED);
-            t.ChangeScorePerQuestion(unifiedScore);
+            QuestionScore userScore = new(5);
+            QuestionWithChoicesTestData data = new() { Score = userScore, Options = QuestionOptionsOneRight };
+            data.Test.ChangeScoreDistributionMethod(ScoreDistributionMethod.UNIFIED);
+            data.Test.ChangeScorePerQuestion(unifiedScore);
 
-            QuestionText questionText = new("Кто проживает на дне океана?");
-            List<QuestionOption> options = QuestionTestData.QuestionOptionsOneRight;
-            QuestionScore score = new(5);
+            SingleChoiceQuestion question = data.Test.AddSingleChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object);
 
-            var questionCounterMock = new Mock<IQuestionCounter>();
-            questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(t.ID)).Returns(0);
-
-            // act
-            SingleChoiceQuestion question = t.AddSingleChoiceQuestion(questionText, score, options, questionCounterMock.Object);
-
-            // assert
             Assert.Equal(unifiedScore, question.Score);
-            Assert.NotEqual(score, question.Score);
-        }     
-
-        private QuestionScore GetRandomScore()
-        {
-            Random random = new();
-            return new QuestionScore(
-                random.Next(
-                    QuestionScoreMustBeInRangeRule.MIN_SCORE,
-                    QuestionScoreMustBeInRangeRule.MAX_SCORE
-                )
-            );
+            Assert.NotEqual(userScore, question.Score);
         }
     }
 }
