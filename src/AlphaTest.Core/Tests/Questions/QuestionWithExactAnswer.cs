@@ -8,16 +8,16 @@
 
         protected QuestionWithExactAnswer() { }
 
-        protected QuestionWithExactAnswer(int testID, string text, uint number, uint score, TDecimalOrString rightAnswer):
+        protected QuestionWithExactAnswer(int testID, QuestionText text, uint number, QuestionScore score, TDecimalOrString rightAnswer):
             base(testID, text, number, score)
         {
             RightAnswer = rightAnswer;
         }
 
-        internal void ChangeAttributes(string text, uint score, TDecimalOrString rightAnswer)
-        {
-            CheckRulesForTextAndScore(text, score);
+        internal void ChangeAttributes(string text, QuestionScore score, TDecimalOrString rightAnswer)
+        {   
             RightAnswer = rightAnswer;
+            Score = score;
         }
     }
 }

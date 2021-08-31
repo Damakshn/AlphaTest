@@ -20,8 +20,8 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         {
             // arrange
             Test t = QuestionTestData.GetDefaultTest();
-            string questionText = "Кто проживает на дне океана?";
-            uint score = 1;
+            QuestionText questionText = new("Кто проживает на дне океана?");
+            QuestionScore score = new(1);
             var questionCounterMock = new Mock<IQuestionCounter>();
             questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
 
@@ -37,8 +37,8 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         {
             // arrange
             Test t = QuestionTestData.GetDefaultTest();
-            string questionText = "Кто проживает на дне океана?";
-            uint score = 1;
+            QuestionText questionText = new("Кто проживает на дне океана?");
+            QuestionScore score = new(1);
             var questionCounterMock = new Mock<IQuestionCounter>();
             List<QuestionOption> options = QuestionTestData.QuestionOptionsOneRight;
             questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
@@ -56,8 +56,8 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         {
             // arrange
             Test t = QuestionTestData.GetDefaultTest();
-            string questionText = "Кто проживает на дне океана?";
-            uint score = 1;
+            QuestionText questionText = new("Кто проживает на дне океана?");
+            QuestionScore score = new(1);
             var questionCounterMock = new Mock<IQuestionCounter>();
             questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
 
@@ -74,8 +74,8 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         {
             // arrange
             Test t = QuestionTestData.GetDefaultTest();
-            string questionText = "Кто проживает на дне океана?";
-            uint score = 1;
+            QuestionText questionText = new("Кто проживает на дне океана?");
+            QuestionScore score = new(1);
             var questionCounterMock = new Mock<IQuestionCounter>();
             questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
 
@@ -84,82 +84,6 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 
             // assert
             Assert.Equal(question.Options.Count, options.Count);
-        }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(101)]
-        public void CreateSingleChoiceQuestion_WhenQuestionScoreOutOfRange_IsNotPossible(uint score)
-        {
-            // arrange
-            Test t = QuestionTestData.GetDefaultTest();
-            string questionText = "Кто проживает на дне океана?";
-            var questionCounterMock = new Mock<IQuestionCounter>();
-            List<QuestionOption> options = QuestionTestData.QuestionOptionsOneRight;
-            questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
-
-            // act
-            Action act = () => t.AddSingleChoiceQuestion(questionText, score, options, questionCounterMock.Object);
-
-            // assert
-            AssertBrokenRule<QuestionScoreMustBeInRangeRule>(act);
-        }
-
-        [Theory]
-        [InlineData(1)]
-        [InlineData(10)]
-        [InlineData(85)]
-        [InlineData(100)]
-        public void CreateSingleChoiceQuestion_WhenQuestionScoreWithinRange_IsOk(uint score)
-        {
-            // arrange
-            Test t = QuestionTestData.GetDefaultTest();
-            string questionText = "Кто проживает на дне океана?";
-            var questionCounterMock = new Mock<IQuestionCounter>();
-            List<QuestionOption> options = QuestionTestData.QuestionOptionsOneRight;
-            questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
-
-            // act
-            SingleChoiceQuestion question = t.AddSingleChoiceQuestion(questionText, score, options, questionCounterMock.Object);
-
-            // assert
-            Assert.Equal(question.Score, score);
-        }
-
-        [Theory]
-        [MemberData(nameof(QuestionTestData.QuestionTexts_LengthOutOfRange), MemberType = typeof(QuestionTestData))]
-        public void CreateSingleChoiceQuestion_WithTooBigOrToShortText_IsNotPossible(string questionText)
-        {
-            // arrange
-            Test t = QuestionTestData.GetDefaultTest();
-            var questionCounterMock = new Mock<IQuestionCounter>();
-            questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
-            List<QuestionOption> options = QuestionTestData.QuestionOptionsOneRight;
-            uint score = 1;
-
-            // act
-            Action act = () => t.AddSingleChoiceQuestion(questionText, score, options, questionCounterMock.Object);
-
-            // assert
-            AssertBrokenRule<QuestionTextLengthMustBeInRangeRule>(act);
-        }
-
-        [Theory]
-        [MemberData(nameof(QuestionTestData.QuestionTexts_LengthWithinRange), MemberType = typeof(QuestionTestData))]
-        public void CreateSingleChoiceQuestion_WhenTextLengthWithinRange_IsOk(string questionText)
-        {
-            // arrange
-            Test t = QuestionTestData.GetDefaultTest();
-            var questionCounterMock = new Mock<IQuestionCounter>();
-            questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
-            List<QuestionOption> options = QuestionTestData.QuestionOptionsOneRight;
-            uint score = 1;
-
-            // act
-            SingleChoiceQuestion question = t.AddSingleChoiceQuestion(questionText, score, options, questionCounterMock.Object);
-
-            // assert
-            Assert.Equal(questionText, question.Text);
         }
     }
 }
