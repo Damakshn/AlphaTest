@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Xunit;
 using Moq;
 using AlphaTest.Core.Tests;
+using AlphaTest.Core.Tests.TestSettings.Checking;
 using AlphaTest.Core.Tests.Rules;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Tests.Questions.Rules;
@@ -21,7 +22,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             // arrange
             Test t = QuestionTestData.GetDefaultTest();
             QuestionText questionText = new("Кто проживает на дне океана?");
-            QuestionScore score = new(1);
+            QuestionScore score = GetRandomScore();
             var questionCounterMock = new Mock<IQuestionCounter>();
             questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
 
@@ -38,7 +39,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             // arrange
             Test t = QuestionTestData.GetDefaultTest();
             QuestionText questionText = new("Кто проживает на дне океана?");
-            QuestionScore score = new(1);
+            QuestionScore score = GetRandomScore();
             var questionCounterMock = new Mock<IQuestionCounter>();
             List<QuestionOption> options = QuestionTestData.QuestionOptionsOneRight;
             questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
@@ -48,6 +49,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 
             // assert
             Assert.Equal(1, question.Options.Count(o => o.IsRight));
+            Assert.Equal(score, question.Score);
         }
 
         [Theory]
@@ -57,7 +59,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             // arrange
             Test t = QuestionTestData.GetDefaultTest();
             QuestionText questionText = new("Кто проживает на дне океана?");
-            QuestionScore score = new(1);
+            QuestionScore score = GetRandomScore();
             var questionCounterMock = new Mock<IQuestionCounter>();
             questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
 
@@ -75,7 +77,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             // arrange
             Test t = QuestionTestData.GetDefaultTest();
             QuestionText questionText = new("Кто проживает на дне океана?");
-            QuestionScore score = new(1);
+            QuestionScore score = GetRandomScore();
             var questionCounterMock = new Mock<IQuestionCounter>();
             questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(It.IsAny<int>())).Returns(0);
 
@@ -84,6 +86,42 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 
             // assert
             Assert.Equal(question.Options.Count, options.Count);
+            Assert.Equal(score, question.Score);
+        }
+
+        [Fact]
+        public void WhenCreateSingleChoiceQuestion_WithUnifiedScore_ScoreFromUserIsIgnored()
+        {
+            // arrange
+            Test t = QuestionTestData.GetDefaultTest();
+            QuestionScore unifiedScore = new(10);
+            t.ChangeScoreDistributionMethod(ScoreDistributionMethod.UNIFIED);
+            t.ChangeScorePerQuestion(unifiedScore);
+
+            QuestionText questionText = new("Кто проживает на дне океана?");
+            List<QuestionOption> options = QuestionTestData.QuestionOptionsOneRight;
+            QuestionScore score = new(5);
+
+            var questionCounterMock = new Mock<IQuestionCounter>();
+            questionCounterMock.Setup(qc => qc.GetNumberOfQuestionsInTest(t.ID)).Returns(0);
+
+            // act
+            SingleChoiceQuestion question = t.AddSingleChoiceQuestion(questionText, score, options, questionCounterMock.Object);
+
+            // assert
+            Assert.Equal(unifiedScore, question.Score);
+            Assert.NotEqual(score, question.Score);
+        }     
+
+        private QuestionScore GetRandomScore()
+        {
+            Random random = new();
+            return new QuestionScore(
+                random.Next(
+                    QuestionScoreMustBeInRangeRule.MIN_SCORE,
+                    QuestionScoreMustBeInRangeRule.MAX_SCORE
+                )
+            );
         }
     }
 }

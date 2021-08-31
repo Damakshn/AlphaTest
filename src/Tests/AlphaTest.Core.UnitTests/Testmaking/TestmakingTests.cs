@@ -116,24 +116,6 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             Assert.Throws<BusinessException>(setTooFewAttempts);
         }
 
-        [Fact]
-        public void When_ChangingScorePerQuestion_NewValueMustBeInRange()
-        {
-            // arrange
-            Test t = MakeDefaultTest();
-
-            // act
-            uint tooBigScore = QuestionScoreMustBeInRangeRule.MAX_SCORE + 1;
-            uint tooSmallScore = QuestionScoreMustBeInRangeRule.MIN_SCORE - 1;
-            Action setTooBig = () => t.ChangeScorePerQuestion(tooBigScore);
-            Action setTooSmall = () => t.ChangeScorePerQuestion(tooSmallScore);
-
-            // assert
-            Assert.Throws<BusinessException>(setTooBig);
-            Assert.Throws<BusinessException>(setTooSmall);
-
-        }
-
         #region Вспомогательные методы
         private Test MakeDefaultTest()
         {

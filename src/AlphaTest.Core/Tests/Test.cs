@@ -53,9 +53,9 @@ namespace AlphaTest.Core.Tests
         // MAYBE ScoreDistributionMethod + PassingScore = ScorePolicy(passingScore, method)
         public uint PassingScore { get; private set; } = default;
         
-        public ScoreDistributionMethod ScoreDistributionMethod { get; private set; } = ScoreDistributionMethod.AUTOMATIC;
+        public ScoreDistributionMethod ScoreDistributionMethod { get; private set; } = ScoreDistributionMethod.MANUAL;
 
-        public uint ScorePerQuestion { get; private set; } = QuestionScoreMustBeInRangeRule.MIN_SCORE;
+        public QuestionScore ScorePerQuestion { get; private set; } = new(QuestionScoreMustBeInRangeRule.MIN_SCORE);
         #endregion
 
         #region Конструкторы
@@ -128,11 +128,10 @@ namespace AlphaTest.Core.Tests
             ScoreDistributionMethod = scoreDistributionMethod;
         }
 
-        public void ChangeScorePerQuestion(uint scorePerQuestion)
+        public void ChangeScorePerQuestion(QuestionScore scorePerQuestion)
         {
             // ToDo допустимо только при автоматическом распределении
             // ToDo перезапись баллов всех вопросов
-            CheckRule(new QuestionScoreMustBeInRangeRule(scorePerQuestion));
             ScorePerQuestion = scorePerQuestion;
         }
         #endregion
@@ -141,16 +140,14 @@ namespace AlphaTest.Core.Tests
         public SingleChoiceQuestion AddSingleChoiceQuestion(QuestionText text, QuestionScore score, List<QuestionOption> options, IQuestionCounter questionCounter)
         {
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
-            // ToDo score from test
-            SingleChoiceQuestion question = new(this.ID, text, questionNumber, score, options);
+            SingleChoiceQuestion question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), options);
             return question;
         }
 
         public MultiChoiceQuestion AddMultiChoiceQuestion(QuestionText text, QuestionScore score, List<QuestionOption> options, IQuestionCounter questionCounter)
         {
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
-            // ToDo score from test
-            MultiChoiceQuestion question = new(this.ID, text, questionNumber, score, options);
+            MultiChoiceQuestion question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), options);
             return question;
         }
 
@@ -158,8 +155,7 @@ namespace AlphaTest.Core.Tests
         {
             CheckRule(new QuestionsWithDetailedAnswersNotAllowedWithAutomatedCheckRule(this.WorkCheckingMethod));
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
-            // ToDo score from test
-            QuestionWithDetailedAnswer question = new(this.ID, text, questionNumber, score);
+            QuestionWithDetailedAnswer question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score));
             return question;
         }
 
@@ -167,8 +163,7 @@ namespace AlphaTest.Core.Tests
             QuestionScore score, string rightAnswer, IQuestionCounter questionCounter)
         {
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
-            // ToDo score from test
-            QuestionWithTextualAnswer question = new(this.ID, text, questionNumber, score, rightAnswer);
+            QuestionWithTextualAnswer question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), rightAnswer);
             return question;
         }
 
@@ -176,9 +171,15 @@ namespace AlphaTest.Core.Tests
             QuestionScore score, decimal rightAnswer, IQuestionCounter questionCounter)
         {
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
-            // ToDo score from test
-            QuestionWithNumericAnswer question = new(this.ID, text, questionNumber, score, rightAnswer);
+            QuestionWithNumericAnswer question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), rightAnswer);
             return question;
+        }
+
+        internal QuestionScore CalculateActualQuestionScore(QuestionScore scoreFromUser)
+        {
+            return this.ScoreDistributionMethod == ScoreDistributionMethod.UNIFIED
+                ? this.ScorePerQuestion
+                : scoreFromUser;
         }
         #endregion
 

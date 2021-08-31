@@ -5,9 +5,9 @@ namespace AlphaTest.Core.Tests.TestSettings.Checking
     public class ScoreDistributionMethod: Enumeration<ScoreDistributionMethod>
     {
         #region Опции
-        public static readonly ScoreDistributionMethod AUTOMATIC = new(1, "Автоматически");
+        public static readonly ScoreDistributionMethod UNIFIED = new(1, "Автоматически");
 
-        public static readonly ScoreDistributionMethod MANUAL = new(1, "Вручную");
+        public static readonly ScoreDistributionMethod MANUAL = new(2, "Вручную");
         #endregion
 
         public ScoreDistributionMethod(int id, string name) : base(id, name) { }
