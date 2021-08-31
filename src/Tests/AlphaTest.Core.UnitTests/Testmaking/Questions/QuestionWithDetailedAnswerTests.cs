@@ -1,54 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Xunit;
-using Moq;
-using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Rules;
 using AlphaTest.Core.Tests.Questions;
-using AlphaTest.Core.Tests.Questions.Rules;
-using AlphaTest.Core.UnitTests.Common;
 using AlphaTest.Core.Tests.TestSettings.Checking;
+using System.Linq;
+using AlphaTest.Core.Tests;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 {
-    public class QuestionWithDetailedAnswerTests: UnitTestBase
+    public class QuestionWithDetailedAnswerTests: QuestionTestsBase
     {   
         [Fact]
         public void CreateQuestionWithDetailedAnswer_WhenCheckingMethodIsAutomatic_IsNotPossible()
         {
-            // arrange
-            Test test = QuestionTestSamples.GetDefaultTest();
-            test.ChangeWorkCheckingMethod(WorkCheckingMethod.AUTOMATIC, new List<Question>());
-            var counterMock = new Mock<IQuestionCounter>();
-            QuestionText questionText = new("Текст вопроса");
-            QuestionScore score = new(1);
-            counterMock.Setup(c => c.GetNumberOfQuestionsInTest(test.ID)).Returns(0);
-
-            // act
-            Action act = () => test.AddQuestionWithDetailedAnswer(questionText, score, counterMock.Object);
-
-            // assert
-            AssertBrokenRule<QuestionsWithDetailedAnswersNotAllowedWithAutomatedCheckRule>(act);
+            QuestionTestData data = new();
+            data.Test.ChangeWorkCheckingMethod(WorkCheckingMethod.AUTOMATIC, new List<Question>());
+         
+            AssertBrokenRule<QuestionsWithDetailedAnswersNotAllowedWithAutomatedCheckRule>(() => 
+                data.Test.AddQuestionWithDetailedAnswer(data.Text, data.Score, data.CounterMock.Object)
+            );
         }
 
         [Theory]
-        [MemberData(nameof(QuestionTestSamples.NonAutomaticCheckingMethods), MemberType = typeof(QuestionTestSamples))]
+        [MemberData(nameof(NonAutomaticCheckingMethods))]
         public void CreateQuestionWithDetailedAnswer_WhenCheckingMethodNotAutomatic_IsOk(WorkCheckingMethod checkingMethod)
         {
-            // arrange
-            Test test = QuestionTestSamples.GetDefaultTest();
-            test.ChangeWorkCheckingMethod(checkingMethod, new List<Question>());
-            var counterMock = new Mock<IQuestionCounter>();
-            QuestionText questionText = new("Текст вопроса");
-            QuestionScore score = new(1);
-            counterMock.Setup(c => c.GetNumberOfQuestionsInTest(test.ID)).Returns(0);
-
-            // act
-            QuestionWithDetailedAnswer question = test.AddQuestionWithDetailedAnswer(questionText, score, counterMock.Object);
-
-            // assert
-            Assert.Equal(test.ID, question.TestID);
-            Assert.Equal(score, question.Score);
+            QuestionTestData data = new();
+            data.Test.ChangeWorkCheckingMethod(checkingMethod, new List<Question>());
+            
+            QuestionWithDetailedAnswer question = data.Test.AddQuestionWithDetailedAnswer(data.Text, data.Score, data.CounterMock.Object);
+            
+            Assert.Equal(data.Test.ID, question.TestID);
+            Assert.Equal(data.Score, question.Score);
         }
+
+        [Fact]
+        public void WhenCreateQuestionWithDetailedAnswer_WithUnifiedScore_ScoreArgumentIsIgnored()
+        {
+            QuestionScore unifiedScore = new(10);
+            QuestionScore userScore = new(5);
+            QuestionTestData data = new();
+            data.Test.ChangeScoreDistributionMethod(ScoreDistributionMethod.UNIFIED);
+            data.Test.ChangeScorePerQuestion(unifiedScore);
+
+            QuestionWithDetailedAnswer question = data.Test.AddQuestionWithDetailedAnswer(data.Text, data.Score, data.CounterMock.Object);
+
+            Assert.Equal(unifiedScore, question.Score);
+            Assert.NotEqual(userScore, question.Score);
+        }
+
+        public static IEnumerable<object[]> NonAutomaticCheckingMethods =>
+            WorkCheckingMethod.All
+            .Where(m => m != WorkCheckingMethod.AUTOMATIC)
+            .Select(m => new object[] { m })
+            .ToList();
     }
 }
