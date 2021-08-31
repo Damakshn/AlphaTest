@@ -4,9 +4,9 @@ namespace AlphaTest.Core.Tests.Rules
 {
     public class QuestionScoreMustBeInRangeRule : IBusinessRule
     {
-        public static readonly uint MIN_SCORE = 1;
+        public static readonly int MIN_SCORE = 1;
 
-        public static readonly uint MAX_SCORE = 100;
+        public static readonly int MAX_SCORE = 100;
 
         private readonly uint _score;
 
