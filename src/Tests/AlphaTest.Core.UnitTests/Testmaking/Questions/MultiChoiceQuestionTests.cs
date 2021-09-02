@@ -2,15 +2,18 @@
 using Xunit;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Tests.Questions.Rules;
+using AlphaTest.Core.Tests.Rules;
+using AlphaTest.Core.Tests.TestSettings.Checking;
+using AlphaTest.Core.Tests;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 {
-    public class MultiChoiceQuestionTests: QuestionWithChoicesTestsBase
+    public class MultiChoiceQuestionTests: QuestionTestsBase
     {
         [Fact]
         public void CreateMultiChoiceQuestion_WithoutRightOptions_IsNotPossible()
         {
-            QuestionWithChoicesTestData data = new() { Options = QuestionOptionsNoneRight };
+            QuestionTestData data = new() { Options = QuestionOptionsNoneRight };
 
             AssertBrokenRule<AtLeastOneQuestionOptionMustBeRightRule>(() =>
                 data.Test.AddMultiChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object)
@@ -21,7 +24,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         [MemberData(nameof(Options_OneOrManyRight))]
         public void CreateMultiChoiceQuestion_WithOneOrManyRightOptions_IsOk(List<QuestionOption> options)
         {
-            QuestionWithChoicesTestData data = new() { Options = options };
+            QuestionTestData data = new() { Options = options };
 
             MultiChoiceQuestion question = data.Test.AddMultiChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object);
 
@@ -34,7 +37,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         [MemberData(nameof(Options_QuantityOutOfRange))]
         public void CreateMultiChoiceQuestion_WhenOptionsLimitIsBroken_IsNotPossible(List<QuestionOption> options)
         {
-            QuestionWithChoicesTestData data = new() { Options = options };
+            QuestionTestData data = new() { Options = options };
 
             AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(() =>
                 data.Test.AddMultiChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object)
@@ -45,7 +48,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         [MemberData(nameof(Options_QuantityWithinRange))]
         public void CreateMultiChoiceQuestion_WithOptionsNumberWithinRange_IsOk(List<QuestionOption> options)
         {
-            QuestionWithChoicesTestData data = new() { Options = options };
+            QuestionTestData data = new() { Options = options };
 
             MultiChoiceQuestion question = data.Test.AddMultiChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object);
 

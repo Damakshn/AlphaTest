@@ -121,18 +121,13 @@ namespace AlphaTest.Core.Tests
             PassingScore = passingScore;
         }
 
-        public void ChangeScoreDistributionMethod(ScoreDistributionMethod scoreDistributionMethod)
+        public void ConfigureScoreDistribution(ScoreDistributionMethod newScoreDistributionMethod, QuestionScore newScorePerQuestion)
         {
-            // ToDo нельзя использовать автоматическое распределение, если баллы за вопросы разные
-            // MAYBE изменить подход, сделать перезапись баллов; тогда нужна правка документации
-            ScoreDistributionMethod = scoreDistributionMethod;
-        }
-
-        public void ChangeScorePerQuestion(QuestionScore scorePerQuestion)
-        {
-            // ToDo допустимо только при автоматическом распределении
-            // ToDo перезапись баллов всех вопросов
-            ScorePerQuestion = scorePerQuestion;
+            CheckRule(new ScorePerQuestionMustBeSpecifiedForUnifiedDistributionRule(newScoreDistributionMethod, newScorePerQuestion));
+            ScoreDistributionMethod = newScoreDistributionMethod;
+            ScorePerQuestion = newScorePerQuestion;
+            // ToDo domain event
+            // ToDo нужна правка документации
         }
         #endregion
 
@@ -175,11 +170,12 @@ namespace AlphaTest.Core.Tests
             return question;
         }
 
-        internal QuestionScore CalculateActualQuestionScore(QuestionScore scoreFromUser)
+        internal QuestionScore CalculateActualQuestionScore(QuestionScore customScore)
         {
+            CheckRule(new UnifiedScoreCannotBeReplacedWithDifferentScoreRule(ScoreDistributionMethod, ScorePerQuestion, customScore));
             return this.ScoreDistributionMethod == ScoreDistributionMethod.UNIFIED
                 ? this.ScorePerQuestion
-                : scoreFromUser;
+                : customScore;
         }
         #endregion
 

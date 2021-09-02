@@ -34,21 +34,6 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             Assert.Equal(data.Score, question.Score);
         }
 
-        [Fact]
-        public void WhenCreateQuestionWithDetailedAnswer_WithUnifiedScore_ScoreArgumentIsIgnored()
-        {
-            QuestionScore unifiedScore = new(10);
-            QuestionScore userScore = new(5);
-            QuestionTestData data = new();
-            data.Test.ChangeScoreDistributionMethod(ScoreDistributionMethod.UNIFIED);
-            data.Test.ChangeScorePerQuestion(unifiedScore);
-
-            QuestionWithDetailedAnswer question = data.Test.AddQuestionWithDetailedAnswer(data.Text, data.Score, data.CounterMock.Object);
-
-            Assert.Equal(unifiedScore, question.Score);
-            Assert.NotEqual(userScore, question.Score);
-        }
-
         public static IEnumerable<object[]> NonAutomaticCheckingMethods =>
             WorkCheckingMethod.All
             .Where(m => m != WorkCheckingMethod.AUTOMATIC)
