@@ -1,5 +1,6 @@
 ﻿using AlphaTest.Core.Common.Abstractions;
 using AlphaTest.Core.Tests.Questions.Rules;
+using System;
 
 namespace AlphaTest.Core.Tests.Questions
 {
@@ -21,7 +22,8 @@ namespace AlphaTest.Core.Tests.Questions
         protected Question(){}
 
         protected Question(int testID, QuestionText text, uint number, QuestionScore score)
-        {   
+        {
+            CheckCommonRules(score);
             TestID = testID;
             Text = text;
             Number = number;
@@ -30,9 +32,25 @@ namespace AlphaTest.Core.Tests.Questions
         #endregion
 
         #region Методы
+        public void ChangeScore(Test test, QuestionScore score)
+        {
+            if (test is null) throw new ArgumentNullException(nameof(test));
+            if (score is not null)
+            {
+                score = test.CalculateActualQuestionScore(score);
+            }
+            CheckRule(new QuestionScoreMustBeSpecifiedRule(score));
+            Score = score;
+        }
+
         internal void ChangeNumber(uint number)
         {
             Number = number;
+        }
+
+        private void CheckCommonRules(QuestionScore score)
+        {
+            CheckRule(new QuestionScoreMustBeSpecifiedRule(score));
         }
         #endregion
 

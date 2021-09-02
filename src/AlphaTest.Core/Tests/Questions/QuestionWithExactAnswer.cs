@@ -1,4 +1,6 @@
-﻿namespace AlphaTest.Core.Tests.Questions
+﻿using System;
+
+namespace AlphaTest.Core.Tests.Questions
 {
     public abstract class QuestionWithExactAnswer<TDecimalOrString>: Question
     {
@@ -12,12 +14,6 @@
             base(testID, text, number, score)
         {
             RightAnswer = rightAnswer;
-        }
-
-        internal void ChangeAttributes(string text, QuestionScore score, TDecimalOrString rightAnswer)
-        {   
-            RightAnswer = rightAnswer;
-            Score = score;
         }
     }
 }

@@ -17,14 +17,6 @@ namespace AlphaTest.Core.Tests.Questions
             Options = options;
         }
 
-        internal void ChangeAttributes(QuestionText text, QuestionScore score, List<QuestionOption> options)
-        {   
-            CheckSpecificRulesForOptions(options);
-            Text = text;
-            Score = score;
-            Options = options;
-        }
-
         protected abstract void CheckSpecificRulesForOptions(List<QuestionOption> options);
 
     }

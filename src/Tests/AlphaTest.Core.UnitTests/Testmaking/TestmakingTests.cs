@@ -4,6 +4,7 @@ using Moq;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Common.Exceptions;
 using AlphaTest.Core.Tests.Rules;
+using AlphaTest.Core.Tests.TestSettings.Checking;
 using AlphaTest.Core.UnitTests.Common;
 
 namespace AlphaTest.Core.UnitTests.Testmaking
@@ -114,6 +115,15 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             // assert
             Assert.Throws<BusinessException>(setTooManyAttempts);
             Assert.Throws<BusinessException>(setTooFewAttempts);
+        }
+
+        [Fact]
+        public void SetUnifiedScoreDistribution_WithoutScore_IsNotPossible()
+        {
+            Test t = MakeDefaultTest();
+            AssertBrokenRule<ScorePerQuestionMustBeSpecifiedForUnifiedDistributionRule>(() =>
+                t.ConfigureScoreDistribution(ScoreDistributionMethod.UNIFIED, null)
+            );
         }
 
         #region Вспомогательные методы
