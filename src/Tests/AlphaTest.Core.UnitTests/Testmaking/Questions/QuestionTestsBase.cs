@@ -144,18 +144,18 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
                 new QuestionOption("Третий вариант", 3, false),
             };
 
-        private static List<QuestionOption> QuestionOptionsTooMany =>
+        public static List<QuestionOption> QuestionOptionsTooMany =>
             Enumerable.Range(1, 21)
                 .Select(x => new QuestionOption($"{x}-й вариант", (uint)x, x == 1))
                 .ToList();
 
-        private static List<QuestionOption> QuestionOptionsTooFew =>
+        public static List<QuestionOption> QuestionOptionsTooFew =>
             new List<QuestionOption>
             {
                 new QuestionOption("Единственный вариант", 1, false)
             };
 
-        private static List<QuestionOption> QuestionOptionsMinimum =>
+        public static List<QuestionOption> QuestionOptionsMinimum =>
             new List<QuestionOption>
             {
                 new QuestionOption("Первый вариант", 1, true),
