@@ -6,7 +6,7 @@ namespace AlphaTest.Core.Tests.Questions
     {
         public static string AnswerType => typeof(TDecimalOrString).ToString();
 
-        public TDecimalOrString RightAnswer { get; private set; }
+        public TDecimalOrString RightAnswer { get; protected set; }
 
         protected QuestionWithExactAnswer() { }
 
@@ -15,5 +15,7 @@ namespace AlphaTest.Core.Tests.Questions
         {
             RightAnswer = rightAnswer;
         }
+
+        public abstract void ChangeRightAnswer(TDecimalOrString newRightAnswer);
     }
 }

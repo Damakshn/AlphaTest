@@ -12,5 +12,10 @@ namespace AlphaTest.Core.Tests.Questions
             CheckRule(new TextualRightAnswerCannotBeNullOrWhitespaceRule(rightAnswer));
         }
 
+        public override void ChangeRightAnswer(string newRightAnswer)
+        {
+            CheckRule(new TextualRightAnswerCannotBeNullOrWhitespaceRule(newRightAnswer));
+            RightAnswer = newRightAnswer;
+        }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using Xunit;
 using AlphaTest.Core.Tests.Questions.Rules;
 using AlphaTest.Core.UnitTests.Common;
+using AlphaTest.Core.Tests.Questions;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 {
-    
+
     public class QuestionWithTextualAnswerTests: UnitTestBase
     {
         [Theory]
@@ -17,6 +18,21 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 
             AssertBrokenRule<TextualRightAnswerCannotBeNullOrWhitespaceRule>(() =>
                 QuestionTestSamples.CreateQuestionWithTextualAnswer(data)
+            );
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public void SetTextualAnswer_ToNullOrWhiteSpace_IsNotPossible(string newRightAnswer)
+        {
+            QuestionTestData data = new();
+
+            QuestionWithTextualAnswer question = QuestionTestSamples.CreateQuestionWithTextualAnswer(data) as QuestionWithTextualAnswer;
+
+            AssertBrokenRule<TextualRightAnswerCannotBeNullOrWhitespaceRule>(() =>
+                question.ChangeRightAnswer(newRightAnswer)
             );
         }
     }
