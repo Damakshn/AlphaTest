@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Xunit;
 using Moq;
 using AlphaTest.Core.Tests;
@@ -6,6 +7,9 @@ using AlphaTest.Core.Common.Exceptions;
 using AlphaTest.Core.Tests.Rules;
 using AlphaTest.Core.Tests.TestSettings.Checking;
 using AlphaTest.Core.UnitTests.Common;
+using AlphaTest.Core.Tests.TestSettings.TestFlow;
+using AlphaTest.Core.Tests.Questions;
+using AlphaTest.Core.UnitTests.Testmaking.Questions;
 
 namespace AlphaTest.Core.UnitTests.Testmaking
 {
@@ -126,6 +130,36 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             );
         }
 
+        [Fact]
+        public void SetUnifiedScoreDistribution_WithScore_IsOk()
+        {
+            Test t = MakeDefaultTest();
+            QuestionScore unifiedScore = new(50);
+            t.ConfigureScoreDistribution(ScoreDistributionMethod.UNIFIED, unifiedScore);
+            Assert.Equal(unifiedScore, t.ScorePerQuestion);
+        }
+
+        [Theory]
+        [MemberData(nameof(AllSettingsEditingActions))]
+        public void EditAnySettings_WhenTestIsPublished_IsNotPossible(Action<Test> editingDelegate)
+        {
+            Test test = MakeDefaultTest();
+            test.Publish();
+            AssertBrokenRule<NonDraftTestCannotBeEditedRule>(() => editingDelegate(test));
+        }
+
+        [Theory]
+        [MemberData(nameof(QuestionTestsBase.InstanceAllTypesOfQuestions), MemberType = typeof(QuestionTestsBase))]
+        public void AddAnyQuestion_WhenTestIsPublished_IsNotPossible(Func<QuestionTestsBase.QuestionTestData, Question> addQuestionDelegate)
+        {
+            // ToDo выглядит плохо, надо будет исправить
+            // MAYBE перенести в тесты для вопросов
+            QuestionTestsBase.QuestionTestData data = new();
+            data.Test.Publish();
+            AssertBrokenRule<NonDraftTestCannotBeEditedRule>(() => addQuestionDelegate(data));
+        }
+        
+        
         #region Вспомогательные методы
         private Test MakeDefaultTest()
         {
@@ -141,6 +175,33 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             Test defaultTest = new(title, topic, authorID, testCounterMock.Object);
             return defaultTest;
         }
+        #endregion
+
+        #region Тестовые данные
+        // ToDo не хватает редактирования темы и названия - туда нужно передавать Counter
+        public static IEnumerable<object[]> AllSettingsEditingActions =>
+            new List<object[]> {
+                new object[]{ChangeAttemptsLimit},
+                new object[]{ChangeTimeLimit},
+                new object[]{ChangeRevokePolicy},
+                new object[]{ChangeNavigationMode},
+                new object[]{ChangeCheckingPolicy},
+                new object[]{ChangeWorkCheckingMethod},
+                new object[]{ChangePassingScore},
+                new object[]{ConfigureScoreDistribution}
+            };
+
+        #region Делегаты с редактированием настроек
+        private static Action<Test> ChangeAttemptsLimit = test => test.ChangeAttemptsLimit(2);
+        private static Action<Test> ChangeTimeLimit = test => test.ChangeTimeLimit(TimeSpan.FromHours(2));
+        private static Action<Test> ChangeRevokePolicy = test => test.ChangeRevokePolicy(new RevokePolicy(true, 2));
+        private static Action<Test> ChangeNavigationMode = test => test.ChangeNavigationMode(NavigationMode.FREE);
+        private static Action<Test> ChangeCheckingPolicy = test => test.ChangeCheckingPolicy(CheckingPolicy.SOFT);
+        private static Action<Test> ChangeWorkCheckingMethod = test => test.ChangeWorkCheckingMethod(WorkCheckingMethod.MIXED, new List<Question>());
+        private static Action<Test> ChangePassingScore = test => test.ChangePassingScore(200);
+        private static Action<Test> ConfigureScoreDistribution = test => test.ConfigureScoreDistribution(ScoreDistributionMethod.MANUAL);
+        #endregion
+
         #endregion
     }
 }

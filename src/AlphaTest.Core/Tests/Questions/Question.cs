@@ -1,4 +1,5 @@
 ﻿using AlphaTest.Core.Common.Abstractions;
+using AlphaTest.Core.Tests.Rules;
 using AlphaTest.Core.Tests.Questions.Rules;
 using System;
 
@@ -35,6 +36,8 @@ namespace AlphaTest.Core.Tests.Questions
         public void ChangeScore(Test test, QuestionScore score)
         {
             if (test is null) throw new ArgumentNullException(nameof(test));
+            // ToDo unit test this
+            CheckRule(new NonDraftTestCannotBeEditedRule(test));
             if (score is not null)
             {
                 score = test.CalculateActualQuestionScore(score);
