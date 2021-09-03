@@ -1,10 +1,11 @@
 ﻿using Xunit;
 using AlphaTest.Core.Tests.Questions.Rules;
+using AlphaTest.Core.UnitTests.Common;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 {
     
-    public class QuestionWithTextualAnswerTests: QuestionTestsBase
+    public class QuestionWithTextualAnswerTests: UnitTestBase
     {
         [Theory]
         [InlineData(null)]
@@ -15,7 +16,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             QuestionTestData data = new() { TextualAnswer = rightAnswer };
 
             AssertBrokenRule<TextualRightAnswerCannotBeNullOrWhitespaceRule>(() =>
-                CreateQuestionWithTextualAnswer(data)
+                QuestionTestSamples.CreateQuestionWithTextualAnswer(data)
             );
         }
     }

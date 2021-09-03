@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using Xunit;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Tests.Questions.Rules;
+using AlphaTest.Core.UnitTests.Common;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
 {
-    public class SingleChoiceQuestionTests: QuestionTestsBase
+    public class SingleChoiceQuestionTests: UnitTestBase
     {
         [Theory]
-        [MemberData(nameof(Options_NoneOrManyRight))]
+        [MemberData(nameof(QuestionWithChoicesTestSamples.Options_NoneOrManyRight), MemberType = typeof(QuestionWithChoicesTestSamples))]
         public void CreateSingleChoiceQuestion_WithNoneOrMultipleRightOptions_IsNotPossible(List<QuestionOption> options)
         {            
             QuestionTestData data = new() { Options = options };
@@ -22,7 +23,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         [Fact]
         public void CreateSingleChoiceQuestion_WithExactlyOneRightOption_IsOk()
         {
-            QuestionTestData data = new() { Options = QuestionOptionsOneRight };
+            QuestionTestData data = new() { Options = QuestionWithChoicesTestSamples.QuestionOptionsOneRight };
 
             SingleChoiceQuestion question = data.Test.AddSingleChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object);
 
