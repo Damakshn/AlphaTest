@@ -26,12 +26,10 @@ namespace AlphaTest.Core.Tests
         public int AuthorID { get; private set; }
 
         // ToDo Contributors
+                
+        public TestStatus Status { get; private set; } = TestStatus.Draft;
 
-        // ToDo Publish
-        // ToDo Cannot edit if not Draft
-        public TestStatus Status { get; private set; }
-
-        // ToDo AddQuestion, DeleteQuestion, MoveQuestion
+        // ToDo DeleteQuestion, MoveQuestion
         #endregion
 
         #region Настройки процедуры тестирования
@@ -76,7 +74,9 @@ namespace AlphaTest.Core.Tests
 
         #region Изменение настроек
         public void ChangeTitleAndTopic(string title, string topic, ITestCounter counter)
-        {
+        {   
+            // MAYBE подумать про использование AOP, так как эта проверка используется в очень большом числе методов
+            CheckRule(new NonDraftTestCannotBeEditedRule(this));
             // TBD Конструктор - правило похожее, но ошибка другая
             CheckRule(new TestMustBeUniqueRule(title, topic, INITIAL_VERSION, AuthorID, counter));
             Title = title;
@@ -85,44 +85,52 @@ namespace AlphaTest.Core.Tests
 
         public void ChangeTimeLimit(TimeSpan limit)
         {
+            CheckRule(new NonDraftTestCannotBeEditedRule(this));
             CheckRule(new TimeLimitMustBeInRangeRule(limit));
             TimeLimit = limit;
         }
 
         public void ChangeRevokePolicy(RevokePolicy revokePolicy)
         {
+            CheckRule(new NonDraftTestCannotBeEditedRule(this));
             RevokePolicy = revokePolicy;
         }
 
         public void ChangeAttemptsLimit(uint? attemptsPerTest)
         {
+            CheckRule(new NonDraftTestCannotBeEditedRule(this));
             CheckRule(new AttemptsLimitForTestMustBeInRangeRule(attemptsPerTest));
             AttemptsLimit = attemptsPerTest;
         }
 
         public void ChangeNavigationMode(NavigationMode navigationMode)
         {
+            CheckRule(new NonDraftTestCannotBeEditedRule(this));
             NavigationMode = navigationMode;
         }
 
         public void ChangeCheckingPolicy(CheckingPolicy checkingPolicy)
         {
+            CheckRule(new NonDraftTestCannotBeEditedRule(this));
             CheckingPolicy = checkingPolicy;
         }
 
         public void ChangeWorkCheckingMethod(WorkCheckingMethod workCheckingMethod, IEnumerable<Question> questionsInTest)
         {
+            CheckRule(new NonDraftTestCannotBeEditedRule(this));
             CheckRule(new AutomatedCheckCannotBeAppliedToQuestionsWithDetailedAnswerRule(workCheckingMethod, questionsInTest));
             WorkCheckingMethod = workCheckingMethod;
         }
 
         public void ChangePassingScore(uint passingScore)
         {
+            CheckRule(new NonDraftTestCannotBeEditedRule(this));
             PassingScore = passingScore;
         }
 
-        public void ConfigureScoreDistribution(ScoreDistributionMethod newScoreDistributionMethod, QuestionScore newScorePerQuestion)
+        public void ConfigureScoreDistribution(ScoreDistributionMethod newScoreDistributionMethod, QuestionScore newScorePerQuestion = null)
         {
+            CheckRule(new NonDraftTestCannotBeEditedRule(this));
             CheckRule(new ScorePerQuestionMustBeSpecifiedForUnifiedDistributionRule(newScoreDistributionMethod, newScorePerQuestion));
             ScoreDistributionMethod = newScoreDistributionMethod;
             ScorePerQuestion = newScorePerQuestion;
@@ -134,6 +142,7 @@ namespace AlphaTest.Core.Tests
         #region Работа с вопросами
         public SingleChoiceQuestion AddSingleChoiceQuestion(QuestionText text, QuestionScore score, List<QuestionOption> options, IQuestionCounter questionCounter)
         {
+            CheckRule(new NonDraftTestCannotBeEditedRule(this));
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
             SingleChoiceQuestion question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), options);
             return question;
@@ -141,6 +150,7 @@ namespace AlphaTest.Core.Tests
 
         public MultiChoiceQuestion AddMultiChoiceQuestion(QuestionText text, QuestionScore score, List<QuestionOption> options, IQuestionCounter questionCounter)
         {
+            CheckRule(new NonDraftTestCannotBeEditedRule(this));
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
             MultiChoiceQuestion question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), options);
             return question;
@@ -148,6 +158,7 @@ namespace AlphaTest.Core.Tests
 
         public QuestionWithDetailedAnswer AddQuestionWithDetailedAnswer(QuestionText text, QuestionScore score, IQuestionCounter questionCounter)
         {
+            CheckRule(new NonDraftTestCannotBeEditedRule(this));
             CheckRule(new QuestionsWithDetailedAnswersNotAllowedWithAutomatedCheckRule(this.WorkCheckingMethod));
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
             QuestionWithDetailedAnswer question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score));
@@ -157,6 +168,7 @@ namespace AlphaTest.Core.Tests
         public QuestionWithTextualAnswer AddQuestionWithTextualAnswer(QuestionText text,
             QuestionScore score, string rightAnswer, IQuestionCounter questionCounter)
         {
+            CheckRule(new NonDraftTestCannotBeEditedRule(this));
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
             QuestionWithTextualAnswer question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), rightAnswer);
             return question;
@@ -165,6 +177,7 @@ namespace AlphaTest.Core.Tests
         public QuestionWithNumericAnswer AddQuestionWithNumericAnswer(QuestionText text,
             QuestionScore score, decimal rightAnswer, IQuestionCounter questionCounter)
         {
+            CheckRule(new NonDraftTestCannotBeEditedRule(this));
             uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
             QuestionWithNumericAnswer question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), rightAnswer);
             return question;
@@ -179,6 +192,12 @@ namespace AlphaTest.Core.Tests
         }
         #endregion
 
+        public void Publish()
+        {
+            // ToDo временная реализация
+            // ToDo на вход нужно передавать отработанную заявку
+            Status = TestStatus.Published;
+        }
 
         #endregion
     }
