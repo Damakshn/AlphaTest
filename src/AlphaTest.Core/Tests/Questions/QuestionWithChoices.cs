@@ -12,12 +12,25 @@ namespace AlphaTest.Core.Tests.Questions
         protected QuestionWithChoices(int testID, QuestionText text, uint number, QuestionScore score, List<QuestionOption> options) 
             : base(testID, text, number, score)
         {
-            CheckRule(new NumberOfOptionsForQiestionMustBeInRangeRule(options));
+            CheckCommonRulesForOptions(options);
             CheckSpecificRulesForOptions(options);
             Options = options;
         }
 
+        public void ChangeOptions(List<QuestionOption> newOptions)
+        {
+            CheckCommonRulesForOptions(newOptions);
+            CheckSpecificRulesForOptions(newOptions);
+            Options = newOptions;
+        }
+
         protected abstract void CheckSpecificRulesForOptions(List<QuestionOption> options);
+
+        private void CheckCommonRulesForOptions(List<QuestionOption> options)
+        {
+            CheckRule(new QuestionOptionsMustBeSpecifiedRule(options));
+            CheckRule(new NumberOfOptionsForQiestionMustBeInRangeRule(options));
+        }
 
     }
 }
