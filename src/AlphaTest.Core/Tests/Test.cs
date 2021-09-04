@@ -5,6 +5,8 @@ using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Tests.Rules;
 using AlphaTest.Core.Tests.TestSettings.TestFlow;
 using AlphaTest.Core.Tests.TestSettings.Checking;
+using AlphaTest.Core.Tests.Publishing;
+using AlphaTest.Core.Tests.Publishing.Rules;
 
 namespace AlphaTest.Core.Tests
 {
@@ -191,6 +193,15 @@ namespace AlphaTest.Core.Tests
                 : customScore;
         }
         #endregion
+
+        public PublishingProposal ProposeForPublishing(List<Question> allQuestionsInTest)
+        {
+            CheckRule(new OnlyDraftTestsCanBeProposedForPublishingRule(this.Status));
+            CheckRule(new QuestionListMustNotBeEmptyBeforePublishingRule(allQuestionsInTest));
+            CheckRule(new PassingScoreMustBeAchievableRule(PassingScore, allQuestionsInTest));
+            Status = TestStatus.WaitingForPublishing;
+            return new PublishingProposal(this.ID);
+        }
 
         public void Publish()
         {
