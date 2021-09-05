@@ -4,13 +4,14 @@ using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Tests.Rules;
 using AlphaTest.Core.Tests.TestSettings.Checking;
 using AlphaTest.Core.Tests;
+using AlphaTest.Core.UnitTests.Common;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 {
-    public class UnifiedScoreTests: QuestionTestsBase
+    public class UnifiedScoreTests: UnitTestBase
     {
         [Theory]
-        [MemberData(nameof(InstanceAllTypesOfQuestions))]
+        [MemberData(nameof(QuestionTestSamples.InstanceAllTypesOfQuestions), MemberType = typeof(QuestionTestSamples))]
         public void CreateQuestion_WithCustomScore_WhenScoreIsUnified_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionScore unifiedScore = new(10);
@@ -24,7 +25,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         }
 
         [Theory]
-        [MemberData(nameof(InstanceAllTypesOfQuestions))]
+        [MemberData(nameof(QuestionTestSamples.InstanceAllTypesOfQuestions), MemberType = typeof(QuestionTestSamples))]
         public void CreateQuestion_WhenScoreIsUnified_Expect_AnyQuestionHasUnifiedScore(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionScore unifiedScore = new(10);
@@ -37,7 +38,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         }
 
         [Theory]
-        [MemberData(nameof(InstanceAllTypesOfQuestions))]
+        [MemberData(nameof(QuestionTestSamples.InstanceAllTypesOfQuestions), MemberType = typeof(QuestionTestSamples))]
         public void ReplaceQuestionScore_FromNonUnified_ToUnified_IsOk (Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionScore unifiedScore = new(10);
@@ -53,7 +54,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         }
 
         [Theory]
-        [MemberData(nameof(InstanceAllTypesOfQuestions))]
+        [MemberData(nameof(QuestionTestSamples.InstanceAllTypesOfQuestions), MemberType = typeof(QuestionTestSamples))]
         public void ReplaceQuestionScore_FromUnified_ToNonUnified_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionScore unifiedScore = new(10);

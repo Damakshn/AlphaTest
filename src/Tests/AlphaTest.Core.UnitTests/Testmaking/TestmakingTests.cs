@@ -149,19 +149,19 @@ namespace AlphaTest.Core.UnitTests.Testmaking
         }
 
         [Theory]
-        [MemberData(nameof(QuestionTestsBase.InstanceAllTypesOfQuestions), MemberType = typeof(QuestionTestsBase))]
-        public void AddAnyQuestion_WhenTestIsPublished_IsNotPossible(Func<QuestionTestsBase.QuestionTestData, Question> addQuestionDelegate)
+        [MemberData(nameof(QuestionTestSamples.InstanceAllTypesOfQuestions), MemberType = typeof(QuestionTestSamples))]
+        public void AddAnyQuestion_WhenTestIsPublished_IsNotPossible(Func<QuestionTestData, Question> addQuestionDelegate)
         {
             // ToDo выглядит плохо, надо будет исправить
             // MAYBE перенести в тесты для вопросов
-            QuestionTestsBase.QuestionTestData data = new();
+            QuestionTestData data = new();
             data.Test.Publish();
             AssertBrokenRule<NonDraftTestCannotBeEditedRule>(() => addQuestionDelegate(data));
         }
         
         
         #region Вспомогательные методы
-        private Test MakeDefaultTest()
+        private static Test MakeDefaultTest()
         {
             string title = It.IsAny<string>();
             string topic = It.IsAny<string>();
@@ -192,14 +192,14 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             };
 
         #region Делегаты с редактированием настроек
-        private static Action<Test> ChangeAttemptsLimit = test => test.ChangeAttemptsLimit(2);
-        private static Action<Test> ChangeTimeLimit = test => test.ChangeTimeLimit(TimeSpan.FromHours(2));
-        private static Action<Test> ChangeRevokePolicy = test => test.ChangeRevokePolicy(new RevokePolicy(true, 2));
-        private static Action<Test> ChangeNavigationMode = test => test.ChangeNavigationMode(NavigationMode.FREE);
-        private static Action<Test> ChangeCheckingPolicy = test => test.ChangeCheckingPolicy(CheckingPolicy.SOFT);
-        private static Action<Test> ChangeWorkCheckingMethod = test => test.ChangeWorkCheckingMethod(WorkCheckingMethod.MIXED, new List<Question>());
-        private static Action<Test> ChangePassingScore = test => test.ChangePassingScore(200);
-        private static Action<Test> ConfigureScoreDistribution = test => test.ConfigureScoreDistribution(ScoreDistributionMethod.MANUAL);
+        public static readonly Action<Test> ChangeAttemptsLimit = test => test.ChangeAttemptsLimit(2);
+        public static readonly Action<Test> ChangeTimeLimit = test => test.ChangeTimeLimit(TimeSpan.FromHours(2));
+        public static readonly Action<Test> ChangeRevokePolicy = test => test.ChangeRevokePolicy(new RevokePolicy(true, 2));
+        public static readonly Action<Test> ChangeNavigationMode = test => test.ChangeNavigationMode(NavigationMode.FREE);
+        public static readonly Action<Test> ChangeCheckingPolicy = test => test.ChangeCheckingPolicy(CheckingPolicy.SOFT);
+        public static readonly Action<Test> ChangeWorkCheckingMethod = test => test.ChangeWorkCheckingMethod(WorkCheckingMethod.MIXED, new List<Question>());
+        public static readonly Action<Test> ChangePassingScore = test => test.ChangePassingScore(200);
+        public static readonly Action<Test> ConfigureScoreDistribution = test => test.ConfigureScoreDistribution(ScoreDistributionMethod.MANUAL);
         #endregion
 
         #endregion

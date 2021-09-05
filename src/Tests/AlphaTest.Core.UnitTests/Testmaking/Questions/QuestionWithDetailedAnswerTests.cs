@@ -4,11 +4,11 @@ using AlphaTest.Core.Tests.Rules;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Tests.TestSettings.Checking;
 using System.Linq;
-using AlphaTest.Core.Tests;
+using AlphaTest.Core.UnitTests.Common;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 {
-    public class QuestionWithDetailedAnswerTests: QuestionTestsBase
+    public class QuestionWithDetailedAnswerTests: UnitTestBase
     {   
         [Fact]
         public void CreateQuestionWithDetailedAnswer_WhenCheckingMethodIsAutomatic_IsNotPossible()

@@ -3,13 +3,14 @@ using System;
 using System.Collections.Generic;
 using AlphaTest.Core.Tests.Questions;
 using Xunit;
+using AlphaTest.Core.UnitTests.Common;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
 {
-    public class QuestionWithChoicesCommonTests: QuestionTestsBase
+    public class QuestionWithChoicesCommonTests: UnitTestBase
     {
         [Theory]
-        [MemberData(nameof(InstanceQuestionsWithChoices))]
+        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
         public void CreateAnyQuestionWithChoices_WithoutOptions_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionTestData data = new() { Options = null };
@@ -20,10 +21,10 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         }
 
         [Theory]
-        [MemberData(nameof(InstanceQuestionsWithChoices))]
+        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
         public void CreateAnyQuestionWithChoices_WithTooManyOptions_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
-            QuestionTestData data = new() { Options = QuestionOptionsTooMany };
+            QuestionTestData data = new() { Options = QuestionWithChoicesTestSamples.QuestionOptionsTooMany };
 
             AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(() =>
                 createQuestionDelegate(data)
@@ -31,10 +32,10 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         }
 
         [Theory]
-        [MemberData(nameof(InstanceQuestionsWithChoices))]
+        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
         public void CreateAnyQuestionWithChoices_WithTooFewOptions_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
-            QuestionTestData data = new() { Options = QuestionOptionsTooFew };
+            QuestionTestData data = new() { Options = QuestionWithChoicesTestSamples.QuestionOptionsTooFew };
 
             AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(() =>
                 createQuestionDelegate(data)
@@ -42,7 +43,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         }
 
         [Theory]
-        [MemberData(nameof(InstanceQuestionsWithChoices))]
+        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
         public void CreateAnyQuestionWithChoices_When_NumberOfOptions_WithinRange_IsOk(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionTestData data = new();
@@ -55,7 +56,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         }
 
         [Theory]
-        [MemberData(nameof(InstanceQuestionsWithChoices))]
+        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
         public void ChangeOptions_ToNull_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionTestData data = new();
@@ -67,37 +68,37 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         }
 
         [Theory]
-        [MemberData(nameof(InstanceQuestionsWithChoices))]
+        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
         public void ChangeOptions_ForTooMany_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionTestData data = new();
             
             QuestionWithChoices question = createQuestionDelegate(data) as QuestionWithChoices;
 
-            AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(() => question.ChangeOptions(QuestionOptionsTooMany));
+            AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(() => question.ChangeOptions(QuestionWithChoicesTestSamples.QuestionOptionsTooMany));
         }
 
         [Theory]
-        [MemberData(nameof(InstanceQuestionsWithChoices))]
+        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
         public void ChangeOptions_ForTooFew_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionTestData data = new();
 
             QuestionWithChoices question = createQuestionDelegate(data) as QuestionWithChoices;
 
-            AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(() => question.ChangeOptions(QuestionOptionsTooFew));
+            AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(() => question.ChangeOptions(QuestionWithChoicesTestSamples.QuestionOptionsTooFew));
         }
 
         [Theory]
-        [MemberData(nameof(InstanceQuestionsWithChoices))]
+        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
         public void ChangeOptions_When_NumberOfOptions_WithinRange_IsOk(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionTestData data = new();
 
             QuestionWithChoices question = createQuestionDelegate(data) as QuestionWithChoices;
 
-            List<QuestionOption> newOptions = QuestionOptionsMinimum;
-            question.ChangeOptions(QuestionOptionsMinimum);
+            List<QuestionOption> newOptions = QuestionWithChoicesTestSamples.QuestionOptionsMinimum;
+            question.ChangeOptions(QuestionWithChoicesTestSamples.QuestionOptionsMinimum);
             Assert.Equal(newOptions.Count, question.Options.Count);
         }
 
@@ -105,12 +106,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
 
         #region Тестовые данные
         // ToDo разобрать все тестовые данные
-        public static IEnumerable<object[]> InstanceQuestionsWithChoices =>
-            new List<object[]>
-            {
-                new object[] { CreateSingleChoiceQuestion },
-                new object[] { CreateMultiChoiceQuestion }                
-            };
+        
         #endregion
     }
 }

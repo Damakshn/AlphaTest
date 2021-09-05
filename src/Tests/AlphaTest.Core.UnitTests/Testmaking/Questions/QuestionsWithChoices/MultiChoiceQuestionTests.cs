@@ -2,15 +2,16 @@
 using Xunit;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Tests.Questions.Rules;
+using AlphaTest.Core.UnitTests.Common;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
 {
-    public class MultiChoiceQuestionTests: QuestionTestsBase
+    public class MultiChoiceQuestionTests: UnitTestBase
     {
         [Fact]
         public void CreateMultiChoiceQuestion_WithoutRightOptions_IsNotPossible()
         {
-            QuestionTestData data = new() { Options = QuestionOptionsNoneRight };
+            QuestionTestData data = new() { Options = QuestionWithChoicesTestSamples.QuestionOptionsNoneRight };
 
             AssertBrokenRule<AtLeastOneQuestionOptionMustBeRightRule>(() =>
                 data.Test.AddMultiChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object)
@@ -18,7 +19,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         }
 
         [Theory]
-        [MemberData(nameof(Options_OneOrManyRight))]
+        [MemberData(nameof(QuestionWithChoicesTestSamples.Options_OneOrManyRight), MemberType = typeof(QuestionWithChoicesTestSamples))]
         public void CreateMultiChoiceQuestion_WithOneOrManyRightOptions_IsOk(List<QuestionOption> options)
         {
             QuestionTestData data = new() { Options = options };

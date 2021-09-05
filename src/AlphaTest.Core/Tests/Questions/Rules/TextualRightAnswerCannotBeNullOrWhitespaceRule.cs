@@ -4,7 +4,7 @@ namespace AlphaTest.Core.Tests.Questions.Rules
 {
     public class TextualRightAnswerCannotBeNullOrWhitespaceRule : IBusinessRule
     {
-        private string _rightAnswer;
+        private readonly string _rightAnswer;
 
         public TextualRightAnswerCannotBeNullOrWhitespaceRule(string rightAnswer)
         {

@@ -6,5 +6,10 @@
 
         internal QuestionWithNumericAnswer(int testID, QuestionText text, uint number, QuestionScore score, decimal rightAnswer) :
             base(testID, text, number, score, rightAnswer) { }
+
+        public override void ChangeRightAnswer(decimal newRightAnswer)
+        {
+            RightAnswer = newRightAnswer;
+        }
     }
 }
