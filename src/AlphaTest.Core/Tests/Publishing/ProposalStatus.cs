@@ -6,12 +6,12 @@ namespace AlphaTest.Core.Tests.Publishing
     {
         private ProposalStatus(int id, string name):base(id, name) { }
 
-        public static ProposalStatus NEW = new(1, "Новая");
+        public static readonly ProposalStatus NEW = new(1, "Новая");
 
-        public static ProposalStatus PENDING = new(2, "В работе");
+        public static readonly ProposalStatus PENDING = new(2, "В работе");
 
-        public static ProposalStatus APPROVED = new(3, "Одобрена");
+        public static readonly ProposalStatus APPROVED = new(3, "Одобрена");
 
-        public static ProposalStatus DECLINED = new(4, "Отклонена");
+        public static readonly ProposalStatus DECLINED = new(4, "Отклонена");
     }
 }

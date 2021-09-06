@@ -10,6 +10,7 @@ using AlphaTest.Core.UnitTests.Common;
 using AlphaTest.Core.Tests.TestSettings.TestFlow;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.UnitTests.Testmaking.Questions;
+using AlphaTest.Core.UnitTests.Common.Helpers;
 
 namespace AlphaTest.Core.UnitTests.Testmaking
 {
@@ -144,7 +145,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
         public void EditAnySettings_WhenTestIsPublished_IsNotPossible(Action<Test> editingDelegate)
         {
             Test test = MakeDefaultTest();
-            test.Publish();
+            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
             AssertBrokenRule<NonDraftTestCannotBeEditedRule>(() => editingDelegate(test));
         }
 
@@ -155,7 +156,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             // ToDo выглядит плохо, надо будет исправить
             // MAYBE перенести в тесты для вопросов
             QuestionTestData data = new();
-            data.Test.Publish();
+            HelpersForTests.SetNewStatusForTest(data.Test, TestStatus.Published);
             AssertBrokenRule<NonDraftTestCannotBeEditedRule>(() => addQuestionDelegate(data));
         }
         

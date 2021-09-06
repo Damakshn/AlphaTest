@@ -7,8 +7,9 @@ namespace AlphaTest.Core.UnitTests.Common
 {
     public abstract class UnitTestBase
     {
-        public void AssertBrokenRule<TRule>(Action testAction) where TRule : class, IBusinessRule
+        public static void AssertBrokenRule<TRule>(Action testAction) where TRule : class, IBusinessRule
         {
+            // ToDo если нет ошибки - одно сообщение, если нарушено другое правило - другое сообщение
             string message = $"Правило {typeof(TRule).Name} не было нарушено.";
             BusinessException exception = Assert.Throws<BusinessException>(testAction);
             if (exception is not null)

@@ -10,8 +10,8 @@ namespace AlphaTest.Core.Tests
 
         public static readonly TestStatus WaitingForPublishing = new(2, "В ожидании публикации");
 
-        public static readonly TestStatus Published = new TestStatus(3, "Опубликован");
+        public static readonly TestStatus Published = new (3, "Опубликован");
 
-        public static readonly TestStatus Archived = new TestStatus(4, "В архиве");
+        public static readonly TestStatus Archived = new (4, "В архиве");
     }
 }

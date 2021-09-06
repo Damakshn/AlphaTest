@@ -203,10 +203,11 @@ namespace AlphaTest.Core.Tests
             return new PublishingProposal(this.ID);
         }
 
-        public void Publish()
+        public void Publish(PublishingProposal approvedProposal)
         {
-            // ToDo временная реализация
-            // ToDo на вход нужно передавать отработанную заявку
+            CheckRule(new TestMustBeProposedForPublishingBeforeBeingPublishedRule(this.Status));
+            CheckRule(new ProposalMustBeProvidedForPublishingRule(approvedProposal));
+            CheckRule(new PublishingOfTestRequiresApprovedProposalRule(approvedProposal));
             Status = TestStatus.Published;
         }
 
