@@ -4,7 +4,7 @@ using AlphaTest.Core.Tests.Questions;
 
 namespace AlphaTest.Core.Tests.Publishing.Rules
 {
-    class QuestionListMustNotBeEmptyBeforePublishingRule : IBusinessRule
+    public class QuestionListMustNotBeEmptyBeforePublishingRule : IBusinessRule
     {
         private readonly List<Question> _allQuestionsInTest;
 
