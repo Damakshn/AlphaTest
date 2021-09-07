@@ -74,5 +74,10 @@ namespace AlphaTest.Core.Users
                 throw new InvalidOperationException($"Пользователь не состоял в роли {role}.");
             }
         }
+
+        public bool IsInRole(UserRole role)
+        {
+            return _roles.Contains(role);
+        }
     }
 }
