@@ -14,13 +14,7 @@ namespace AlphaTest.Core.UnitTests.Common.Helpers
             string title = It.IsAny<string>();
             string topic = It.IsAny<string>();
             int authorID = It.IsAny<int>();
-            var testCounterMock = new Mock<ITestCounter>();
-            testCounterMock
-                .Setup(
-                    c => c.GetQuantityOfTests(title, topic, Test.INITIAL_VERSION, authorID)
-                )
-                .Returns(0);
-            Test defaultTest = new(title, topic, authorID, testCounterMock.Object);
+            Test defaultTest = new(title, topic, authorID, false);
             EntityIDSetter.SetIDTo(defaultTest, 1);
             return defaultTest;
         }

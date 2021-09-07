@@ -60,10 +60,10 @@ namespace AlphaTest.Core.Tests
         #region Конструкторы
         private Test() {}
 
-        public Test(string title, string topic, int authorID, ITestCounter counter)
+        public Test(string title, string topic, int authorID, bool testAlreadyExists)
         {
             // TBD ChangeTitleAndTopic - правило похожее, но ошибка другая
-            CheckRule(new TestMustBeUniqueRule(title, topic, INITIAL_VERSION, authorID, counter));
+            CheckRule(new TestMustBeUniqueRule(testAlreadyExists));
             Title = title;
             Topic = topic;
             Version = INITIAL_VERSION;
@@ -74,12 +74,11 @@ namespace AlphaTest.Core.Tests
         #region Методы
 
         #region Изменение настроек
-        public void ChangeTitleAndTopic(string title, string topic, ITestCounter counter)
-        {   
-            // MAYBE подумать про использование AOP, так как эта проверка используется в очень большом числе методов
+        public void ChangeTitleAndTopic(string title, string topic, bool attributesAlreadyInUse)
+        {
             CheckRule(new NonDraftTestCannotBeEditedRule(this));
             // TBD Конструктор - правило похожее, но ошибка другая
-            CheckRule(new TestMustBeUniqueRule(title, topic, INITIAL_VERSION, AuthorID, counter));
+            CheckRule(new TestMustBeUniqueRule(attributesAlreadyInUse));
             Title = title;
             Topic = topic;
         }
