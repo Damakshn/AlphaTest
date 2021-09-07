@@ -17,7 +17,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             data.Test.ChangeWorkCheckingMethod(WorkCheckingMethod.AUTOMATIC, new List<Question>());
          
             AssertBrokenRule<QuestionsWithDetailedAnswersNotAllowedWithAutomatedCheckRule>(() => 
-                data.Test.AddQuestionWithDetailedAnswer(data.Text, data.Score, data.CounterMock.Object)
+                data.Test.AddQuestionWithDetailedAnswer(data.Text, data.Score, data.NumberOfQuestionInTest)
             );
         }
 
@@ -28,7 +28,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             QuestionTestData data = new();
             data.Test.ChangeWorkCheckingMethod(checkingMethod, new List<Question>());
             
-            QuestionWithDetailedAnswer question = data.Test.AddQuestionWithDetailedAnswer(data.Text, data.Score, data.CounterMock.Object);
+            QuestionWithDetailedAnswer question = data.Test.AddQuestionWithDetailedAnswer(data.Text, data.Score, data.NumberOfQuestionInTest);
             
             Assert.Equal(data.Test.ID, question.TestID);
             Assert.Equal(data.Score, question.Score);

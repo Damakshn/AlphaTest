@@ -16,7 +16,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
             QuestionTestData data = new() { Options = options };
             
             AssertBrokenRule<ForSingleChoiceQuestionMustBeExactlyOneRightOptionRule>(() =>
-                data.Test.AddSingleChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object)
+                data.Test.AddSingleChoiceQuestion(data.Text, data.Score, data.Options, data.NumberOfQuestionInTest)
             );
         }
 
@@ -25,7 +25,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         {
             QuestionTestData data = new() { Options = QuestionWithChoicesTestSamples.QuestionOptionsOneRight };
 
-            SingleChoiceQuestion question = data.Test.AddSingleChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object);
+            SingleChoiceQuestion question = data.Test.AddSingleChoiceQuestion(data.Text, data.Score, data.Options, data.NumberOfQuestionInTest);
 
             Assert.Equal(1, question.Options.Count(o => o.IsRight));
             Assert.Equal(data.Score, question.Score);

@@ -14,7 +14,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
             QuestionTestData data = new() { Options = QuestionWithChoicesTestSamples.QuestionOptionsNoneRight };
 
             AssertBrokenRule<AtLeastOneQuestionOptionMustBeRightRule>(() =>
-                data.Test.AddMultiChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object)
+                data.Test.AddMultiChoiceQuestion(data.Text, data.Score, data.Options, data.NumberOfQuestionInTest)
             );
         }
 
@@ -24,7 +24,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         {
             QuestionTestData data = new() { Options = options };
 
-            MultiChoiceQuestion question = data.Test.AddMultiChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object);
+            MultiChoiceQuestion question = data.Test.AddMultiChoiceQuestion(data.Text, data.Score, data.Options, data.NumberOfQuestionInTest);
 
             Assert.Equal(data.Test.ID, question.TestID);
             Assert.Equal(data.Score, question.Score);

@@ -141,45 +141,45 @@ namespace AlphaTest.Core.Tests
         #endregion
 
         #region Работа с вопросами
-        public SingleChoiceQuestion AddSingleChoiceQuestion(QuestionText text, QuestionScore score, List<QuestionOption> options, IQuestionCounter questionCounter)
+        public SingleChoiceQuestion AddSingleChoiceQuestion(QuestionText text, QuestionScore score, List<QuestionOption> options, uint numberOfQuestionsInTest)
         {
             CheckRule(new NonDraftTestCannotBeEditedRule(this));
-            uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
+            uint questionNumber = numberOfQuestionsInTest + 1;
             SingleChoiceQuestion question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), options);
             return question;
         }
 
-        public MultiChoiceQuestion AddMultiChoiceQuestion(QuestionText text, QuestionScore score, List<QuestionOption> options, IQuestionCounter questionCounter)
+        public MultiChoiceQuestion AddMultiChoiceQuestion(QuestionText text, QuestionScore score, List<QuestionOption> options, uint numberOfQuestionsInTest)
         {
             CheckRule(new NonDraftTestCannotBeEditedRule(this));
-            uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
+            uint questionNumber = numberOfQuestionsInTest + 1;
             MultiChoiceQuestion question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), options);
             return question;
         }
 
-        public QuestionWithDetailedAnswer AddQuestionWithDetailedAnswer(QuestionText text, QuestionScore score, IQuestionCounter questionCounter)
+        public QuestionWithDetailedAnswer AddQuestionWithDetailedAnswer(QuestionText text, QuestionScore score, uint numberOfQuestionsInTest)
         {
             CheckRule(new NonDraftTestCannotBeEditedRule(this));
             CheckRule(new QuestionsWithDetailedAnswersNotAllowedWithAutomatedCheckRule(this.WorkCheckingMethod));
-            uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
+            uint questionNumber = numberOfQuestionsInTest + 1;
             QuestionWithDetailedAnswer question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score));
             return question;
         }
 
         public QuestionWithTextualAnswer AddQuestionWithTextualAnswer(QuestionText text,
-            QuestionScore score, string rightAnswer, IQuestionCounter questionCounter)
+            QuestionScore score, string rightAnswer, uint numberOfQuestionsInTest)
         {
             CheckRule(new NonDraftTestCannotBeEditedRule(this));
-            uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
+            uint questionNumber = numberOfQuestionsInTest + 1;
             QuestionWithTextualAnswer question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), rightAnswer);
             return question;
         }
 
         public QuestionWithNumericAnswer AddQuestionWithNumericAnswer(QuestionText text,
-            QuestionScore score, decimal rightAnswer, IQuestionCounter questionCounter)
+            QuestionScore score, decimal rightAnswer, uint numberOfQuestionsInTest)
         {
             CheckRule(new NonDraftTestCannotBeEditedRule(this));
-            uint questionNumber = questionCounter.GetNumberOfQuestionsInTest(this.ID) + 1;
+            uint questionNumber = numberOfQuestionsInTest + 1;
             QuestionWithNumericAnswer question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), rightAnswer);
             return question;
         }

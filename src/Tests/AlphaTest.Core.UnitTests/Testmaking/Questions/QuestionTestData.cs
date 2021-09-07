@@ -11,10 +11,8 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
     {
         public QuestionTestData()
         {
-            CounterMock.Setup(m => m.GetNumberOfQuestionsInTest(Test.ID)).Returns(0);
+            
         }
-
-        internal Mock<IQuestionCounter> CounterMock = new Mock<IQuestionCounter>();
 
         internal Test Test { get; set; } = GetDefaultTest();
 
@@ -32,6 +30,8 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
                 new QuestionOption("Второй вариант", 2, false),
                 new QuestionOption("Третий вариант", 3, false),
             };
+
+        internal uint NumberOfQuestionInTest { get; set; } = 0;
 
         public static Test GetDefaultTest()
         {
