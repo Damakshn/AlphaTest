@@ -7,6 +7,8 @@ using AlphaTest.Core.Tests.TestSettings.TestFlow;
 using AlphaTest.Core.Tests.TestSettings.Checking;
 using AlphaTest.Core.Tests.Publishing;
 using AlphaTest.Core.Tests.Publishing.Rules;
+using AlphaTest.Core.Users;
+using AlphaTest.Core.Tests.Ownership.Rules;
 
 namespace AlphaTest.Core.Tests
 {
@@ -24,10 +26,7 @@ namespace AlphaTest.Core.Tests
         // ToDo NewVersion, Replicate
         public int Version { get; private set; }
 
-        // ToDo SwitchAuthor
         public int AuthorID { get; private set; }
-
-        // ToDo Contributors
                 
         public TestStatus Status { get; private set; } = TestStatus.Draft;
 
@@ -194,6 +193,7 @@ namespace AlphaTest.Core.Tests
         }
         #endregion
 
+        #region Публикация
         public PublishingProposal ProposeForPublishing(List<Question> allQuestionsInTest)
         {
             CheckRule(new OnlyDraftTestsCanBeProposedForPublishingRule(this.Status));
@@ -210,6 +210,16 @@ namespace AlphaTest.Core.Tests
             CheckRule(new PublishingOfTestRequiresApprovedProposalRule(approvedProposal));
             Status = TestStatus.Published;
         }
+        #endregion
+
+        #region Авторство
+        public void SwitchAuthor(User newAuthor)
+        {
+            CheckRule(new OnlyTeacherCanBeSetAsNewAuthorOrContributorRule(newAuthor));
+            CheckRule(new SuspendedUserCannotBeSetAsNewAuthorOrContributorRule(newAuthor));
+            AuthorID = newAuthor.ID;
+        }
+        #endregion
 
         #endregion
     }
