@@ -1,6 +1,7 @@
 ﻿using System;
 using AlphaTest.Core.Common.Abstractions;
 using AlphaTest.Core.Tests.Publishing.Rules;
+using AlphaTest.Core.Users;
 
 namespace AlphaTest.Core.Tests.Publishing
 {
@@ -33,14 +34,12 @@ namespace AlphaTest.Core.Tests.Publishing
 
 		public string Remark { get; private set; }
 
-		public void Assign(int assigneeID)
+		public void AssignTo(User admin)
         {
-			throw new NotImplementedException();
-			/*
+			CheckRule(new ProposalCanBeAssignedOnlyToAdminUsersRule(admin));
 			AssignedAt = DateTime.Now;
-			AssigneeID = assigneeID;
+			AssigneeID = admin.ID;
 			Status = ProposalStatus.PENDING;
-			*/
         }
 
 		public void Approve()
