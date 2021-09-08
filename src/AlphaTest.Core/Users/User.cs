@@ -79,5 +79,15 @@ namespace AlphaTest.Core.Users
         {
             return _roles.Contains(role);
         }
+
+        public void Suspend()
+        {
+            IsSuspended = true;
+        }
+
+        public void Unlock()
+        {
+            IsSuspended = false;
+        }
     }
 }
