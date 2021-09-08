@@ -11,10 +11,8 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
     {
         public QuestionTestData()
         {
-            CounterMock.Setup(m => m.GetNumberOfQuestionsInTest(Test.ID)).Returns(0);
+            
         }
-
-        internal Mock<IQuestionCounter> CounterMock = new Mock<IQuestionCounter>();
 
         internal Test Test { get; set; } = GetDefaultTest();
 
@@ -33,18 +31,14 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
                 new QuestionOption("Третий вариант", 3, false),
             };
 
+        internal uint NumberOfQuestionInTest { get; set; } = 0;
+
         public static Test GetDefaultTest()
         {
             string title = It.IsAny<string>();
             string topic = It.IsAny<string>();
             int authorID = It.IsAny<int>();
-            var testCounterMock = new Mock<ITestCounter>();
-            testCounterMock
-                .Setup(
-                    c => c.GetQuantityOfTests(title, topic, Test.INITIAL_VERSION, authorID)
-                )
-                .Returns(0);
-            Test defaultTest = new(title, topic, authorID, testCounterMock.Object);
+            Test defaultTest = new(title, topic, authorID, false);
             EntityIDSetter.SetIDTo(defaultTest, 1);
             return defaultTest;
         }

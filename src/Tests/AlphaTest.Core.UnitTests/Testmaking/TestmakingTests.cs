@@ -24,14 +24,8 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             string title = It.IsAny<string>();
             string topic = It.IsAny<string>();
             int authorID = It.IsAny<int>();
-            var testCounterMock = new Mock<ITestCounter>();
-            testCounterMock
-                .Setup(
-                    c => c.GetQuantityOfTests(title, topic, Test.INITIAL_VERSION, authorID)
-                )
-                .Returns(0);
             // act
-            Test t = new(title, topic, authorID, testCounterMock.Object);
+            Test t = new(title, topic, authorID, false);
             // assert
             Assert.Equal(1, t.Version);
         }
@@ -43,16 +37,9 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             string title = It.IsAny<string>();
             string topic = It.IsAny<string>();
             int authorID = It.IsAny<int>();
-            var testCounterMock = new Mock<ITestCounter>();
-            // TBD какая версия теста должна передаваться?
-            testCounterMock
-                .Setup(
-                    c => c.GetQuantityOfTests(title, topic, Test.INITIAL_VERSION, authorID)
-                )
-                .Returns(1);
-
+            
             // act
-            Action act = () => { Test t = new(title, topic, authorID, testCounterMock.Object); };
+            Action act = () => { Test t = new(title, topic, authorID, true); };
 
             // assert
             Assert.Throws<BusinessException>(act);
@@ -65,23 +52,13 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             string intialTitle = "Политология как наука";
             string initialTopic = "Политология";
             int authorID = It.IsAny<int>();
-            var testCounterMock = new Mock<ITestCounter>();
-            testCounterMock
-                .Setup(
-                    c => c.GetQuantityOfTests(intialTitle, initialTopic, Test.INITIAL_VERSION, authorID)
-                )
-                .Returns(0);
 
             string newTitle = "Политическая система";
             string newTopic = "Политология";
-            // TBD какая версия теста должна передаваться?
-            testCounterMock
-                .Setup(c => c.GetQuantityOfTests(newTitle, newTopic, It.IsAny<int>(), authorID))
-                .Returns(1);
 
             // act
-            Test t = new(intialTitle, initialTopic, authorID, testCounterMock.Object);
-            Action act = () => t.ChangeTitleAndTopic(newTitle, newTopic, testCounterMock.Object);
+            Test t = new(intialTitle, initialTopic, authorID, false);
+            Action act = () => t.ChangeTitleAndTopic(newTitle, newTopic, true);
 
             // assert
             Assert.Throws<BusinessException>(act);
@@ -167,19 +144,14 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             string title = It.IsAny<string>();
             string topic = It.IsAny<string>();
             int authorID = It.IsAny<int>();
-            var testCounterMock = new Mock<ITestCounter>();
-            testCounterMock
-                .Setup(
-                    c => c.GetQuantityOfTests(title, topic, Test.INITIAL_VERSION, authorID)
-                )
-                .Returns(0);
-            Test defaultTest = new(title, topic, authorID, testCounterMock.Object);
+            
+            Test defaultTest = new(title, topic, authorID, false);
             return defaultTest;
         }
         #endregion
 
         #region Тестовые данные
-        // ToDo не хватает редактирования темы и названия - туда нужно передавать Counter
+
         public static IEnumerable<object[]> AllSettingsEditingActions =>
             new List<object[]> {
                 new object[]{ChangeAttemptsLimit},
@@ -189,7 +161,8 @@ namespace AlphaTest.Core.UnitTests.Testmaking
                 new object[]{ChangeCheckingPolicy},
                 new object[]{ChangeWorkCheckingMethod},
                 new object[]{ChangePassingScore},
-                new object[]{ConfigureScoreDistribution}
+                new object[]{ConfigureScoreDistribution},
+                new object[]{ChangeTitleAndTopic}
             };
 
         #region Делегаты с редактированием настроек
@@ -201,6 +174,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
         public static readonly Action<Test> ChangeWorkCheckingMethod = test => test.ChangeWorkCheckingMethod(WorkCheckingMethod.MIXED, new List<Question>());
         public static readonly Action<Test> ChangePassingScore = test => test.ChangePassingScore(200);
         public static readonly Action<Test> ConfigureScoreDistribution = test => test.ConfigureScoreDistribution(ScoreDistributionMethod.MANUAL);
+        public static readonly Action<Test> ChangeTitleAndTopic = test => test.ChangeTitleAndTopic("НовоеНазвание", "НоваяТема", false);
         #endregion
 
         #endregion

@@ -8,19 +8,19 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
     {
         #region Создание вопросов со стандартными данными
         public static Func<QuestionTestData, Question> CreateSingleChoiceQuestion { get; } =
-            data => data.Test.AddSingleChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object);
+            data => data.Test.AddSingleChoiceQuestion(data.Text, data.Score, data.Options, data.NumberOfQuestionInTest);
 
         public static Func<QuestionTestData, Question> CreateMultiChoiceQuestion { get; } =
-            data => data.Test.AddMultiChoiceQuestion(data.Text, data.Score, data.Options, data.CounterMock.Object);
+            data => data.Test.AddMultiChoiceQuestion(data.Text, data.Score, data.Options, data.NumberOfQuestionInTest);
 
         public static Func<QuestionTestData, Question> CreateQuestionWithTextualAnswer { get; } =
-            data => data.Test.AddQuestionWithTextualAnswer(data.Text, data.Score, data.TextualAnswer, data.CounterMock.Object);
+            data => data.Test.AddQuestionWithTextualAnswer(data.Text, data.Score, data.TextualAnswer, data.NumberOfQuestionInTest);
 
         public static Func<QuestionTestData, Question> CreateQuestionWithNumericAnswer { get; } =
-            data => data.Test.AddQuestionWithNumericAnswer(data.Text, data.Score, data.NumericAnswer, data.CounterMock.Object);
+            data => data.Test.AddQuestionWithNumericAnswer(data.Text, data.Score, data.NumericAnswer, data.NumberOfQuestionInTest);
 
         public static Func<QuestionTestData, Question> CreateQuestionWithDetailedAnswer { get; } =
-            data => data.Test.AddQuestionWithDetailedAnswer(data.Text, data.Score, data.CounterMock.Object);
+            data => data.Test.AddQuestionWithDetailedAnswer(data.Text, data.Score, data.NumberOfQuestionInTest);
 
         public static IEnumerable<object[]> InstanceAllTypesOfQuestions =>
             new List<object[]>
