@@ -68,7 +68,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
         public void When_ChangingTimeLimit_ValueMustBeInRange()
         {
             // arrange
-            Test t = MakeDefaultTest();
+            Test t = HelpersForTests.GetDefaultTest();
 
             // act
             TimeSpan oneSecond = new(0, 0, 1);
@@ -86,7 +86,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
         public void When_ChangingNumberOfAttempts_ValueMustBeInRange()
         {
             // arrange
-            Test t = MakeDefaultTest();
+            Test t = HelpersForTests.GetDefaultTest();
 
             // act
             uint tooManyAttempts = AttemptsLimitForTestMustBeInRangeRule.MAX_ATTEMPTS_PER_TEST + 1;
@@ -102,7 +102,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
         [Fact]
         public void SetUnifiedScoreDistribution_WithoutScore_IsNotPossible()
         {
-            Test t = MakeDefaultTest();
+            Test t = HelpersForTests.GetDefaultTest();
             AssertBrokenRule<ScorePerQuestionMustBeSpecifiedForUnifiedDistributionRule>(() =>
                 t.ConfigureScoreDistribution(ScoreDistributionMethod.UNIFIED, null)
             );
@@ -111,7 +111,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
         [Fact]
         public void SetUnifiedScoreDistribution_WithScore_IsOk()
         {
-            Test t = MakeDefaultTest();
+            Test t = HelpersForTests.GetDefaultTest();
             QuestionScore unifiedScore = new(50);
             t.ConfigureScoreDistribution(ScoreDistributionMethod.UNIFIED, unifiedScore);
             Assert.Equal(unifiedScore, t.ScorePerQuestion);
@@ -121,7 +121,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
         [MemberData(nameof(AllSettingsEditingActions))]
         public void EditAnySettings_WhenTestIsPublished_IsNotPossible(Action<Test> editingDelegate)
         {
-            Test test = MakeDefaultTest();
+            Test test = HelpersForTests.GetDefaultTest();
             HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
             AssertBrokenRule<NonDraftTestCannotBeEditedRule>(() => editingDelegate(test));
         }
@@ -136,19 +136,6 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             HelpersForTests.SetNewStatusForTest(data.Test, TestStatus.Published);
             AssertBrokenRule<NonDraftTestCannotBeEditedRule>(() => addQuestionDelegate(data));
         }
-        
-        
-        #region Вспомогательные методы
-        private static Test MakeDefaultTest()
-        {
-            string title = It.IsAny<string>();
-            string topic = It.IsAny<string>();
-            int authorID = It.IsAny<int>();
-            
-            Test defaultTest = new(title, topic, authorID, false);
-            return defaultTest;
-        }
-        #endregion
 
         #region Тестовые данные
 

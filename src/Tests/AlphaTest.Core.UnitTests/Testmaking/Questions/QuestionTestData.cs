@@ -4,6 +4,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using AlphaTest.TestingHelpers;
+using AlphaTest.Core.UnitTests.Common.Helpers;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 {
@@ -14,7 +15,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             
         }
 
-        internal Test Test { get; set; } = GetDefaultTest();
+        internal Test Test { get; set; } = HelpersForTests.GetDefaultTest();
 
         internal QuestionScore Score { get; set; } = GetRandomScore();
 
@@ -32,16 +33,6 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             };
 
         internal uint NumberOfQuestionInTest { get; set; } = 0;
-
-        public static Test GetDefaultTest()
-        {
-            string title = It.IsAny<string>();
-            string topic = It.IsAny<string>();
-            int authorID = It.IsAny<int>();
-            Test defaultTest = new(title, topic, authorID, false);
-            EntityIDSetter.SetIDTo(defaultTest, 1);
-            return defaultTest;
-        }
 
         public static QuestionScore GetRandomScore()
         {

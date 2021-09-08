@@ -7,8 +7,7 @@ using System;
 namespace AlphaTest.Core.UnitTests.Common.Helpers
 {
     public static class HelpersForTests
-    {
-        // ToDo заменить все GetDefaultTest на вызов этого метода
+    {   
         public static Test GetDefaultTest()
         {
             string title = It.IsAny<string>();
