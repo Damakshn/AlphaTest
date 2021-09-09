@@ -17,5 +17,13 @@ namespace AlphaTest.Core.Tests.Questions
             CheckRule(new TextualRightAnswerCannotBeNullOrWhitespaceRule(newRightAnswer));
             RightAnswer = newRightAnswer;
         }
+
+        public override QuestionWithTextualAnswer ReplicateForNewEdition(Test newEdition)
+        {
+            QuestionWithTextualAnswer replica = (QuestionWithTextualAnswer)this.MemberwiseClone();
+            replica.TestID = newEdition.ID;
+            replica.ID = default;
+            return replica;
+        }
     }
 }

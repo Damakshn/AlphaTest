@@ -46,6 +46,8 @@ namespace AlphaTest.Core.Tests.Questions
             Score = score;
         }
 
+        public abstract Question ReplicateForNewEdition(Test newEdition);
+
         internal void ChangeNumber(uint number)
         {
             Number = number;

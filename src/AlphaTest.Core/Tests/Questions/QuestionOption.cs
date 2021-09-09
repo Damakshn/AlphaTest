@@ -1,6 +1,8 @@
-﻿namespace AlphaTest.Core.Tests.Questions
+﻿using AlphaTest.Core.Common.Abstractions;
+
+namespace AlphaTest.Core.Tests.Questions
 {
-    public class QuestionOption
+    public class QuestionOption: Entity
     {
         public int ID { get; private set; }
 

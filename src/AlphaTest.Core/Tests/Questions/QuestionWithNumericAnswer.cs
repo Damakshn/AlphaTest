@@ -11,5 +11,13 @@
         {
             RightAnswer = newRightAnswer;
         }
+
+        public override QuestionWithNumericAnswer ReplicateForNewEdition(Test newEdition)
+        {
+            QuestionWithNumericAnswer replica = (QuestionWithNumericAnswer)this.MemberwiseClone();
+            replica.TestID = newEdition.ID;
+            replica.ID = default;
+            return replica;
+        }
     }
 }
