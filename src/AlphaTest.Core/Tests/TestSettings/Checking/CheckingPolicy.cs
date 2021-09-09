@@ -7,9 +7,9 @@ namespace AlphaTest.Core.Tests.TestSettings.Checking
         #region Опции
         public static readonly CheckingPolicy STANDARD = new(1, "Стандартная");
 
-        public static readonly CheckingPolicy SOFT = new(1, "Мягкая");
+        public static readonly CheckingPolicy SOFT = new(2, "Мягкая");
 
-        public static readonly CheckingPolicy HARD = new(1, "Жёсткая");
+        public static readonly CheckingPolicy HARD = new(3, "Жёсткая");
         #endregion
 
         public CheckingPolicy(int id, string name) : base(id, name) { }

@@ -22,8 +22,7 @@ namespace AlphaTest.Core.Tests
         public string Title { get; private set; }
 
         public string Topic { get; private set; }
-
-        // ToDo NewVersion, Replicate
+        
         public int Version { get; private set; }
 
         public int AuthorID { get; private set; }
@@ -83,7 +82,7 @@ namespace AlphaTest.Core.Tests
             Topic = topic;
         }
 
-        public void ChangeTimeLimit(TimeSpan limit)
+        public void ChangeTimeLimit(TimeSpan? limit)
         {
             CheckRule(new NonDraftTestCannotBeEditedRule(this));
             CheckRule(new TimeLimitMustBeInRangeRule(limit));
@@ -217,6 +216,17 @@ namespace AlphaTest.Core.Tests
             CheckRule(new OnlyTeacherCanBeSetAsNewAuthorOrContributorRule(newAuthor));
             CheckRule(new SuspendedUserCannotBeSetAsNewAuthorOrContributorRule(newAuthor));
             AuthorID = newAuthor.ID;
+        }
+        #endregion
+
+        #region Создание новой версии
+        public Test Replicate()
+        {
+            Test replica = (Test)this.MemberwiseClone();
+            replica.ID = default;
+            replica.Version = this.Version + 1;
+            replica.Status = TestStatus.Draft;
+            return replica;
         }
         #endregion
 

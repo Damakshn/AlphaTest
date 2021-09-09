@@ -137,6 +137,51 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             AssertBrokenRule<NonDraftTestCannotBeEditedRule>(() => addQuestionDelegate(data));
         }
 
+
+        // ToDo NAMING
+        [Fact]
+        public void Replicated_test_has_same_checking_and_procedure_settings_as_source_test() 
+        {
+            Test test = HelpersForTests.GetDefaultTest();
+
+            test.ChangeWorkCheckingMethod(WorkCheckingMethod.AUTOMATIC, new List<Question>());
+            test.ChangeCheckingPolicy(CheckingPolicy.HARD);
+            test.ChangeNavigationMode(NavigationMode.FREE);
+            test.ChangePassingScore(250);
+            test.ChangeTimeLimit(new TimeSpan(2, 0, 0));
+            test.ChangeTitleAndTopic("Новое название", "Новая тема", false);
+            test.ChangeAttemptsLimit(3);
+
+            Test replica = test.Replicate();
+
+            Assert.Equal(test.WorkCheckingMethod, replica.WorkCheckingMethod);
+            Assert.Equal(test.CheckingPolicy, replica.CheckingPolicy);
+            Assert.Equal(test.NavigationMode, replica.NavigationMode);
+            Assert.Equal(test.PassingScore, replica.PassingScore);
+            Assert.Equal(test.TimeLimit, replica.TimeLimit);
+            Assert.Equal(test.Title, replica.Title);
+            Assert.Equal(test.Topic, replica.Topic);
+            Assert.Equal(test.AttemptsLimit, replica.AttemptsLimit);
+        }
+
+        [Fact]
+        public void Replicated_test_is_always_draft()
+        {
+            Test test = HelpersForTests.GetDefaultTest();
+            HelpersForTests.SetNewStatusForTest(test, TestStatus.Archived);
+            Test replica = test.Replicate();
+            Assert.Equal(TestStatus.Draft, replica.Status);
+        }
+
+        [Fact]
+        public void Replicated_test_version_is_higher_than_source_test_version_for_one()
+        {
+            Test test = HelpersForTests.GetDefaultTest();
+            Test replica = test.Replicate();
+            Assert.Equal(test.Version + 1, replica.Version);
+        }
+
+
         #region Тестовые данные
 
         public static IEnumerable<object[]> AllSettingsEditingActions =>
