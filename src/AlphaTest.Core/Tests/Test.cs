@@ -222,6 +222,7 @@ namespace AlphaTest.Core.Tests
         #region Создание новой версии
         public Test Replicate()
         {
+            CheckRule(new OnlyPublishedTestsCanBeReplicatedRule(this));
             Test replica = (Test)this.MemberwiseClone();
             replica.ID = default;
             replica.Version = this.Version + 1;

@@ -55,6 +55,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
             User contributor = HelpersForUsers.CreateUser(data);
             Contribution source = new(test, contributor);
 
+            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
             Test newEdition = test.Replicate();
             Contribution replica = source.ReplicateForNewEdition(newEdition);
 

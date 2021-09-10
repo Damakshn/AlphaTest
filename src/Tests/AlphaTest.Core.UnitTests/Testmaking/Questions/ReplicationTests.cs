@@ -28,6 +28,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             Question source = createQuestionDelegate(data);
 
             // act
+            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
             Test newEdition = test.Replicate();
             Question replica = source.ReplicateForNewEdition(newEdition);
 
@@ -42,6 +43,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         public void Replicated_question_is_bound_to_different_test_than_source_question(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             Test test = HelpersForTests.GetDefaultTest();
+            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
             QuestionTestData data = new();
             Question source = createQuestionDelegate(data);
             
@@ -57,6 +59,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
         public void Replicated_question_ID_is_reset_to_default(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             Test test = HelpersForTests.GetDefaultTest();
+            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
             QuestionTestData data = new();
             Question source = createQuestionDelegate(data);
 
@@ -81,6 +84,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             QuestionWithNumericAnswer source = (QuestionWithNumericAnswer)QuestionTestSamples.CreateQuestionWithNumericAnswer(data);
             
             // act
+            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
             Test newEdition = test.Replicate();
             QuestionWithNumericAnswer replica = source.ReplicateForNewEdition(newEdition);
 
@@ -103,6 +107,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             QuestionWithTextualAnswer source = (QuestionWithTextualAnswer)QuestionTestSamples.CreateQuestionWithTextualAnswer(data);
 
             // act
+            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
             Test newEdition = test.Replicate();
             QuestionWithTextualAnswer replica = source.ReplicateForNewEdition(newEdition);
 
@@ -136,6 +141,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             }
 
             // act
+            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
             Test newEdition = test.Replicate();
             QuestionWithChoices replica = (QuestionWithChoices)source.ReplicateForNewEdition(newEdition);
 

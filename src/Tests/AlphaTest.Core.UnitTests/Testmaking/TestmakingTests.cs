@@ -152,6 +152,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             test.ChangeTitleAndTopic("Новое название", "Новая тема", false);
             test.ChangeAttemptsLimit(3);
 
+            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
             Test replica = test.Replicate();
 
             Assert.Equal(test.WorkCheckingMethod, replica.WorkCheckingMethod);
@@ -168,7 +169,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
         public void Replicated_test_is_always_draft()
         {
             Test test = HelpersForTests.GetDefaultTest();
-            HelpersForTests.SetNewStatusForTest(test, TestStatus.Archived);
+            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
             Test replica = test.Replicate();
             Assert.Equal(TestStatus.Draft, replica.Status);
         }
@@ -177,8 +178,18 @@ namespace AlphaTest.Core.UnitTests.Testmaking
         public void Replicated_test_version_is_higher_than_source_test_version_for_one()
         {
             Test test = HelpersForTests.GetDefaultTest();
+            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
             Test replica = test.Replicate();
             Assert.Equal(test.Version + 1, replica.Version);
+        }
+
+        [Fact]
+        public void Only_published_test_can_be_replicated_for_new_version()
+        {
+            Test test = HelpersForTests.GetDefaultTest();
+            AssertBrokenRule<OnlyPublishedTestsCanBeReplicatedRule>(() =>
+                test.Replicate()
+            );
         }
 
 
