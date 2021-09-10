@@ -33,5 +33,35 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
                 new Contribution(test, contributor)
             );
         }
+
+        [Fact]
+        public void Active_teacher_user_can_be_set_as_contributor()
+        {
+            Test test = HelpersForTests.GetDefaultTest();
+            UserTestData data = new() { ID = 5, InitialRole = UserRole.TEACHER };
+            User contributor = HelpersForUsers.CreateUser(data);
+
+            Contribution contribution = new(test, contributor);
+
+            Assert.Equal(test.ID, contribution.TestID);
+            Assert.Equal(contributor.ID, contribution.TeacherID);
+        }
+
+        [Fact]
+        public void Replicated_contribution_is_bound_to_different_test()
+        {
+            Test test = HelpersForTests.GetDefaultTest();
+            UserTestData data = new() { ID = 5, InitialRole = UserRole.TEACHER };
+            User contributor = HelpersForUsers.CreateUser(data);
+            Contribution source = new(test, contributor);
+
+            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
+            Test newEdition = test.Replicate();
+            Contribution replica = source.ReplicateForNewEdition(newEdition);
+
+            Assert.NotEqual(test.ID, replica.TestID);
+            Assert.Equal(newEdition.ID, replica.TestID);
+
+        }
     }
 }

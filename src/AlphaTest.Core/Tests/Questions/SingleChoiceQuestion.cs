@@ -11,6 +11,20 @@ namespace AlphaTest.Core.Tests.Questions
         internal SingleChoiceQuestion(int testID, QuestionText text, uint number, QuestionScore score, List<QuestionOption> options):
             base(testID, text, number, score, options){ }
 
+        public override SingleChoiceQuestion ReplicateForNewEdition(Test newEdition)
+        {
+            SingleChoiceQuestion replica = (SingleChoiceQuestion)this.MemberwiseClone();
+            replica.TestID = newEdition.ID;
+            List<QuestionOption> copiedOptions = new();
+            foreach(var option in this.Options)
+            {
+                copiedOptions.Add(new QuestionOption(option.Text, option.Number, option.IsRight));
+            }
+            replica.Options = copiedOptions;
+            replica.ID = default;
+            return replica;
+        }
+
         protected override void CheckSpecificRulesForOptions(List<QuestionOption> options)
         {
             CheckRule(new ForSingleChoiceQuestionMustBeExactlyOneRightOptionRule(options));

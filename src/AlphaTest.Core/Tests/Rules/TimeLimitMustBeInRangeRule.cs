@@ -17,6 +17,6 @@ namespace AlphaTest.Core.Tests.Rules
 
         public string Message => $"Лимит времени на тест должен быть в интервале от {MIN_LIMIT} до {MAX_LIMIT}.";
 
-        public bool IsBroken => (_timeLimit is not null) && (_timeLimit < MAX_LIMIT || _timeLimit > MAX_LIMIT);
+        public bool IsBroken => (_timeLimit is not null) && (_timeLimit < MIN_LIMIT || _timeLimit > MAX_LIMIT);
     }
 }

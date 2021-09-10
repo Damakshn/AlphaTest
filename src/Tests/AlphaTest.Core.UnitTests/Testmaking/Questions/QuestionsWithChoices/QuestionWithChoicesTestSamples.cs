@@ -91,12 +91,5 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
                 .Select(x => new QuestionOption($"{x}-й вариант", (uint)x, x == 1))
                 .ToList();
         #endregion
-
-        public static IEnumerable<object[]> InstanceQuestionsWithChoices =>
-            new List<object[]>
-            {
-                new object[] { CreateSingleChoiceQuestion },
-                new object[] { CreateMultiChoiceQuestion }
-            };
     }
 }

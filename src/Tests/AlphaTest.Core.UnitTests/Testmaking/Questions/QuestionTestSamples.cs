@@ -31,6 +31,13 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
                 new object[] { CreateQuestionWithNumericAnswer },
                 new object[] { CreateQuestionWithDetailedAnswer }
             };
+
+        public static IEnumerable<object[]> InstanceQuestionsWithChoices =>
+            new List<object[]>
+            {
+                new object[] { CreateSingleChoiceQuestion },
+                new object[] { CreateMultiChoiceQuestion }
+            };
         #endregion
     }
 }

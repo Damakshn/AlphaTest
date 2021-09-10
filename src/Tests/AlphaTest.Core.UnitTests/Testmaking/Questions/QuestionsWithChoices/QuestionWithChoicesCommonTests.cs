@@ -10,7 +10,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
     public class QuestionWithChoicesCommonTests: UnitTestBase
     {
         [Theory]
-        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
+        [MemberData(nameof(QuestionTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionTestSamples))]
         public void CreateAnyQuestionWithChoices_WithoutOptions_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionTestData data = new() { Options = null };
@@ -21,7 +21,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         }
 
         [Theory]
-        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
+        [MemberData(nameof(QuestionTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionTestSamples))]
         public void CreateAnyQuestionWithChoices_WithTooManyOptions_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionTestData data = new() { Options = QuestionWithChoicesTestSamples.QuestionOptionsTooMany };
@@ -32,7 +32,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         }
 
         [Theory]
-        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
+        [MemberData(nameof(QuestionTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionTestSamples))]
         public void CreateAnyQuestionWithChoices_WithTooFewOptions_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionTestData data = new() { Options = QuestionWithChoicesTestSamples.QuestionOptionsTooFew };
@@ -43,7 +43,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         }
 
         [Theory]
-        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
+        [MemberData(nameof(QuestionTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionTestSamples))]
         public void CreateAnyQuestionWithChoices_When_NumberOfOptions_WithinRange_IsOk(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionTestData data = new();
@@ -56,7 +56,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         }
 
         [Theory]
-        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
+        [MemberData(nameof(QuestionTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionTestSamples))]
         public void ChangeOptions_ToNull_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionTestData data = new();
@@ -68,7 +68,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         }
 
         [Theory]
-        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
+        [MemberData(nameof(QuestionTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionTestSamples))]
         public void ChangeOptions_ForTooMany_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionTestData data = new();
@@ -79,7 +79,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         }
 
         [Theory]
-        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
+        [MemberData(nameof(QuestionTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionTestSamples))]
         public void ChangeOptions_ForTooFew_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionTestData data = new();
@@ -90,7 +90,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         }
 
         [Theory]
-        [MemberData(nameof(QuestionWithChoicesTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionWithChoicesTestSamples))]
+        [MemberData(nameof(QuestionTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionTestSamples))]
         public void ChangeOptions_When_NumberOfOptions_WithinRange_IsOk(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             QuestionTestData data = new();
@@ -101,12 +101,6 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
             question.ChangeOptions(QuestionWithChoicesTestSamples.QuestionOptionsMinimum);
             Assert.Equal(newOptions.Count, question.Options.Count);
         }
-
-
-
-        #region Тестовые данные
-        // ToDo разобрать все тестовые данные
-        
-        #endregion
+       
     }
 }
