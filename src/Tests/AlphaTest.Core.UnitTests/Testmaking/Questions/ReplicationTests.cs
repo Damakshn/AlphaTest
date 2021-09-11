@@ -1,4 +1,5 @@
 ﻿using System;
+using Moq;
 using Xunit;
 using AlphaTest.Core.UnitTests.Common;
 using AlphaTest.Core.UnitTests.Common.Helpers;
@@ -29,7 +30,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 
             // act
             HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test newEdition = test.Replicate();
+            Test newEdition = test.Replicate(It.IsAny<int>());
             Question replica = source.ReplicateForNewEdition(newEdition);
 
             // assert
@@ -47,7 +48,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             QuestionTestData data = new();
             Question source = createQuestionDelegate(data);
             
-            Test newEdition = test.Replicate();
+            Test newEdition = test.Replicate(It.IsAny<int>());
             Question replica = source.ReplicateForNewEdition(newEdition);
 
             Assert.NotEqual(test.ID, replica.TestID);
@@ -63,7 +64,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             QuestionTestData data = new();
             Question source = createQuestionDelegate(data);
 
-            Test newEdition = test.Replicate();
+            Test newEdition = test.Replicate(It.IsAny<int>());
             Question replica = source.ReplicateForNewEdition(newEdition);
 
             Assert.Equal(default, replica.ID);
@@ -85,7 +86,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             
             // act
             HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test newEdition = test.Replicate();
+            Test newEdition = test.Replicate(It.IsAny<int>());
             QuestionWithNumericAnswer replica = source.ReplicateForNewEdition(newEdition);
 
             // assert
@@ -108,7 +109,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 
             // act
             HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test newEdition = test.Replicate();
+            Test newEdition = test.Replicate(It.IsAny<int>());
             QuestionWithTextualAnswer replica = source.ReplicateForNewEdition(newEdition);
 
             // assert
@@ -142,7 +143,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 
             // act
             HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test newEdition = test.Replicate();
+            Test newEdition = test.Replicate(It.IsAny<int>());
             QuestionWithChoices replica = (QuestionWithChoices)source.ReplicateForNewEdition(newEdition);
 
             // assert

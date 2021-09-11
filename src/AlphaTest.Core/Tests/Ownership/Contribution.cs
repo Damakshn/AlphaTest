@@ -3,10 +3,11 @@ using AlphaTest.Core.Users;
 using AlphaTest.Core.Tests.Ownership.Rules;
 namespace AlphaTest.Core.Tests.Ownership
 {
-    // MAYBE положить в один агрегат вместе с Test
     public class Contribution: Entity
     {
-        public Contribution(Test test, User teacher)
+        private Contribution() { }
+
+        internal Contribution(Test test, User teacher)
         {
             CheckRule(new OnlyTeacherCanBeSetAsNewAuthorOrContributorRule(teacher));
             CheckRule(new SuspendedUserCannotBeSetAsNewAuthorOrContributorRule(teacher));
