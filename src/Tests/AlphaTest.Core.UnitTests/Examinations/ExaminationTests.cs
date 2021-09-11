@@ -5,6 +5,8 @@ using AlphaTest.Core.UnitTests.Common.Helpers;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Examinations.Rules;
+using System.Collections.Generic;
+using AlphaTest.Core.Groups;
 
 namespace AlphaTest.Core.UnitTests.Examinations
 {
@@ -28,7 +30,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             DateTime start = DateTime.Now.AddDays(1);
             DateTime end = start.AddDays(1);
             AssertBrokenRule<ExaminationsCanBeCreatedOnlyForPublishedTestsRule>(() =>
-                new Examination(test, start, end, null)
+                new Examination(test, start, end, null, new List<Group>())
             );
         }
 
@@ -39,7 +41,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             DateTime end = DateTime.Now.AddDays(1);
             DateTime start = end.AddDays(1);
             AssertBrokenRule<StartOfExaminationMustBeEarlierThanEndRule>(() =>
-                new Examination(test, start, end, null)
+                new Examination(test, start, end, null, new List<Group>())
             );
         }
 
@@ -49,8 +51,8 @@ namespace AlphaTest.Core.UnitTests.Examinations
             Test test = GetTestForExamination();
             DateTime start = DateTime.Now - new TimeSpan(5, 0, 0);
             DateTime end = DateTime.Now.AddDays(1);
-            AssertBrokenRule<ExaminationCannotStartInThePastRule>(() =>
-                new Examination(test, start, end, null)
+            AssertBrokenRule<ExaminationCannotBeCreatedThePastRule>(() =>
+                new Examination(test, start, end, null, new List<Group>())
             );
         }
 
@@ -65,7 +67,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             DateTime start = DateTime.Now.AddDays(1);
             DateTime end = start + new TimeSpan(0, 30, 0);
             AssertBrokenRule<ExamDurationCannotBeShorterThanTimeLimitInTestRule>(() =>
-                new Examination(test, start, end, null)
+                new Examination(test, start, end, null, new List<Group>())
             );
         }
 
