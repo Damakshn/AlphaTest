@@ -27,7 +27,7 @@ namespace AlphaTest.Core.Examinations.Rules
         // ToDo predicate
         public bool IsBroken => 
             _candidateGroup is not null 
-            ? _candidateGroup.IsDisbanded || !_candidateGroup.IsActive
-            : _candidateGroups.Any(g => g.IsDisbanded || !g.IsActive);
+            ? _candidateGroup.IsDisbanded || _candidateGroup.IsGone
+            : _candidateGroups.Any(g => g.IsDisbanded || g.IsGone);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using AlphaTest.TestingHelpers;
 using AlphaTest.Core.Users;
+using System.Linq;
 
 namespace AlphaTest.Core.UnitTests.Common.Helpers
 {
@@ -20,17 +21,16 @@ namespace AlphaTest.Core.UnitTests.Common.Helpers
         }
 
         public static IEnumerable<object[]> NonTeacherRoles =>
-            new List<object[]> 
-            { 
-                new object[]{UserRole.ADMIN},
-                new object[]{UserRole.STUDENT},
-            };
+            UserRole.All
+            .Where(r => r != UserRole.TEACHER)
+            .Select(r => new object[] { r })
+            .ToList();
+            
 
         public static IEnumerable<object[]> NonAdminRoles =>
-            new List<object[]>
-            {
-                new object[]{UserRole.TEACHER},
-                new object[]{UserRole.STUDENT},
-            };
+            UserRole.All
+            .Where(r => r != UserRole.ADMIN)
+            .Select(r => new object[] { r })
+            .ToList();
     }
 }

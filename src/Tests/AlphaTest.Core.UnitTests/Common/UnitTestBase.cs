@@ -10,10 +10,10 @@ namespace AlphaTest.Core.UnitTests.Common
         public static void AssertBrokenRule<TRule>(Action testAction) where TRule : class, IBusinessRule
         {
             // ToDo если нет ошибки - одно сообщение, если нарушено другое правило - другое сообщение
-            string message = $"Правило {typeof(TRule).Name} не было нарушено.";
             BusinessException exception = Assert.Throws<BusinessException>(testAction);
             if (exception is not null)
             {
+                string message = $"Правило {typeof(TRule).Name} не было нарушено, ошибка - {exception.Message}.";
                 Assert.True(exception.BrokenRule is TRule, message);
             }
         }

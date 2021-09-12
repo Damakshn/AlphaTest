@@ -7,89 +7,88 @@ using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Examinations.Rules;
 using System.Collections.Generic;
 using AlphaTest.Core.Groups;
+using AlphaTest.Core.Users;
+
 
 namespace AlphaTest.Core.UnitTests.Examinations
 {
     public class ExaminationTests: UnitTestBase
     {
-        /*
-        ToDo
-            class ExamTestData
-                StartsAt
-                EndsAt
-                Test
-                    author
-                    contributors
-                
-        */
         [Fact]
         public void Examination_can_be_created_only_for_published_test()
         {
-            Test test = GetTestForExamination();
-            HelpersForTests.SetNewStatusForTest(test, TestStatus.Draft);
-            DateTime start = DateTime.Now.AddDays(1);
-            DateTime end = start.AddDays(1);
+            ExaminationTestData data = new();
+
+            HelpersForTests.SetNewStatusForTest(data.Test, TestStatus.Draft);
+
             AssertBrokenRule<ExaminationsCanBeCreatedOnlyForPublishedTestsRule>(() =>
-                new Examination(test, start, end, null, new List<Group>())
+                new Examination(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups)
             );
         }
 
         [Fact]
         public void Start_of_examination_must_be_earlier_than_end()
         {
-            Test test = GetTestForExamination();
-            DateTime end = DateTime.Now.AddDays(1);
-            DateTime start = end.AddDays(1);
+            DateTime start = DateTime.Now.AddDays(1);
+            DateTime end = start - TimeSpan.FromDays(10);
+            ExaminationTestData data = new() { StartsAt = start, EndsAt = end };
+            
             AssertBrokenRule<StartOfExaminationMustBeEarlierThanEndRule>(() =>
-                new Examination(test, start, end, null, new List<Group>())
+                new Examination(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups)
             );
         }
 
         [Fact]
         public void Examination_cannot_start_in_the_past()
         {
-            Test test = GetTestForExamination();
             DateTime start = DateTime.Now - new TimeSpan(5, 0, 0);
             DateTime end = DateTime.Now.AddDays(1);
+            ExaminationTestData data = new() { StartsAt = start, EndsAt = end };
+            
             AssertBrokenRule<ExaminationCannotBeCreatedThePastRule>(() =>
-                new Examination(test, start, end, null, new List<Group>())
+                new Examination(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups)
             );
         }
 
         [Fact]
         public void Examination_duration_cannot_be_shorter_than_time_limit_for_test()
         {
-            Test test = GetTestForExamination();
-            // иначе тест не даст поменять лимит времени
-            HelpersForTests.SetNewStatusForTest(test, TestStatus.Draft);
-            test.ChangeTimeLimit(new TimeSpan(2, 0, 0));
-            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
             DateTime start = DateTime.Now.AddDays(1);
             DateTime end = start + new TimeSpan(0, 30, 0);
+            ExaminationTestData data = new() { StartsAt = start, EndsAt = end };
+            // иначе тест не даст поменять лимит времени
+            HelpersForTests.SetNewStatusForTest(data.Test, TestStatus.Draft);
+            data.Test.ChangeTimeLimit(new TimeSpan(2, 0, 0));
+            HelpersForTests.SetNewStatusForTest(data.Test, TestStatus.Published);
+            
             AssertBrokenRule<ExamDurationCannotBeShorterThanTimeLimitInTestRule>(() =>
-                new Examination(test, start, end, null, new List<Group>())
+                new Examination(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups)
             );
         }
 
-        [Fact]
-        public void Examiner_must_be_teacher()
+        [Theory]
+        [MemberData(nameof(HelpersForUsers.NonTeacherRoles), MemberType = typeof(HelpersForUsers))]
+        public void Examiner_must_be_teacher(UserRole role)
         {
-            throw new NotImplementedException();
+            UserTestData examinerData = new() { ID = 1001, InitialRole = role };
+            User examiner = HelpersForUsers.CreateUser(examinerData);
+            ExaminationTestData data = new() { Examiner = examiner };
+
+            AssertBrokenRule<ExaminerMustBeTeacherRule>(() =>
+                new Examination(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups)
+            );
         }
 
         [Fact]
         public void Examiner_must_be_author_or_contributor_of_the_test()
         {
-            throw new NotImplementedException();
+            UserTestData examinerData = new() { ID = 1001, InitialRole = UserRole.TEACHER };
+            User examiner = HelpersForUsers.CreateUser(examinerData);
+            ExaminationTestData data = new() { Examiner = examiner };
+
+            AssertBrokenRule<ExaminerMustBeAuthorOrContributorOfTheTestRule>(() =>
+                new Examination(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups)
+            );
         }
-
-        private static Test GetTestForExamination()
-        {
-            Test test = HelpersForTests.GetDefaultTest();
-            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            return test;
-        }
-
-
     }
 }

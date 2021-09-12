@@ -44,7 +44,8 @@ namespace AlphaTest.Core.Groups
 
         public bool IsDisbanded { get; private set; }
 
-        public bool IsActive => BeginDate < DateTime.Now && EndDate > DateTime.Now;
+        // MAYBE придумать другое название
+        public bool IsGone => EndDate <= DateTime.Now;
         #endregion
 
         #region Методы
