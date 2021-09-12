@@ -13,8 +13,8 @@ namespace AlphaTest.Core.UnitTests.Common.Helpers
             string title = It.IsAny<string>();
             string topic = It.IsAny<string>();
             int authorID = It.IsAny<int>();
-            Test defaultTest = new(title, topic, authorID, false);
-            EntityIDSetter.SetIDTo(defaultTest, 1);
+            int id = 1;
+            Test defaultTest = new(id, title, topic, authorID, false);
             return defaultTest;
         }
 

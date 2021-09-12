@@ -9,12 +9,16 @@ using AlphaTest.Core.Tests.Publishing;
 using AlphaTest.Core.Tests.Publishing.Rules;
 using AlphaTest.Core.Users;
 using AlphaTest.Core.Tests.Ownership.Rules;
+using AlphaTest.Core.Tests.Ownership;
+using System.Linq;
 
 namespace AlphaTest.Core.Tests
 {
     public class Test: Entity
     {
         public static readonly int INITIAL_VERSION = 1;
+
+        private List<Contribution> _contributions;
 
         #region Основные атрибуты
         public int ID { get; private set; }
@@ -26,6 +30,8 @@ namespace AlphaTest.Core.Tests
         public int Version { get; private set; }
 
         public int AuthorID { get; private set; }
+
+        public IReadOnlyCollection<Contribution> Contributions => _contributions.AsReadOnly();
                 
         public TestStatus Status { get; private set; } = TestStatus.Draft;
 
@@ -33,40 +39,51 @@ namespace AlphaTest.Core.Tests
         #endregion
 
         #region Настройки процедуры тестирования
-        public RevokePolicy RevokePolicy { get; private set; } = new RevokePolicy(false);
+        public RevokePolicy RevokePolicy { get; private set; }
 
         public TimeSpan? TimeLimit { get; private set; }
 
         // MAYBE uint? заменить на RetryPolicy(uint attemptsPerTest, bool infinite)
-        public uint? AttemptsLimit { get; private set; } = AttemptsLimitForTestMustBeInRangeRule.MIN_ATTEMPTS_PER_TEST;
+        public uint? AttemptsLimit { get; private set; }
         
-        public NavigationMode NavigationMode { get; private set; } = NavigationMode.SEQUENTIONAL;
+        public NavigationMode NavigationMode { get; private set; }
         #endregion
 
         #region Настройки оценивания
-        public CheckingPolicy CheckingPolicy { get; private set; } = CheckingPolicy.STANDARD;
+        public CheckingPolicy CheckingPolicy { get; private set; }
 
-        public WorkCheckingMethod WorkCheckingMethod { get; private set; } = WorkCheckingMethod.MANUAL;
+        public WorkCheckingMethod WorkCheckingMethod { get; private set; }
 
         // MAYBE ScoreDistributionMethod + PassingScore = ScorePolicy(passingScore, method)
-        public uint PassingScore { get; private set; } = default;
+        public uint PassingScore { get; private set; }
         
-        public ScoreDistributionMethod ScoreDistributionMethod { get; private set; } = ScoreDistributionMethod.MANUAL;
+        public ScoreDistributionMethod ScoreDistributionMethod { get; private set; }
 
-        public QuestionScore ScorePerQuestion { get; private set; } = new(QuestionScoreMustBeInRangeRule.MIN_SCORE);
+        public QuestionScore ScorePerQuestion { get; private set; }
         #endregion
 
         #region Конструкторы
         private Test() {}
 
-        public Test(string title, string topic, int authorID, bool testAlreadyExists)
+        public Test(int id, string title, string topic, int authorID, bool testAlreadyExists)
         {
             // TBD ChangeTitleAndTopic - правило похожее, но ошибка другая
             CheckRule(new TestMustBeUniqueRule(testAlreadyExists));
+            ID = id;
             Title = title;
             Topic = topic;
             Version = INITIAL_VERSION;
             AuthorID = authorID;
+            RevokePolicy = new RevokePolicy(false);
+            TimeLimit = null;
+            AttemptsLimit = AttemptsLimitForTestMustBeInRangeRule.MIN_ATTEMPTS_PER_TEST;
+            NavigationMode = NavigationMode.SEQUENTIONAL;
+            CheckingPolicy = CheckingPolicy.STANDARD;
+            WorkCheckingMethod = WorkCheckingMethod.MANUAL;
+            PassingScore = default;
+            ScoreDistributionMethod = ScoreDistributionMethod.MANUAL;
+            ScorePerQuestion = new QuestionScore(QuestionScoreMustBeInRangeRule.MIN_SCORE);
+            _contributions = new List<Contribution>();
         }
         #endregion
 
@@ -217,14 +234,34 @@ namespace AlphaTest.Core.Tests
             CheckRule(new SuspendedUserCannotBeSetAsNewAuthorOrContributorRule(newAuthor));
             AuthorID = newAuthor.ID;
         }
+
+        public void AddContributor(User contributor)
+        {
+            CheckRule(new TeacherCanBeAddedToContributorsOnlyOnceRule(contributor, this));
+            Contribution contribution = new(this, contributor);
+            _contributions.Add(contribution);
+        }
+
+        public void RemoveContributor(int contributorID)
+        {
+            CheckRule(new NonContributorTeacherCannotBeRemovedFromContributorsRule(contributorID, this));
+            Contribution contributionToRemove = _contributions.Where(c => c.TeacherID == contributorID).FirstOrDefault();
+            _contributions.Remove(contributionToRemove);
+        }
         #endregion
 
         #region Создание новой версии
-        public Test Replicate()
+        public Test Replicate(int id)
         {
             CheckRule(new OnlyPublishedTestsCanBeReplicatedRule(this));
             Test replica = (Test)this.MemberwiseClone();
-            replica.ID = default;
+            replica.ID = id;
+            replica._contributions = new List<Contribution>();
+            foreach(var source in this._contributions)
+            {
+                Contribution copy = source.ReplicateForNewEdition(replica);
+                replica._contributions.Add(copy);
+            }
             replica.Version = this.Version + 1;
             replica.Status = TestStatus.Draft;
             return replica;

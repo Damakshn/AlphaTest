@@ -1,4 +1,6 @@
-﻿using Xunit;
+﻿using System.Linq;
+using Xunit;
+using Moq;
 using AlphaTest.Core.Users;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Ownership;
@@ -18,7 +20,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
             UserTestData data = new() { ID = 5, InitialRole = role };
             User contributor = HelpersForUsers.CreateUser(data);
             AssertBrokenRule<OnlyTeacherCanBeSetAsNewAuthorOrContributorRule>(() =>
-                new Contribution(test, contributor)
+                test.AddContributor(contributor)
             );
         }
 
@@ -30,7 +32,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
             User contributor = HelpersForUsers.CreateUser(data);
             contributor.Suspend();
             AssertBrokenRule<SuspendedUserCannotBeSetAsNewAuthorOrContributorRule>(() =>
-                new Contribution(test, contributor)
+                test.AddContributor(contributor)
             );
         }
 
@@ -40,28 +42,47 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
             Test test = HelpersForTests.GetDefaultTest();
             UserTestData data = new() { ID = 5, InitialRole = UserRole.TEACHER };
             User contributor = HelpersForUsers.CreateUser(data);
+            
+            test.AddContributor(contributor);
 
-            Contribution contribution = new(test, contributor);
-
-            Assert.Equal(test.ID, contribution.TestID);
-            Assert.Equal(contributor.ID, contribution.TeacherID);
+            Assert.Equal(1, test.Contributions.Count(c => c.TeacherID == contributor.ID));
         }
 
         [Fact]
-        public void Replicated_contribution_is_bound_to_different_test()
+        public void Teacher_can_be_added_to_contributors_only_once()
         {
             Test test = HelpersForTests.GetDefaultTest();
             UserTestData data = new() { ID = 5, InitialRole = UserRole.TEACHER };
             User contributor = HelpersForUsers.CreateUser(data);
-            Contribution source = new(test, contributor);
 
-            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test newEdition = test.Replicate();
-            Contribution replica = source.ReplicateForNewEdition(newEdition);
+            test.AddContributor(contributor);
 
-            Assert.NotEqual(test.ID, replica.TestID);
-            Assert.Equal(newEdition.ID, replica.TestID);
+            AssertBrokenRule<TeacherCanBeAddedToContributorsOnlyOnceRule>(() =>
+                test.AddContributor(contributor)    
+            );
+        }
 
+        [Fact]
+        public void Non_contributor_teacher_cannot_be_removed_from_contributors()
+        {
+            Test test = HelpersForTests.GetDefaultTest();
+
+            AssertBrokenRule<NonContributorTeacherCannotBeRemovedFromContributorsRule>(() =>
+                test.RemoveContributor(It.IsAny<int>())
+            );
+        }
+
+        [Fact]
+        public void Teacher_can_be_removed_from_contributors()
+        {
+            Test test = HelpersForTests.GetDefaultTest();
+            UserTestData data = new() { ID = 5, InitialRole = UserRole.TEACHER };
+            User contributor = HelpersForUsers.CreateUser(data);
+            test.AddContributor(contributor);
+
+            Assert.Equal(1, test.Contributions.Count(c => c.TeacherID == contributor.ID));
+            test.RemoveContributor(contributor.ID);
+            Assert.Equal(0, test.Contributions.Count(c => c.TeacherID == contributor.ID));
         }
     }
 }
