@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AlphaTest.Core.Examinations.Rules
 {
-    class NonParticipatingGroupsCannotBeExcludedFromExamRule : IBusinessRule
+    public class NonParticipatingGroupsCannotBeExcludedFromExamRule : IBusinessRule
     {
         private readonly Group _group;
 
@@ -31,6 +31,6 @@ namespace AlphaTest.Core.Examinations.Rules
         public bool IsBroken =>
             _group is not null
             ? _exam.Participations.Where(p => p.GroupID == _group.ID).FirstOrDefault() is null
-            : _exam.Participations.Any(p => _groups.Where(g => g.ID == p.GroupID).FirstOrDefault() is null);
+            : _groups.Any(g => _exam.Participations.Where(p => p.GroupID == g.ID).FirstOrDefault() is null);
     }
 }

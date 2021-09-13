@@ -6,7 +6,6 @@ using AlphaTest.Core.Tests;
 using AlphaTest.Core.UnitTests.Common;
 using AlphaTest.Core.UnitTests.Common.Helpers;
 using AlphaTest.Core.Users;
-using AlphaTest.TestingHelpers;
 
 namespace AlphaTest.Core.UnitTests.Examinations
 {
@@ -32,6 +31,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             };
             TestAuthor = HelpersForUsers.CreateUser(authorData);
             Contributor = HelpersForUsers.CreateUser(contributorData);
+            Examiner = TestAuthor;
             // MAYBE перенести в HelpersForTests с возможностью настраивать автора
             Test = new(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), TestAuthor.ID, false);
             Test.AddContributor(Contributor);
