@@ -30,6 +30,7 @@ namespace AlphaTest.Core.Examinations
             CheckCommonRulesForDatesAndDuration(startsAt, endsAt, test);
             CheckCommonRulesForExaminer(examiner, test);
             CheckRule(new DisbandedOrInactiveGroupsCannotParticipateExamRule(groups));
+            // ToDo группы должны существовать на момент проведения экзамена
             TestID = test.ID;
             ExaminerID = examiner.ID;
             StartsAt = startsAt;

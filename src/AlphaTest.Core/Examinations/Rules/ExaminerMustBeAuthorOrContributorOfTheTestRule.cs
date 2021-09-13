@@ -1,6 +1,7 @@
 ﻿using AlphaTest.Core.Common;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Users;
+using System.Linq;
 
 namespace AlphaTest.Core.Examinations.Rules
 {
@@ -16,8 +17,9 @@ namespace AlphaTest.Core.Examinations.Rules
         }
 
         public string Message => "Экзаменатор должен быть автором теста или входить в число составителей.";
-
-        // ToDo зашить список составителей внутрь теста
-        public bool IsBroken => false;
+        
+        public bool IsBroken => 
+            _test.AuthorID != _examiner.ID && 
+            _test.Contributions.Count(c => c.TeacherID == _examiner.ID) == 0;
     }
 }
