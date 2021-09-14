@@ -32,5 +32,11 @@ namespace AlphaTest.Core.UnitTests.Common.Helpers
             .Where(r => r != UserRole.ADMIN)
             .Select(r => new object[] { r })
             .ToList();
+
+        public static IEnumerable<object[]> NonStudentRoles =>
+            UserRole.All
+            .Where(r => r != UserRole.STUDENT)
+            .Select(r => new object[] { r })
+            .ToList();
     }
 }
