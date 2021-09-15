@@ -60,7 +60,7 @@ namespace AlphaTest.Core.Groups
             // ToDo domain event
         }
 
-        public void RemoveStudent(User student)
+        public void ExcludeStudent(User student)
         {
             CheckRule(new DisbandedGroupCannotBeModifiedRule(this));
             CheckRule(new InactiveGroupCannotBeModifiedRule(this));
@@ -72,19 +72,20 @@ namespace AlphaTest.Core.Groups
 
         public void Disband()
         {
+            CheckRule(new DisbandedGroupCannotBeModifiedRule(this));
             CheckRule(new InactiveGroupCannotBeModifiedRule(this));
             IsDisbanded = true;
         }
 
         public void Restore()
-        {
-            CheckRule(new InactiveGroupCannotBeModifiedRule(this));
+        {   
             IsDisbanded = false;
         }
 
         // ToDo согласованность с расписанием экзаменов
         public void ChangeDates(DateTime newBegin, DateTime newEnd)
         {
+            CheckRule(new DisbandedGroupCannotBeModifiedRule(this));
             CheckCommonRulesForDates(newBegin, newEnd);
             BeginDate = newBegin;
             EndDate = newEnd;

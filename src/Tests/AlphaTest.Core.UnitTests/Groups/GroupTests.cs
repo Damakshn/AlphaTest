@@ -111,15 +111,31 @@ namespace AlphaTest.Core.UnitTests.Groups
         }
 
         [Fact]
-        public void Disbanded_group_can_be_restored()
+        public void Students_cannot_be_added_to_disbanded_group()
         {
             GroupTestData data = new();
             Group group = new(data.ID, data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
+
+            UserTestData userData = new() { ID = 100, InitialRole = UserRole.STUDENT };
+            User candidate = HelpersForUsers.CreateUser(userData);
             group.Disband();
 
-            group.Restore();
+            AssertBrokenRule<DisbandedGroupCannotBeModifiedRule>(() =>
+                group.AddStudent(candidate)
+            );
+        }
 
-            Assert.False(group.IsDisbanded);
+        [Fact]
+        public void Students_cannot_be_added_to_outdated_group()
+        {
+            GroupTestData data = new();
+            Group group = new(data.ID, data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
+
+            UserTestData userData = new() { ID = 100, InitialRole = UserRole.STUDENT };
+            User candidate = HelpersForUsers.CreateUser(userData);
+            HelpersForGroups.SetGroupDates(group, DateTime.Now.AddDays(-365), DateTime.Now.AddDays(-100));
+            
+            AssertBrokenRule<InactiveGroupCannotBeModifiedRule>(() => group.AddStudent(candidate));
         }
 
         [Fact]
@@ -127,14 +143,66 @@ namespace AlphaTest.Core.UnitTests.Groups
         {
             GroupTestData data = new();
             Group group = new(data.ID, data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
-            
+
             group.Disband();
 
             Assert.True(group.IsDisbanded);
         }
 
         [Fact]
-        public void Non_member_student_cannot_be_removed_from_group()
+        public void Disbanded_group_can_be_restored()
+        {
+            GroupTestData data = new();
+            Group group = new(data.ID, data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
+            group.Disband();
+
+            Assert.True(group.IsDisbanded);
+            group.Restore();
+            Assert.False(group.IsDisbanded);
+        }
+
+        [Fact]
+        public void Group_can_be_disbanded_only_once()
+        {
+            GroupTestData data = new();
+            Group group = new(data.ID, data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
+            group.Disband();
+
+            AssertBrokenRule<DisbandedGroupCannotBeModifiedRule>(() =>
+                group.Disband()
+            );
+        }
+
+        [Fact]
+        public void Outdated_group_cannot_be_disbanded()
+        {
+            GroupTestData data = new();
+            Group group = new(data.ID, data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
+            HelpersForGroups.SetGroupDates(group, DateTime.Now.AddDays(-365), DateTime.Now.AddDays(-100));
+
+            AssertBrokenRule<InactiveGroupCannotBeModifiedRule>(() =>
+                group.Disband()
+            );
+        }
+
+        [Fact]
+        public void Outdated_disbanded_group_can_be_restored()
+        {
+            GroupTestData data = new();
+            Group group = new(data.ID, data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
+            group.Disband();
+            HelpersForGroups.SetGroupDates(group, DateTime.Now.AddDays(-365), DateTime.Now.AddDays(-100));
+            Assert.True(group.IsDisbanded);
+            Assert.True(group.IsGone);
+
+            group.Restore();
+
+            Assert.True(group.IsGone);
+            Assert.False(group.IsDisbanded);
+        }
+
+        [Fact]
+        public void Non_member_student_cannot_be_excluded_from_group()
         {
             GroupTestData data = new();
             Group group = new(data.ID, data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
@@ -144,7 +212,7 @@ namespace AlphaTest.Core.UnitTests.Groups
 
             User userNotInGroup = HelpersForUsers.CreateUser(new() { ID = 101, InitialRole = UserRole.STUDENT });
             AssertBrokenRule<NonMemberStudentsCannotBeExcludedFromGroupRule>(() =>
-                group.RemoveStudent(userNotInGroup)
+                group.ExcludeStudent(userNotInGroup)
             );
             
         }
@@ -159,8 +227,36 @@ namespace AlphaTest.Core.UnitTests.Groups
             group.AddStudent(student);
 
             Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.ID));
-            group.RemoveStudent(student);
+            group.ExcludeStudent(student);
             Assert.Equal(0, group.Memberships.Count(m => m.StudentID == student.ID));
+        }
+
+        [Fact]
+        public void Student_cannot_be_excluded_from_disbanded_group()
+        {
+            GroupTestData data = new();
+            Group group = new(data.ID, data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
+
+            User student = HelpersForUsers.CreateUser(new() { ID = 100, InitialRole = UserRole.STUDENT });
+            group.AddStudent(student);
+            Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.ID));
+            group.Disband();
+
+            AssertBrokenRule<DisbandedGroupCannotBeModifiedRule>(() => group.ExcludeStudent(student));
+        }
+
+        [Fact]
+        public void Student_cannot_be_excluded_from_outdated_group()
+        {
+            GroupTestData data = new();
+            Group group = new(data.ID, data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
+
+            User student = HelpersForUsers.CreateUser(new() { ID = 100, InitialRole = UserRole.STUDENT });
+            group.AddStudent(student);
+            Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.ID));
+            HelpersForGroups.SetGroupDates(group, DateTime.Now.AddDays(-365), DateTime.Now.AddDays(-100));
+
+            AssertBrokenRule<InactiveGroupCannotBeModifiedRule>(() => group.ExcludeStudent(student));
         }
 
         [Fact]
@@ -184,6 +280,20 @@ namespace AlphaTest.Core.UnitTests.Groups
             var newEndDate = DateTime.Now.AddDays(10);
 
             AssertBrokenRule<GroupEndDateMustFollowBeginDateRule>(() =>
+                group.ChangeDates(newBeginDate, newEndDate)
+            );
+        }
+
+        [Fact]
+        public void Dates_of_disbanded_group_cannot_be_changed()
+        {
+            GroupTestData data = new();
+            Group group = new(data.ID, data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
+
+            var newBeginDate = DateTime.Now.AddDays(10);
+            var newEndDate = DateTime.Now.AddDays(100);
+            group.Disband();
+            AssertBrokenRule<DisbandedGroupCannotBeModifiedRule>(() =>
                 group.ChangeDates(newBeginDate, newEndDate)
             );
         }
@@ -228,6 +338,17 @@ namespace AlphaTest.Core.UnitTests.Groups
         }
 
         [Fact]
+        public void Disbanded_group_cannot_be_renamed()
+        {
+            GroupTestData data = new();
+            Group group = new(data.ID, data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
+            group.Disband();
+            AssertBrokenRule<DisbandedGroupCannotBeModifiedRule>(() =>
+                group.Rename("Новое название", false)
+            );
+        }
+
+        [Fact]
         public void Group_can_be_renamed()
         {
             GroupTestData data = new();
@@ -237,27 +358,16 @@ namespace AlphaTest.Core.UnitTests.Groups
             group.Rename(newName, false);
 
             Assert.Equal(newName, group.Name);
-
         }
 
         [Fact]
-        public void Disbanded_group_cannot_be_modified()
-        {
-            GroupTestData data = new();
-            Group group = new(data.ID, data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
-            group.Disband();
-
-            throw new NotImplementedException();
-        }
-
-        [Fact]
-        public void Outdated_group_cannot_be_modified()
+        public void Outdated_group_cannot_be_renamed()
         {
             GroupTestData data = new();
             Group group = new(data.ID, data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
             HelpersForGroups.SetGroupDates(group, DateTime.Now.AddDays(-365), DateTime.Now.AddDays(-100));
 
-            throw new NotImplementedException();
+            AssertBrokenRule<InactiveGroupCannotBeModifiedRule>(() => group.Rename("НовоеНазвание", false));
         }
     }
 }
