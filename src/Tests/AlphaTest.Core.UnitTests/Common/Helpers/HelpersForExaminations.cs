@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Reflection;
 using AlphaTest.Core.Examinations;
+using AlphaTest.Core.UnitTests.Examinations;
 
 namespace AlphaTest.Core.UnitTests.Common.Helpers
 {
     public static class HelpersForExaminations
     {
+        public static Examination CreateExamination(ExaminationTestData data)
+        {
+            return new Examination(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+        }
+
         public static void SetExaminationDates(Examination exam, DateTime startsAt, DateTime endsAt)
         {
             if (exam is null)
