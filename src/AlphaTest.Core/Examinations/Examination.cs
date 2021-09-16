@@ -55,7 +55,13 @@ namespace AlphaTest.Core.Examinations
 
         public DateTime EndsAt { get; private set; }
 
+        public TimeSpan Duration => EndsAt - StartsAt;
+
+        public TimeSpan TimeRemained => IsEnded ? TimeSpan.Zero : EndsAt - DateTime.Now;
+
         public bool IsCanceled { get; private set; }
+
+        public bool IsEnded => EndsAt <= DateTime.Now;
 
         public IReadOnlyCollection<ExamParticipation> Participations => _participations.AsReadOnly();
         #endregion
