@@ -4,14 +4,17 @@ using AlphaTest.Core.Answers.Rules;
 
 namespace AlphaTest.Core.Answers
 {
-    public class SingleChoiceAnswer: Answer<SingleChoiceQuestion, int>
+    public class SingleChoiceAnswer: Answer
     {
         private SingleChoiceAnswer() :base() { }
 
-        public SingleChoiceAnswer(int id, SingleChoiceQuestion question, Attempt attempt, int value)
-            : base(id, question, attempt, value)
+        public SingleChoiceAnswer(int id, SingleChoiceQuestion question, Attempt attempt, int rightOptionID)
+            : base(id, attempt, question)
         {
-            CheckRule(new SingleChoiceAnswerValueMustBeValidOptionIDRule(question, value));
+            CheckRule(new SingleChoiceAnswerValueMustBeValidOptionIDRule(question, rightOptionID));
+            RightOptionID = rightOptionID;
         }
+
+        public int RightOptionID { get; private set; }
     }
 }
