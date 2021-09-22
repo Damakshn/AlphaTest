@@ -6,37 +6,52 @@ using AlphaTest.Core.Answers;
 using AutoFixture;
 using AlphaTest.Core.Attempts;
 using AlphaTest.Core.Tests;
-using AlphaTest.Core.UnitTests.Common.Helpers;
+using AlphaTest.Core.UnitTests.Fixtures;
+using AlphaTest.Core.Tests.Questions;
+using AlphaTest.Core.Answers.Rules;
 
 namespace AlphaTest.Core.UnitTests.Answers
 {
     public class AnswersTests: UnitTestBase
     {
-        [Fact]
-        public void Single_choice_answer_cannot_be_registered_if_option_ID_is_invalid()
+        [Theory, AnswerTestData]
+        public void Single_choice_answer_cannot_be_registered_if_option_ID_is_invalid(Attempt attempt, SingleChoiceQuestion question)
         {
-            Fixture fixture = new Fixture();
-            fixture.Customize<Test>( composer =>
-                composer.FromFactory(
-                    (int id, string title, string topic, int authorID) => new Test(id, title, topic, authorID, false))
-                .Do(t => HelpersForTests.SetNewStatusForTest(t, TestStatus.Published))
+            question.ChangeOptions(new List<QuestionOption>
+            {
+                new QuestionOption("Первый вариант", 1, true),
+                new QuestionOption("Второй вариант", 2, false),
+                new QuestionOption("Третий вариант", 3, false)
+            });
+
+            AssertBrokenRule<SingleChoiceAnswerValueMustBeValidOptionIDRule>(() =>
+                new SingleChoiceAnswer(1, question, attempt, 5)
             );
-            //Test test = fixture.Create<Test>();
-            Attempt attempt = fixture.Build<Attempt>().Create();
-            //throw new NotImplementedException();
-            Assert.Equal(1, 1);
         }
 
-        [Fact(Skip = "Ещё не готово")]
-        public void Single_choice_answer_can_be_registered()
+        [Theory, AnswerTestData]
+        public void Single_choice_answer_can_be_registered(Attempt attempt, SingleChoiceQuestion question)
         {
-            throw new NotImplementedException();
+            var answer = new SingleChoiceAnswer(1, question, attempt, question.Options[0].ID);
+
+            Assert.Equal(question.ID, answer.QuestionID);
+            Assert.Equal(attempt.ID, answer.AttemptID);
+            Assert.Equal(question.Options[0].ID, answer.RightOptionID);
         }
 
-        [Fact(Skip = "Ещё не готово")]
-        public void Multi_choice_answer_cannot_be_registered_if_any_option_ID_is_invalid()
+        [Theory, AnswerTestData]
+        public void Multi_choice_answer_cannot_be_registered_if_any_option_ID_is_invalid(Attempt attempt, MultiChoiceQuestion question)
         {
-            throw new NotImplementedException();
+            question.ChangeOptions(new()
+            {
+                new QuestionOption("Первый вариант", 1, true),
+                new QuestionOption("Второй вариант", 2, true),
+                new QuestionOption("Третий вариант", 3, false)
+            });
+
+            AssertBrokenRule<MultiChoiceAnswerValueMustBeValidSetOfOptionIDsRule>(() =>
+                new MultiChoiceAnswer(1, question, attempt, new List<int> { 1, 5 })
+            );
         }
 
         [Fact(Skip = "Ещё не готово")]
