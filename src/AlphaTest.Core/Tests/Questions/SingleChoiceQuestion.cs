@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using AlphaTest.Core.Answers;
 using AlphaTest.Core.Tests.Questions.Rules;
+
 
 
 namespace AlphaTest.Core.Tests.Questions
@@ -28,6 +32,16 @@ namespace AlphaTest.Core.Tests.Questions
         protected override void CheckSpecificRulesForOptions(List<QuestionOption> options)
         {
             CheckRule(new ForSingleChoiceQuestionMustBeExactlyOneRightOptionRule(options));
+        }
+
+        public override bool IsRight(Answer answer)
+        {
+            if (answer is null)
+                throw new ArgumentNullException(nameof(answer));
+            if (answer is not SingleChoiceAnswer convertedAnswer)
+                throw new InvalidOperationException("Тип вопроса и тип ответа не соответствуют.");
+            int rightOptionID = Options.Where(o => o.IsRight).Select(o => o.ID).First();
+            return convertedAnswer.RightOptionID == rightOptionID;
         }
     }
 }

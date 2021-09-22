@@ -1,8 +1,9 @@
-﻿using System;
+﻿using AlphaTest.Core.Answers;
+using System;
 
 namespace AlphaTest.Core.Tests.Questions
 {
-    public abstract class QuestionWithExactAnswer<TDecimalOrString>: Question
+    public abstract class QuestionWithExactAnswer<TDecimalOrString>: Question, IAutoCheckQuestion
     {
         public static string AnswerType => typeof(TDecimalOrString).ToString();
 
@@ -17,5 +18,6 @@ namespace AlphaTest.Core.Tests.Questions
         }
 
         public abstract void ChangeRightAnswer(TDecimalOrString newRightAnswer);
+        public abstract bool IsRight(Answer answer);
     }
 }

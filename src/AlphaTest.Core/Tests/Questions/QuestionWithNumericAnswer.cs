@@ -1,4 +1,7 @@
-﻿namespace AlphaTest.Core.Tests.Questions
+﻿using AlphaTest.Core.Answers;
+using System;
+
+namespace AlphaTest.Core.Tests.Questions
 {
     public class QuestionWithNumericAnswer: QuestionWithExactAnswer<decimal>
     {
@@ -18,6 +21,15 @@
             replica.TestID = newEdition.ID;
             replica.ID = default;
             return replica;
+        }
+
+        public override bool IsRight(Answer answer)
+        {
+            if (answer is null)
+                throw new ArgumentNullException(nameof(answer));
+            if (answer is not ExactNumericAnswer convertedAnswer)
+                throw new InvalidOperationException("Тип вопроса и тип ответа не соответствуют.");
+            return RightAnswer == convertedAnswer.Value;
         }
     }
 }
