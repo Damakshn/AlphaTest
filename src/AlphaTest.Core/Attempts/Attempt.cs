@@ -11,11 +11,11 @@ namespace AlphaTest.Core.Attempts
         #region Конструкторы
         private Attempt(){ }
 
-        public Attempt(int id, Test test, Examination examination, int studentID)
+        public Attempt(Test test, Examination examination, int studentID)
         {
             CheckRule(new NewAttemptCannotBeStartedIfExamIsClosedRule(examination));
             CheckRule(new NewAttemptCannotBeStartedIfExaminationIsAreadyEndedRule(examination));
-            ID = id;
+            ID = Guid.NewGuid();
             ExaminationID = examination.ID;
             StartedAt = DateTime.Now;
             #region Вычисляем продолжительность тестирования
@@ -35,9 +35,9 @@ namespace AlphaTest.Core.Attempts
         #endregion
 
         #region Свойства
-        public int ID { get; private set; }
+        public Guid ID { get; private set; }
 
-        public int ExaminationID { get; private set; }
+        public Guid ExaminationID { get; private set; }
 
         public int StudentID { get; private set; }
 

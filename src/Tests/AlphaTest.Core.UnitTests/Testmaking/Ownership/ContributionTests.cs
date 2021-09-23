@@ -7,6 +7,7 @@ using AlphaTest.Core.Tests.Ownership;
 using AlphaTest.Core.Tests.Ownership.Rules;
 using AlphaTest.Core.UnitTests.Common;
 using AlphaTest.Core.UnitTests.Common.Helpers;
+using System;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
 {
@@ -17,7 +18,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
         public void Non_teacher_user_cannot_be_set_as_contributor(UserRole role)
         {
             Test test = HelpersForTests.GetDefaultTest();
-            UserTestData data = new() { ID = 5, InitialRole = role };
+            UserTestData data = new() { InitialRole = role };
             User contributor = HelpersForUsers.CreateUser(data);
             AssertBrokenRule<OnlyTeacherCanBeSetAsNewAuthorOrContributorRule>(() =>
                 test.AddContributor(contributor)
@@ -28,7 +29,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
         public void Suspended_user_cannot_be_set_as_contributor()
         {
             Test test = HelpersForTests.GetDefaultTest();
-            UserTestData data = new() { ID = 5, InitialRole = UserRole.TEACHER };
+            UserTestData data = new() { InitialRole = UserRole.TEACHER };
             User contributor = HelpersForUsers.CreateUser(data);
             contributor.Suspend();
             AssertBrokenRule<SuspendedUserCannotBeSetAsNewAuthorOrContributorRule>(() =>
@@ -40,7 +41,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
         public void Active_teacher_user_can_be_set_as_contributor()
         {
             Test test = HelpersForTests.GetDefaultTest();
-            UserTestData data = new() { ID = 5, InitialRole = UserRole.TEACHER };
+            UserTestData data = new() { InitialRole = UserRole.TEACHER };
             User contributor = HelpersForUsers.CreateUser(data);
             
             test.AddContributor(contributor);
@@ -52,7 +53,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
         public void Teacher_can_be_added_to_contributors_only_once()
         {
             Test test = HelpersForTests.GetDefaultTest();
-            UserTestData data = new() { ID = 5, InitialRole = UserRole.TEACHER };
+            UserTestData data = new() { InitialRole = UserRole.TEACHER };
             User contributor = HelpersForUsers.CreateUser(data);
 
             test.AddContributor(contributor);
@@ -68,7 +69,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
             Test test = HelpersForTests.GetDefaultTest();
 
             AssertBrokenRule<NonContributorTeacherCannotBeRemovedFromContributorsRule>(() =>
-                test.RemoveContributor(It.IsAny<int>())
+                test.RemoveContributor(Guid.NewGuid())
             );
         }
 
@@ -76,7 +77,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
         public void Teacher_can_be_removed_from_contributors()
         {
             Test test = HelpersForTests.GetDefaultTest();
-            UserTestData data = new() { ID = 5, InitialRole = UserRole.TEACHER };
+            UserTestData data = new() { InitialRole = UserRole.TEACHER };
             User contributor = HelpersForUsers.CreateUser(data);
             test.AddContributor(contributor);
 

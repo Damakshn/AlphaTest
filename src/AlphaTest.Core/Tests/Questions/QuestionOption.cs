@@ -1,10 +1,11 @@
 ﻿using AlphaTest.Core.Common.Abstractions;
+using System;
 
 namespace AlphaTest.Core.Tests.Questions
 {
     public class QuestionOption: Entity
     {
-        public int ID { get; private set; }
+        public Guid ID { get; private set; }
 
         public uint Number { get; private set; }
 
@@ -19,6 +20,7 @@ namespace AlphaTest.Core.Tests.Questions
 
         public QuestionOption(string text, uint number, bool isRight)
         {
+            ID = Guid.NewGuid();
             Text = text;
             Number = number;
             IsRight = isRight;

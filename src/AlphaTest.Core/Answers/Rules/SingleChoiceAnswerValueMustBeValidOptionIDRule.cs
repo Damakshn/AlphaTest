@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AlphaTest.Core.Common;
 using AlphaTest.Core.Tests.Questions;
 
@@ -8,9 +9,9 @@ namespace AlphaTest.Core.Answers.Rules
     {
         private readonly SingleChoiceQuestion _question;
 
-        private readonly int _value;
+        private readonly Guid _value;
 
-        public SingleChoiceAnswerValueMustBeValidOptionIDRule(SingleChoiceQuestion question, int value)
+        public SingleChoiceAnswerValueMustBeValidOptionIDRule(SingleChoiceQuestion question, Guid value)
         {
             _question = question;
             _value = value;

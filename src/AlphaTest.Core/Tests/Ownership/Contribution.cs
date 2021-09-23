@@ -1,6 +1,8 @@
 ﻿using AlphaTest.Core.Common.Abstractions;
 using AlphaTest.Core.Users;
 using AlphaTest.Core.Tests.Ownership.Rules;
+using System;
+
 namespace AlphaTest.Core.Tests.Ownership
 {
     public class Contribution: Entity
@@ -22,8 +24,8 @@ namespace AlphaTest.Core.Tests.Ownership
             return replica;
         }
 
-        public int TestID { get; private set; }
+        public Guid TestID { get; private set; }
 
-        public int TeacherID { get; private set; }
+        public Guid TeacherID { get; private set; }
     }
 }

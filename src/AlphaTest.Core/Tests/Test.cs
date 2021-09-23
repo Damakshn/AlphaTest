@@ -21,7 +21,7 @@ namespace AlphaTest.Core.Tests
         private List<Contribution> _contributions;
 
         #region Основные атрибуты
-        public int ID { get; private set; }
+        public Guid ID { get; private set; }
 
         public string Title { get; private set; }
 
@@ -29,7 +29,7 @@ namespace AlphaTest.Core.Tests
         
         public int Version { get; private set; }
 
-        public int AuthorID { get; private set; }
+        public Guid AuthorID { get; private set; }
 
         public IReadOnlyCollection<Contribution> Contributions => _contributions.AsReadOnly();
                 
@@ -65,11 +65,11 @@ namespace AlphaTest.Core.Tests
         #region Конструкторы
         private Test() {}
 
-        public Test(int id, string title, string topic, int authorID, bool testAlreadyExists)
+        public Test(string title, string topic, Guid authorID, bool testAlreadyExists)
         {
             // TBD ChangeTitleAndTopic - правило похожее, но ошибка другая
             CheckRule(new TestMustBeUniqueRule(testAlreadyExists));
-            ID = id;
+            ID = Guid.NewGuid();
             Title = title;
             Topic = topic;
             Version = INITIAL_VERSION;
@@ -242,7 +242,7 @@ namespace AlphaTest.Core.Tests
             _contributions.Add(contribution);
         }
 
-        public void RemoveContributor(int contributorID)
+        public void RemoveContributor(Guid contributorID)
         {
             CheckRule(new NonContributorTeacherCannotBeRemovedFromContributorsRule(contributorID, this));
             Contribution contributionToRemove = _contributions.Where(c => c.TeacherID == contributorID).FirstOrDefault();
@@ -251,11 +251,11 @@ namespace AlphaTest.Core.Tests
         #endregion
 
         #region Создание новой версии
-        public Test Replicate(int id)
+        public Test Replicate()
         {
             CheckRule(new OnlyPublishedTestsCanBeReplicatedRule(this));
             Test replica = (Test)this.MemberwiseClone();
-            replica.ID = id;
+            replica.ID = Guid.NewGuid();
             replica._contributions = new List<Contribution>();
             foreach(var source in this._contributions)
             {

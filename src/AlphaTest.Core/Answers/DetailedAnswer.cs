@@ -7,8 +7,8 @@ namespace AlphaTest.Core.Answers
     {
         private DetailedAnswer() : base() { }
 
-        public DetailedAnswer(int id, QuestionWithDetailedAnswer question, Attempt attempt, string value)
-            : base(id, attempt, question)
+        public DetailedAnswer(QuestionWithDetailedAnswer question, Attempt attempt, string value)
+            : base(attempt, question)
         {
             Value = value;
         }

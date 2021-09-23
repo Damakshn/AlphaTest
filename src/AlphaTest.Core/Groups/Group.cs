@@ -16,12 +16,12 @@ namespace AlphaTest.Core.Groups
         #region Конструкторы
         private Group() { }
 
-        public Group(int id, string name, DateTime beginDate, DateTime endDate, bool groupAlreadyExists)
+        public Group(string name, DateTime beginDate, DateTime endDate, bool groupAlreadyExists)
         {   
             CheckRule(new GroupMustBeUniqueRule(groupAlreadyExists));
             CheckCommonRulesForDates(beginDate, endDate);
             CheckRule(new GroupNameMustBeProvidedRule(name));
-            ID = id;
+            ID = Guid.NewGuid();
             Name = name;
             BeginDate = beginDate;
             EndDate = endDate;
@@ -31,7 +31,7 @@ namespace AlphaTest.Core.Groups
         #endregion
 
         #region Свойства
-        public int ID { get; private set; }
+        public Guid ID { get; private set; }
 
         public string Name { get; private set; }
 
