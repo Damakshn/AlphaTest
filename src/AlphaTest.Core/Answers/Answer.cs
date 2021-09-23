@@ -28,7 +28,7 @@ namespace AlphaTest.Core.Answers
 
         public Guid QuestionID { get; private set; }
 
-        public int AttemptID { get; private set; }
+        public Guid AttemptID { get; private set; }
 
         public DateTime SentAt { get; private set; }
 

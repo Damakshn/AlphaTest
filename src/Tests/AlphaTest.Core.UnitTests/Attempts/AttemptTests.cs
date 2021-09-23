@@ -27,7 +27,7 @@ namespace AlphaTest.Core.UnitTests.Attempts
             examination.Cancel();
 
             AssertBrokenRule<NewAttemptCannotBeStartedIfExamIsClosedRule>(() => 
-                new Attempt(It.IsAny<int>(), data.Test, examination, It.IsAny<int>()));
+                new Attempt(data.Test, examination, It.IsAny<int>()));
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace AlphaTest.Core.UnitTests.Attempts
             HelpersForExaminations.SetExaminationDates(examination, DateTime.Now.AddDays(-25), DateTime.Now.AddDays(-10));
 
             AssertBrokenRule<NewAttemptCannotBeStartedIfExaminationIsAreadyEndedRule>(() =>
-                new Attempt(It.IsAny<int>(), data.Test, examination, It.IsAny<int>()));
+                new Attempt(data.Test, examination, It.IsAny<int>()));
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace AlphaTest.Core.UnitTests.Attempts
             };
             Examination examination = HelpersForExaminations.CreateExamination(data);
 
-            Attempt attempt = new(It.IsAny<int>(), data.Test, examination, It.IsAny<int>());
+            Attempt attempt = new(data.Test, examination, It.IsAny<int>());
 
             Assert.Equal(examination.ID, attempt.ExaminationID);
             Assert.Equal(DateTime.Now, attempt.StartedAt, TimeSpan.FromSeconds(1));
@@ -84,7 +84,7 @@ namespace AlphaTest.Core.UnitTests.Attempts
                 DateTime.Now + examTimeRemained
             );
 
-            Attempt attempt = new(It.IsAny<int>(), data.Test, examination, It.IsAny<int>());
+            Attempt attempt = new(data.Test, examination, It.IsAny<int>());
 
             Assert.Equal(DateTime.Now + expected, attempt.ForceEndAt, TimeSpan.FromSeconds(10));
         }
@@ -98,7 +98,7 @@ namespace AlphaTest.Core.UnitTests.Attempts
                 EndsAt = DateTime.Now.AddDays(10)
             };
             Examination examination = HelpersForExaminations.CreateExamination(data);
-            Attempt attempt = new(It.IsAny<int>(), data.Test, examination, It.IsAny<int>());
+            Attempt attempt = new(data.Test, examination, It.IsAny<int>());
 
             attempt.Finish();
 
@@ -115,7 +115,7 @@ namespace AlphaTest.Core.UnitTests.Attempts
                 EndsAt = DateTime.Now.AddDays(10)
             };
             Examination examination = HelpersForExaminations.CreateExamination(data);
-            Attempt attempt = new(It.IsAny<int>(), data.Test, examination, It.IsAny<int>());
+            Attempt attempt = new(data.Test, examination, It.IsAny<int>());
             attempt.Finish();
 
             AssertBrokenRule<FinishedAttemptCannotBeModifiedRule>(() => attempt.Finish());
@@ -130,7 +130,7 @@ namespace AlphaTest.Core.UnitTests.Attempts
                 EndsAt = DateTime.Now.AddDays(10)
             };
             Examination examination = HelpersForExaminations.CreateExamination(data);
-            Attempt attempt = new(It.IsAny<int>(), data.Test, examination, It.IsAny<int>());
+            Attempt attempt = new(data.Test, examination, It.IsAny<int>());
             HelpersForAttempts.SetAttemptForcedEndDate(attempt, DateTime.Now);
 
             attempt.ForceEnd();
@@ -148,7 +148,7 @@ namespace AlphaTest.Core.UnitTests.Attempts
                 EndsAt = DateTime.Now.AddDays(10)
             };
             Examination examination = HelpersForExaminations.CreateExamination(data);
-            Attempt attempt = new(It.IsAny<int>(), data.Test, examination, It.IsAny<int>());
+            Attempt attempt = new(data.Test, examination, It.IsAny<int>());
 
             AssertBrokenRule<ForcedEndMustBeAppliedAtRightTimeRule>(() => attempt.ForceEnd());
         }
@@ -162,7 +162,7 @@ namespace AlphaTest.Core.UnitTests.Attempts
                 EndsAt = DateTime.Now.AddDays(10)
             };
             Examination examination = HelpersForExaminations.CreateExamination(data);
-            Attempt attempt = new(It.IsAny<int>(), data.Test, examination, It.IsAny<int>());
+            Attempt attempt = new(data.Test, examination, It.IsAny<int>());
             HelpersForAttempts.SetAttemptForcedEndDate(attempt, DateTime.Now);
             attempt.Finish();
 
