@@ -7,8 +7,8 @@ namespace AlphaTest.Core.Answers
     {
         private ExactTextualAnswer() : base() { }
 
-        public ExactTextualAnswer(int id, QuestionWithTextualAnswer question, Attempt attempt, string value)
-            : base(id, attempt, question)
+        public ExactTextualAnswer(QuestionWithTextualAnswer question, Attempt attempt, string value)
+            : base(attempt, question)
         {
             Value = value;
         }

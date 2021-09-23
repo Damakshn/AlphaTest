@@ -10,8 +10,8 @@ namespace AlphaTest.Core.Answers
     {
         private MultiChoiceAnswer(): base() {}
 
-        public MultiChoiceAnswer(int id, MultiChoiceQuestion question, Attempt attempt, List<Guid> rightOptions)
-            :base(id, attempt, question)
+        public MultiChoiceAnswer(MultiChoiceQuestion question, Attempt attempt, List<Guid> rightOptions)
+            :base(attempt, question)
         {
             CheckRule(new MultiChoiceAnswerValueMustBeValidSetOfOptionIDsRule(question, rightOptions));
             RightOptions = rightOptions;

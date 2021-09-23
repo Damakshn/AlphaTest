@@ -12,10 +12,10 @@ namespace AlphaTest.Core.Answers
         #region Конструкторы
         protected Answer() { }
 
-        protected Answer(int id, Attempt attempt, Question question)
+        protected Answer(Attempt attempt, Question question)
         {
             CheckRule(new AnswerCannotBeRegisteredIfAttemptIsFinishedRule(attempt));
-            ID = id;
+            ID = Guid.NewGuid();
             QuestionID = question.ID;
             AttemptID = attempt.ID;
             IsRevoked = false;
@@ -24,7 +24,7 @@ namespace AlphaTest.Core.Answers
         #endregion
 
         #region Свойства
-        public int ID { get; private set; }
+        public Guid ID { get; private set; }
 
         public Guid QuestionID { get; private set; }
 

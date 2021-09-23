@@ -9,8 +9,8 @@ namespace AlphaTest.Core.Answers
     {
         private SingleChoiceAnswer() :base() { }
 
-        public SingleChoiceAnswer(int id, SingleChoiceQuestion question, Attempt attempt, Guid rightOptionID)
-            : base(id, attempt, question)
+        public SingleChoiceAnswer(SingleChoiceQuestion question, Attempt attempt, Guid rightOptionID)
+            : base(attempt, question)
         {
             CheckRule(new SingleChoiceAnswerValueMustBeValidOptionIDRule(question, rightOptionID));
             RightOptionID = rightOptionID;

@@ -7,8 +7,8 @@ namespace AlphaTest.Core.Answers
     {
         private ExactNumericAnswer() :base() { }
 
-        public ExactNumericAnswer(int id, QuestionWithNumericAnswer question, Attempt attempt, decimal value)
-            :base(id, attempt, question)
+        public ExactNumericAnswer(QuestionWithNumericAnswer question, Attempt attempt, decimal value)
+            :base(attempt, question)
         {
             Value = value;
         }
