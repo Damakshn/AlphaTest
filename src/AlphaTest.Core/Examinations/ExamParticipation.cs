@@ -1,5 +1,6 @@
 ﻿using AlphaTest.Core.Common.Abstractions;
 using AlphaTest.Core.Groups;
+using System;
 
 namespace AlphaTest.Core.Examinations
 {
@@ -13,7 +14,7 @@ namespace AlphaTest.Core.Examinations
             GroupID = group.ID;
         }
 
-        public int ExaminationID { get; private set; }
+        public Guid ExaminationID { get; private set; }
 
         public int GroupID { get; private set; }
     }

@@ -37,7 +37,7 @@ namespace AlphaTest.Core.Attempts
         #region Свойства
         public int ID { get; private set; }
 
-        public int ExaminationID { get; private set; }
+        public Guid ExaminationID { get; private set; }
 
         public int StudentID { get; private set; }
 
