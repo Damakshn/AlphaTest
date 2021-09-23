@@ -6,15 +6,15 @@ namespace AlphaTest.Core.Tests.Questions.Rules
 {
     public class ForSingleChoiceQuestionMustBeExactlyOneRightOptionRule : IBusinessRule
     {
-        private readonly IEnumerable<QuestionOption> _options;
+        private readonly IEnumerable<(string text, uint number, bool isRight)> _optionsData;
 
-        public ForSingleChoiceQuestionMustBeExactlyOneRightOptionRule(IEnumerable<QuestionOption> options)
+        public ForSingleChoiceQuestionMustBeExactlyOneRightOptionRule(IEnumerable<(string text, uint number, bool isRight)> optionsData)
         {
-            _options = options;
+            _optionsData = optionsData;
         }
 
         public string Message => "Для вопроса с выбором одного варианта ответа только один вариант может быть верным.";
 
-        public bool IsBroken => _options.Count(o => o.IsRight) != 1;
+        public bool IsBroken => _optionsData.Count(o => o.isRight) != 1;
     }
 }

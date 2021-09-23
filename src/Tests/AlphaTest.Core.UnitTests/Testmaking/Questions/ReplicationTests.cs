@@ -54,22 +54,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             Assert.NotEqual(test.ID, replica.TestID);
             Assert.Equal(newEdition.ID, replica.TestID);
         }
-
-        [Theory]
-        [MemberData(nameof(QuestionTestSamples.InstanceAllTypesOfQuestions), MemberType = typeof(QuestionTestSamples))]
-        public void Replicated_question_ID_is_reset_to_default(Func<QuestionTestData, Question> createQuestionDelegate)
-        {
-            Test test = HelpersForTests.GetDefaultTest();
-            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            QuestionTestData data = new();
-            Question source = createQuestionDelegate(data);
-
-            Test newEdition = test.Replicate();
-            Question replica = source.ReplicateForNewEdition(newEdition);
-
-            Assert.Equal(default, replica.ID);
-        }
-
+                
         [Fact]        
         public void Replicated_question_with_numeric_answer_has_same_right_answer_as_source_question()
         {
@@ -114,6 +99,41 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 
             // assert
             Assert.Equal("Тегусигальпа", replica.RightAnswer);
+        }
+
+        [Theory]
+        [MemberData(nameof(QuestionTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionTestSamples))]
+        public void Replicated_question_with_choices_has_same_set_of_options(Func<QuestionTestData, Question> createQuestionDelegate)
+        {
+            // arrange
+            Test test = HelpersForTests.GetDefaultTest();
+            QuestionTestData data = new()
+            {
+                Test = test,
+                OptionsData = new List<(string text, uint number, bool isRight)>
+                {
+                    new ("Раз", 1, true),
+                    new ("Два", 2, false),
+                    new ("Три", 3, false),
+                    new ("Четыре", 4, false),
+                    new ("Пять", 5, false),
+                }
+            };
+            QuestionWithChoices source = (QuestionWithChoices)createQuestionDelegate(data);
+            
+            // act
+            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
+            Test newEdition = test.Replicate();
+            QuestionWithChoices replica = (QuestionWithChoices)source.ReplicateForNewEdition(newEdition);
+
+            // assert
+            foreach (var option in source.Options)
+            {
+                var replicatedOption = replica.Options.Where(o => o.Number == option.Number).FirstOrDefault();
+                Assert.NotNull(replicatedOption);
+                Assert.Equal(option.Text, replicatedOption.Text);
+                Assert.Equal(option.IsRight, replicatedOption.IsRight);
+            }
         }
     }
 }
