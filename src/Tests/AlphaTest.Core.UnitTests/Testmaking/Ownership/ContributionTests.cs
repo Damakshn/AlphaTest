@@ -7,6 +7,7 @@ using AlphaTest.Core.Tests.Ownership;
 using AlphaTest.Core.Tests.Ownership.Rules;
 using AlphaTest.Core.UnitTests.Common;
 using AlphaTest.Core.UnitTests.Common.Helpers;
+using System;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
 {
@@ -68,7 +69,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
             Test test = HelpersForTests.GetDefaultTest();
 
             AssertBrokenRule<NonContributorTeacherCannotBeRemovedFromContributorsRule>(() =>
-                test.RemoveContributor(It.IsAny<int>())
+                test.RemoveContributor(Guid.NewGuid())
             );
         }
 

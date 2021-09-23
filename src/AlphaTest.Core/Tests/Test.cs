@@ -29,7 +29,7 @@ namespace AlphaTest.Core.Tests
         
         public int Version { get; private set; }
 
-        public int AuthorID { get; private set; }
+        public Guid AuthorID { get; private set; }
 
         public IReadOnlyCollection<Contribution> Contributions => _contributions.AsReadOnly();
                 
@@ -65,7 +65,7 @@ namespace AlphaTest.Core.Tests
         #region Конструкторы
         private Test() {}
 
-        public Test(string title, string topic, int authorID, bool testAlreadyExists)
+        public Test(string title, string topic, Guid authorID, bool testAlreadyExists)
         {
             // TBD ChangeTitleAndTopic - правило похожее, но ошибка другая
             CheckRule(new TestMustBeUniqueRule(testAlreadyExists));
@@ -242,7 +242,7 @@ namespace AlphaTest.Core.Tests
             _contributions.Add(contribution);
         }
 
-        public void RemoveContributor(int contributorID)
+        public void RemoveContributor(Guid contributorID)
         {
             CheckRule(new NonContributorTeacherCannotBeRemovedFromContributorsRule(contributorID, this));
             Contribution contributionToRemove = _contributions.Where(c => c.TeacherID == contributorID).FirstOrDefault();

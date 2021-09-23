@@ -6,8 +6,6 @@ namespace AlphaTest.Core.UnitTests.Common
     {
         public GroupTestData(){ }
 
-        public int ID { get; set; }
-
         public string Name { get; set; } = "НазваниеЧтобыБыло";
 
         public DateTime BeginDate { get; set; } = DateTime.Now.AddDays(1);

@@ -28,9 +28,10 @@ namespace AlphaTest.Core.Users
             PasswordChanged = false;
             IsSuspended = false;
             LastVisitedAt = null;
+            ID = Guid.NewGuid();
         }
 
-        public int ID { get; private set; }
+        public Guid ID { get; private set; }
 
         public string FirstName { get; private set; }
 

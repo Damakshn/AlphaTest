@@ -25,7 +25,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             // arrange
             string title = It.IsAny<string>();
             string topic = It.IsAny<string>();
-            int authorID = It.IsAny<int>();
+            Guid authorID = Guid.NewGuid();
             // act
             Test t = new(title, topic, authorID, false);
             // assert
@@ -38,7 +38,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             // arrange
             string title = It.IsAny<string>();
             string topic = It.IsAny<string>();
-            int authorID = It.IsAny<int>();
+            Guid authorID = Guid.NewGuid();
             
             // act
             Action act = () => { Test t = new(title, topic, authorID, true); };
@@ -53,7 +53,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             // arrange
             string intialTitle = "Политология как наука";
             string initialTopic = "Политология";
-            int authorID = It.IsAny<int>();
+            Guid authorID = Guid.NewGuid();
 
             string newTitle = "Политическая система";
             string newTopic = "Политология";

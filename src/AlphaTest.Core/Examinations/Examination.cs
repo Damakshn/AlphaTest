@@ -50,7 +50,7 @@ namespace AlphaTest.Core.Examinations
 
         public Guid TestID { get; private set; }
 
-        public int ExaminerID { get; private set; }
+        public Guid ExaminerID { get; private set; }
 
         public DateTime StartsAt {get; private set; }
 

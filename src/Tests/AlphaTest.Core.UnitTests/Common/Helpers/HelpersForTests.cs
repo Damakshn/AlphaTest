@@ -12,7 +12,7 @@ namespace AlphaTest.Core.UnitTests.Common.Helpers
         {
             string title = It.IsAny<string>();
             string topic = It.IsAny<string>();
-            int authorID = It.IsAny<int>();
+            Guid authorID = Guid.NewGuid();
             Test defaultTest = new(title, topic, authorID, false);
             return defaultTest;
         }

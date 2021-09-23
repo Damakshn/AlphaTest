@@ -26,6 +26,6 @@ namespace AlphaTest.Core.Tests.Ownership
 
         public Guid TestID { get; private set; }
 
-        public int TeacherID { get; private set; }
+        public Guid TeacherID { get; private set; }
     }
 }

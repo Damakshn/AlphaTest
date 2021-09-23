@@ -16,6 +16,6 @@ namespace AlphaTest.Core.Examinations
 
         public Guid ExaminationID { get; private set; }
 
-        public int GroupID { get; private set; }
+        public Guid GroupID { get; private set; }
     }
 }

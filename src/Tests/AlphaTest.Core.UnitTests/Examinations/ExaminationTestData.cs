@@ -15,7 +15,6 @@ namespace AlphaTest.Core.UnitTests.Examinations
         {
             UserTestData authorData = new() 
             {
-                ID = 1,
                 InitialRole = UserRole.TEACHER,
                 FirstName = It.IsAny<string>(),
                 LastName = It.IsAny<string>(),
@@ -23,7 +22,6 @@ namespace AlphaTest.Core.UnitTests.Examinations
             };
             UserTestData contributorData = new()
             {
-                ID = 2,
                 InitialRole = UserRole.TEACHER,
                 FirstName = It.IsAny<string>(),
                 LastName = It.IsAny<string>(),
@@ -37,13 +35,11 @@ namespace AlphaTest.Core.UnitTests.Examinations
             Test.AddContributor(Contributor);
             HelpersForTests.SetNewStatusForTest(Test, TestStatus.Published);
             Group group1 = new(
-                1,
                 "Первая группа",
                 DateTime.Now.AddDays(1),
                 DateTime.Now.AddDays(100),
                 false);
             Group group2 = new(
-                2,
                 "Вторая группа",
                 DateTime.Now.AddDays(1),
                 DateTime.Now.AddDays(100),

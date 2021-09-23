@@ -70,7 +70,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
         [MemberData(nameof(HelpersForUsers.NonTeacherRoles), MemberType = typeof(HelpersForUsers))]
         public void Examiner_must_be_teacher(UserRole role)
         {
-            UserTestData examinerData = new() { ID = 1001, InitialRole = role };
+            UserTestData examinerData = new() { InitialRole = role };
             User examiner = HelpersForUsers.CreateUser(examinerData);
             ExaminationTestData data = new() { Examiner = examiner };
 
@@ -275,7 +275,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             ExaminationTestData data = new();
             Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
-            Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1000 });
+            Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData());
             oneMoreGroup.Disband();
 
             AssertBrokenRule<DisbandedOrInactiveGroupsCannotParticipateExamRule>(() =>
@@ -289,7 +289,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             ExaminationTestData data = new();
             Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
-            Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1000 });
+            Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData());
             // подменяем срок существования группы как будто она уже давно не активна
             HelpersForGroups.SetGroupDates(oneMoreGroup, DateTime.Now.AddDays(-365), DateTime.Now.AddDays(-100));
 
@@ -304,7 +304,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             ExaminationTestData data = new();
             Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
-            Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1000 });
+            Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData());
             examination.AddGroup(oneMoreGroup);
 
             AssertBrokenRule<GroupCanBeAddedToExamOnlyOnceRule>(() =>
@@ -318,7 +318,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             ExaminationTestData data = new();
             Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
-            Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1000 });
+            Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData());
             examination.AddGroup(oneMoreGroup);
             Assert.Equal(1, examination.Participations.Count(p => p.GroupID == oneMoreGroup.ID));
         }
@@ -331,9 +331,9 @@ namespace AlphaTest.Core.UnitTests.Examinations
 
             List<Group> groups = new()
             {
-                HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1000 }),
-                HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1001 }),
-                HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1002 })
+                HelpersForGroups.CreateGroup(new GroupTestData()),
+                HelpersForGroups.CreateGroup(new GroupTestData()),
+                HelpersForGroups.CreateGroup(new GroupTestData())
             };
             // подменяем срок существования группы как будто она уже давно не активна
             groups[1].Disband();
@@ -351,9 +351,9 @@ namespace AlphaTest.Core.UnitTests.Examinations
 
             List<Group> groups = new()
             {
-                HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1000 }),
-                HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1001 }),
-                HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1002 })
+                HelpersForGroups.CreateGroup(new GroupTestData()),
+                HelpersForGroups.CreateGroup(new GroupTestData()),
+                HelpersForGroups.CreateGroup(new GroupTestData())
             };
             HelpersForGroups.SetGroupDates(groups[0], DateTime.Now.AddDays(-365), DateTime.Now.AddDays(-100));
 
@@ -370,8 +370,8 @@ namespace AlphaTest.Core.UnitTests.Examinations
 
             List<Group> groups = new()
             {
-                HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1000 }),
-                HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1001 }),
+                HelpersForGroups.CreateGroup(new GroupTestData()),
+                HelpersForGroups.CreateGroup(new GroupTestData()),
                 data.Groups[0]
             };
 
@@ -388,14 +388,15 @@ namespace AlphaTest.Core.UnitTests.Examinations
 
             List<Group> groups = new()
             {
-                HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1000 }),
-                HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1001 }),
-                HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1002 })
+                HelpersForGroups.CreateGroup(new GroupTestData()),
+                HelpersForGroups.CreateGroup(new GroupTestData()),
+                HelpersForGroups.CreateGroup(new GroupTestData())
             };
+            Guid[] ids = groups.Select(g => g.ID).ToArray();
 
             examination.AddGroups(groups);
 
-            Assert.Equal(3, examination.Participations.Count(p => new[] { 1000, 1001, 1002 }.Contains(p.GroupID)));
+            Assert.Equal(3, examination.Participations.Count(p => ids.Contains(p.GroupID)));
         }
 
         [Fact]
@@ -403,7 +404,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
         {
             ExaminationTestData data = new();
             Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
-            Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1000 });
+            Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData());
 
             AssertBrokenRule<NonParticipatingGroupsCannotBeExcludedFromExamRule>(() =>
                 examination.RemoveGroup(oneMoreGroup)
@@ -428,7 +429,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
             List<Group> groups = new()
             {
-                HelpersForGroups.CreateGroup(new GroupTestData() { ID = 1000 }),
+                HelpersForGroups.CreateGroup(new GroupTestData()),
                 data.Groups[0],
                 data.Groups[1]
             };
@@ -517,8 +518,8 @@ namespace AlphaTest.Core.UnitTests.Examinations
             exam.AddGroups(
                 new List<Group>
                 {
-                    HelpersForGroups.CreateGroup(new(){ID = 1000 }),
-                    HelpersForGroups.CreateGroup(new(){ID = 1001 }),
+                    HelpersForGroups.CreateGroup(new()),
+                    HelpersForGroups.CreateGroup(new()),
                 });
 
         private static Action<ExaminationTestData, Examination> RemoveGroup = (data, exam) => 

@@ -17,6 +17,8 @@ namespace AlphaTest.TestingHelpers
             {
                 throw new InvalidOperationException($"Свойство ID не найдено у типа {entity.GetType()}");
             }
+            if (property.PropertyType != typeof(int))
+                throw new InvalidOperationException($"ID сущности типа {entity.GetType()} не int");
             property.SetValue(entity, ID, null);
         }
 
@@ -31,6 +33,8 @@ namespace AlphaTest.TestingHelpers
             {
                 throw new InvalidOperationException($"Свойство ID не найдено у типа {entity.GetType()}");
             }
+            if (property.PropertyType != typeof(Guid))
+                throw new InvalidOperationException($"ID сущности типа {entity.GetType()} не Guid");
             property.SetValue(entity, ID, null);
         }
     }
