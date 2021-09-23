@@ -1,4 +1,5 @@
-﻿using AlphaTest.Core.Tests.Questions.Rules;
+﻿using System;
+using AlphaTest.Core.Tests.Questions.Rules;
 using System.Collections.Generic;
 
 namespace AlphaTest.Core.Tests.Questions
@@ -7,12 +8,13 @@ namespace AlphaTest.Core.Tests.Questions
     {
         private MultiChoiceQuestion() : base() { }
 
-        internal MultiChoiceQuestion(int testID, QuestionText text, uint number, QuestionScore score, List<QuestionOption> options) :
+        internal MultiChoiceQuestion(Guid testID, QuestionText text, uint number, QuestionScore score, List<QuestionOption> options) :
             base(testID, text, number, score, options){ }
 
         public override MultiChoiceQuestion ReplicateForNewEdition(Test newEdition)
         {
             MultiChoiceQuestion replica = (MultiChoiceQuestion)this.MemberwiseClone();
+            replica.ID = Guid.NewGuid();
             replica.TestID = newEdition.ID;
             List<QuestionOption> copiedOptions = new();
             foreach (var option in this.Options)

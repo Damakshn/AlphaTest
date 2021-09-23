@@ -23,7 +23,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Publishing
             test.ChangePassingScore(10);
             PublishingProposal proposal = test.ProposeForPublishing(new List<Question>() { question });
 
-            UserTestData userData = new() { ID = 5, InitialRole = role };
+            UserTestData userData = new() {InitialRole = role };
             User assignee = HelpersForUsers.CreateUser(userData);
 
             AssertBrokenRule<ProposalCanBeAssignedOnlyToAdminUsersRule>(() =>

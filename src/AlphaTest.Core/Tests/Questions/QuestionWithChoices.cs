@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AlphaTest.Core.Tests.Questions.Rules;
 
 namespace AlphaTest.Core.Tests.Questions
@@ -9,7 +10,7 @@ namespace AlphaTest.Core.Tests.Questions
         
         protected QuestionWithChoices(): base() { }
 
-        protected QuestionWithChoices(int testID, QuestionText text, uint number, QuestionScore score, List<QuestionOption> options) 
+        protected QuestionWithChoices(Guid testID, QuestionText text, uint number, QuestionScore score, List<QuestionOption> options) 
             : base(testID, text, number, score)
         {
             CheckCommonRulesForOptions(options);

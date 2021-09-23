@@ -1,4 +1,5 @@
 ﻿using AlphaTest.Core.Tests.Questions.Rules;
+using System;
 
 namespace AlphaTest.Core.Tests.Questions
 {
@@ -6,7 +7,7 @@ namespace AlphaTest.Core.Tests.Questions
     {
         private QuestionWithTextualAnswer() { }
 
-        internal QuestionWithTextualAnswer(int testID, QuestionText text, uint number, QuestionScore score, string rightAnswer) :
+        internal QuestionWithTextualAnswer(Guid testID, QuestionText text, uint number, QuestionScore score, string rightAnswer) :
             base(testID, text, number, score, rightAnswer)
         {
             CheckRule(new TextualRightAnswerCannotBeNullOrWhitespaceRule(rightAnswer));
@@ -21,6 +22,7 @@ namespace AlphaTest.Core.Tests.Questions
         public override QuestionWithTextualAnswer ReplicateForNewEdition(Test newEdition)
         {
             QuestionWithTextualAnswer replica = (QuestionWithTextualAnswer)this.MemberwiseClone();
+            replica.ID = Guid.NewGuid();
             replica.TestID = newEdition.ID;
             replica.ID = default;
             return replica;

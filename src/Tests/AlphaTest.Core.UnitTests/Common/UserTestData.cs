@@ -6,8 +6,6 @@ namespace AlphaTest.Core.UnitTests.Common
     {
         public UserTestData(){ }
 
-        public int ID { get; set; }
-
         public string FirstName { get; set; } = "Иванов";
 
         public string LastName { get; set; } = "Иван";

@@ -10,7 +10,7 @@ namespace AlphaTest.Core.Tests.Questions
 
         protected QuestionWithExactAnswer() { }
 
-        protected QuestionWithExactAnswer(int testID, QuestionText text, uint number, QuestionScore score, TDecimalOrString rightAnswer):
+        protected QuestionWithExactAnswer(Guid testID, QuestionText text, uint number, QuestionScore score, TDecimalOrString rightAnswer):
             base(testID, text, number, score)
         {
             RightAnswer = rightAnswer;

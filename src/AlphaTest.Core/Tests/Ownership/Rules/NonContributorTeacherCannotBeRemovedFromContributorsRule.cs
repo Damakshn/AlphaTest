@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AlphaTest.Core.Common;
 
 
@@ -6,11 +7,11 @@ namespace AlphaTest.Core.Tests.Ownership.Rules
 {
     public class NonContributorTeacherCannotBeRemovedFromContributorsRule : IBusinessRule
     {
-        private readonly int _contributorID;
+        private readonly Guid _contributorID;
 
         private readonly Test _test;
 
-        public NonContributorTeacherCannotBeRemovedFromContributorsRule(int contributorID, Test test)
+        public NonContributorTeacherCannotBeRemovedFromContributorsRule(Guid contributorID, Test test)
         {
             _contributorID = contributorID;
             _test = test;
