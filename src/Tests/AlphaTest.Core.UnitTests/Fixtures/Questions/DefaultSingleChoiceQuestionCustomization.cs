@@ -4,7 +4,7 @@ using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.UnitTests.Common.Helpers;
 
-namespace AlphaTest.Core.UnitTests.Fixtures
+namespace AlphaTest.Core.UnitTests.Fixtures.Questions
 {
     internal class DefaultSingleChoiceQuestionCustomization : ICustomization
     {

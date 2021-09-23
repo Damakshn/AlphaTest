@@ -8,7 +8,7 @@ using AlphaTest.Core.Groups;
 using AlphaTest.Core.UnitTests.Common.Helpers;
 using AlphaTest.TestingHelpers;
 
-namespace AlphaTest.Core.UnitTests.Fixtures
+namespace AlphaTest.Core.UnitTests.Fixtures.Examinations
 {
     internal class DefaultExaminationCustomization : ICustomization
     {

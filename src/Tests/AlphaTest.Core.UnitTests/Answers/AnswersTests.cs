@@ -25,14 +25,14 @@ namespace AlphaTest.Core.UnitTests.Answers
             });
 
             AssertBrokenRule<SingleChoiceAnswerValueMustBeValidOptionIDRule>(() =>
-                new SingleChoiceAnswer(1, question, attempt, 5)
+                new SingleChoiceAnswer(question, attempt, Guid.NewGuid())
             );
         }
 
         [Theory, AnswerTestData]
         public void Single_choice_answer_can_be_registered(Attempt attempt, SingleChoiceQuestion question)
         {
-            var answer = new SingleChoiceAnswer(1, question, attempt, question.Options[0].ID);
+            var answer = new SingleChoiceAnswer(question, attempt, question.Options[0].ID);
 
             Assert.Equal(question.ID, answer.QuestionID);
             Assert.Equal(attempt.ID, answer.AttemptID);
@@ -50,7 +50,7 @@ namespace AlphaTest.Core.UnitTests.Answers
             });
 
             AssertBrokenRule<MultiChoiceAnswerValueMustBeValidSetOfOptionIDsRule>(() =>
-                new MultiChoiceAnswer(1, question, attempt, new List<int> { 1, 5 })
+                new MultiChoiceAnswer(question, attempt, new List<Guid> { Guid.NewGuid(), Guid.NewGuid() })
             );
         }
 

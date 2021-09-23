@@ -4,7 +4,7 @@ using AlphaTest.Core.UnitTests.Common.Helpers;
 using AutoFixture;
 using System.Collections.Generic;
 
-namespace AlphaTest.Core.UnitTests.Fixtures
+namespace AlphaTest.Core.UnitTests.Fixtures.Questions
 {
     internal class DefaultMultiChoiceQuestionCustomization : ICustomization
     {
