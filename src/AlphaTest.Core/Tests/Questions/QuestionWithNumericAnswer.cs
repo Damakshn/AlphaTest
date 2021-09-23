@@ -6,7 +6,7 @@ namespace AlphaTest.Core.Tests.Questions
     {
         private QuestionWithNumericAnswer() { }
 
-        internal QuestionWithNumericAnswer(int testID, QuestionText text, uint number, QuestionScore score, decimal rightAnswer) :
+        internal QuestionWithNumericAnswer(Guid testID, QuestionText text, uint number, QuestionScore score, decimal rightAnswer) :
             base(testID, text, number, score, rightAnswer) { }
 
         public override void ChangeRightAnswer(decimal newRightAnswer)

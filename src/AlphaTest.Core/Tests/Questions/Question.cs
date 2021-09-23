@@ -10,7 +10,7 @@ namespace AlphaTest.Core.Tests.Questions
         #region Свойства
         public Guid ID { get; protected set; }
 
-        public int TestID { get; protected set; }
+        public Guid TestID { get; protected set; }
 
         public QuestionText Text { get; protected set; }
 
@@ -22,7 +22,7 @@ namespace AlphaTest.Core.Tests.Questions
         #region Конструкторы
         protected Question(){}
 
-        protected Question(int testID, QuestionText text, uint number, QuestionScore score)
+        protected Question(Guid testID, QuestionText text, uint number, QuestionScore score)
         {
             CheckCommonRules(score);
             ID = Guid.NewGuid();

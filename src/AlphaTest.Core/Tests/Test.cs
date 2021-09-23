@@ -21,7 +21,7 @@ namespace AlphaTest.Core.Tests
         private List<Contribution> _contributions;
 
         #region Основные атрибуты
-        public int ID { get; private set; }
+        public Guid ID { get; private set; }
 
         public string Title { get; private set; }
 
@@ -65,11 +65,11 @@ namespace AlphaTest.Core.Tests
         #region Конструкторы
         private Test() {}
 
-        public Test(int id, string title, string topic, int authorID, bool testAlreadyExists)
+        public Test(string title, string topic, int authorID, bool testAlreadyExists)
         {
             // TBD ChangeTitleAndTopic - правило похожее, но ошибка другая
             CheckRule(new TestMustBeUniqueRule(testAlreadyExists));
-            ID = id;
+            ID = Guid.NewGuid();
             Title = title;
             Topic = topic;
             Version = INITIAL_VERSION;
@@ -251,11 +251,11 @@ namespace AlphaTest.Core.Tests
         #endregion
 
         #region Создание новой версии
-        public Test Replicate(int id)
+        public Test Replicate()
         {
             CheckRule(new OnlyPublishedTestsCanBeReplicatedRule(this));
             Test replica = (Test)this.MemberwiseClone();
-            replica.ID = id;
+            replica.ID = Guid.NewGuid();
             replica._contributions = new List<Contribution>();
             foreach(var source in this._contributions)
             {

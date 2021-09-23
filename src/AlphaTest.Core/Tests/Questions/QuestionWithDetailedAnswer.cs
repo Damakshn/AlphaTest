@@ -6,7 +6,7 @@ namespace AlphaTest.Core.Tests.Questions
     {
         private QuestionWithDetailedAnswer():base() { }
 
-        internal QuestionWithDetailedAnswer(int testID, QuestionText text, uint number, QuestionScore score)
+        internal QuestionWithDetailedAnswer(Guid testID, QuestionText text, uint number, QuestionScore score)
             : base(testID, text, number, score) { }
 
         public override QuestionWithDetailedAnswer ReplicateForNewEdition(Test newEdition)

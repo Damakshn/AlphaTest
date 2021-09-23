@@ -9,7 +9,7 @@ namespace AlphaTest.Core.Tests.Publishing
     {
 		private PublishingProposal() { }
 
-		internal PublishingProposal(int testID)
+		internal PublishingProposal(Guid testID)
         {
 			TestID = testID;
 			// TBD можно ли использовать DateTime.Now
@@ -20,7 +20,7 @@ namespace AlphaTest.Core.Tests.Publishing
 
 		public int ID { get; private set; }
 
-        public int TestID { get; private set; }
+        public Guid TestID { get; private set; }
 
 		public int AssigneeID { get; private set; }
 

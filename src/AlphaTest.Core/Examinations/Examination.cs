@@ -47,7 +47,7 @@ namespace AlphaTest.Core.Examinations
         #region Свойства
         public int ID { get; private set; }
 
-        public int TestID { get; private set; }
+        public Guid TestID { get; private set; }
 
         public int ExaminerID { get; private set; }
 

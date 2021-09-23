@@ -8,7 +8,7 @@ namespace AlphaTest.Core.Tests.Questions
     {
         private MultiChoiceQuestion() : base() { }
 
-        internal MultiChoiceQuestion(int testID, QuestionText text, uint number, QuestionScore score, List<QuestionOption> options) :
+        internal MultiChoiceQuestion(Guid testID, QuestionText text, uint number, QuestionScore score, List<QuestionOption> options) :
             base(testID, text, number, score, options){ }
 
         public override MultiChoiceQuestion ReplicateForNewEdition(Test newEdition)

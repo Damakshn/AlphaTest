@@ -33,7 +33,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             Contributor = HelpersForUsers.CreateUser(contributorData);
             Examiner = TestAuthor;
             // MAYBE перенести в HelpersForTests с возможностью настраивать автора
-            Test = new(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), TestAuthor.ID, false);
+            Test = new(It.IsAny<string>(), It.IsAny<string>(), TestAuthor.ID, false);
             Test.AddContributor(Contributor);
             HelpersForTests.SetNewStatusForTest(Test, TestStatus.Published);
             Group group1 = new(
