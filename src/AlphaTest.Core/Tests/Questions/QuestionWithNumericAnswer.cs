@@ -1,4 +1,6 @@
-﻿namespace AlphaTest.Core.Tests.Questions
+﻿using System;
+
+namespace AlphaTest.Core.Tests.Questions
 {
     public class QuestionWithNumericAnswer: QuestionWithExactAnswer<decimal>
     {
@@ -15,6 +17,7 @@
         public override QuestionWithNumericAnswer ReplicateForNewEdition(Test newEdition)
         {
             QuestionWithNumericAnswer replica = (QuestionWithNumericAnswer)this.MemberwiseClone();
+            replica.ID = Guid.NewGuid();
             replica.TestID = newEdition.ID;
             replica.ID = default;
             return replica;

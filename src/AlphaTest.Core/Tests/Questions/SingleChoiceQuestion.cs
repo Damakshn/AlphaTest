@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AlphaTest.Core.Tests.Questions.Rules;
 
 
@@ -14,6 +15,7 @@ namespace AlphaTest.Core.Tests.Questions
         public override SingleChoiceQuestion ReplicateForNewEdition(Test newEdition)
         {
             SingleChoiceQuestion replica = (SingleChoiceQuestion)this.MemberwiseClone();
+            replica.ID = Guid.NewGuid();
             replica.TestID = newEdition.ID;
             List<QuestionOption> copiedOptions = new();
             foreach(var option in this.Options)

@@ -1,4 +1,5 @@
-﻿using AlphaTest.Core.Tests.Questions.Rules;
+﻿using System;
+using AlphaTest.Core.Tests.Questions.Rules;
 using System.Collections.Generic;
 
 namespace AlphaTest.Core.Tests.Questions
@@ -13,6 +14,7 @@ namespace AlphaTest.Core.Tests.Questions
         public override MultiChoiceQuestion ReplicateForNewEdition(Test newEdition)
         {
             MultiChoiceQuestion replica = (MultiChoiceQuestion)this.MemberwiseClone();
+            replica.ID = Guid.NewGuid();
             replica.TestID = newEdition.ID;
             List<QuestionOption> copiedOptions = new();
             foreach (var option in this.Options)

@@ -26,7 +26,7 @@ namespace AlphaTest.Core.Answers
         #region Свойства
         public int ID { get; private set; }
 
-        public int QuestionID { get; private set; }
+        public Guid QuestionID { get; private set; }
 
         public int AttemptID { get; private set; }
 
