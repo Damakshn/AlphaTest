@@ -47,8 +47,6 @@ namespace AlphaTest.Core.UnitTests.Examinations
             Groups = new List<Group>() { group1, group2 };
         }
 
-        public int ID { get; set; }
-
         public DateTime StartsAt { get; set; } = DateTime.Now.AddDays(1);
 
         public DateTime EndsAt { get; set; } = DateTime.Now.AddDays(8);

@@ -71,11 +71,11 @@ namespace AlphaTest.Core.UnitTests.Groups
             Group group = new(data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
             for (int i = 0; i < 100; i++)
             {
-                UserTestData userData = new() { ID = i + 1, InitialRole = UserRole.STUDENT };
+                UserTestData userData = new() { InitialRole = UserRole.STUDENT };
                 group.AddStudent(HelpersForUsers.CreateUser(userData));
             }
 
-            UserTestData moreUserData = new() { ID = 1000, InitialRole = UserRole.STUDENT };
+            UserTestData moreUserData = new() { InitialRole = UserRole.STUDENT };
             User extraStudent = HelpersForUsers.CreateUser(moreUserData);
             AssertBrokenRule<GroupSizeIsLimitedRule>(() =>
                 group.AddStudent(extraStudent)
@@ -103,7 +103,7 @@ namespace AlphaTest.Core.UnitTests.Groups
             GroupTestData data = new();
             Group group = new(data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
 
-            UserTestData userData = new() { ID = 100, InitialRole = UserRole.STUDENT };
+            UserTestData userData = new() {InitialRole = UserRole.STUDENT };
             User candidate = HelpersForUsers.CreateUser(userData);
             group.AddStudent(candidate);
 
@@ -116,7 +116,7 @@ namespace AlphaTest.Core.UnitTests.Groups
             GroupTestData data = new();
             Group group = new(data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
 
-            UserTestData userData = new() { ID = 100, InitialRole = UserRole.STUDENT };
+            UserTestData userData = new() { InitialRole = UserRole.STUDENT };
             User candidate = HelpersForUsers.CreateUser(userData);
             group.Disband();
 
@@ -131,7 +131,7 @@ namespace AlphaTest.Core.UnitTests.Groups
             GroupTestData data = new();
             Group group = new(data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
 
-            UserTestData userData = new() { ID = 100, InitialRole = UserRole.STUDENT };
+            UserTestData userData = new() { InitialRole = UserRole.STUDENT };
             User candidate = HelpersForUsers.CreateUser(userData);
             HelpersForGroups.SetGroupDates(group, DateTime.Now.AddDays(-365), DateTime.Now.AddDays(-100));
             
@@ -207,10 +207,10 @@ namespace AlphaTest.Core.UnitTests.Groups
             GroupTestData data = new();
             Group group = new(data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
 
-            User userInGroup = HelpersForUsers.CreateUser(new() { ID = 100, InitialRole = UserRole.STUDENT });
+            User userInGroup = HelpersForUsers.CreateUser(new() { InitialRole = UserRole.STUDENT });
             group.AddStudent(userInGroup);
 
-            User userNotInGroup = HelpersForUsers.CreateUser(new() { ID = 101, InitialRole = UserRole.STUDENT });
+            User userNotInGroup = HelpersForUsers.CreateUser(new() { InitialRole = UserRole.STUDENT });
             AssertBrokenRule<NonMemberStudentsCannotBeExcludedFromGroupRule>(() =>
                 group.ExcludeStudent(userNotInGroup)
             );
@@ -223,7 +223,7 @@ namespace AlphaTest.Core.UnitTests.Groups
             GroupTestData data = new();
             Group group = new(data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
 
-            User student = HelpersForUsers.CreateUser(new() { ID = 100, InitialRole = UserRole.STUDENT });
+            User student = HelpersForUsers.CreateUser(new() { InitialRole = UserRole.STUDENT });
             group.AddStudent(student);
 
             Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.ID));
@@ -237,7 +237,7 @@ namespace AlphaTest.Core.UnitTests.Groups
             GroupTestData data = new();
             Group group = new(data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
 
-            User student = HelpersForUsers.CreateUser(new() { ID = 100, InitialRole = UserRole.STUDENT });
+            User student = HelpersForUsers.CreateUser(new() { InitialRole = UserRole.STUDENT });
             group.AddStudent(student);
             Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.ID));
             group.Disband();
@@ -251,7 +251,7 @@ namespace AlphaTest.Core.UnitTests.Groups
             GroupTestData data = new();
             Group group = new(data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
 
-            User student = HelpersForUsers.CreateUser(new() { ID = 100, InitialRole = UserRole.STUDENT });
+            User student = HelpersForUsers.CreateUser(new() { InitialRole = UserRole.STUDENT });
             group.AddStudent(student);
             Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.ID));
             HelpersForGroups.SetGroupDates(group, DateTime.Now.AddDays(-365), DateTime.Now.AddDays(-100));

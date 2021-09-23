@@ -82,7 +82,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
         [Fact]
         public void Examiner_must_be_author_or_contributor_of_the_test()
         {
-            UserTestData examinerData = new() { ID = 1001, InitialRole = UserRole.TEACHER };
+            UserTestData examinerData = new() { InitialRole = UserRole.TEACHER };
             User examiner = HelpersForUsers.CreateUser(examinerData);
             ExaminationTestData data = new() { Examiner = examiner };
 
@@ -215,11 +215,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
         {
             ExaminationTestData data = new();
             Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
-            UserTestData userData = new()
-            {
-                ID = 1000,
-                InitialRole = role
-            };
+            UserTestData userData = new(){InitialRole = role};
             User examiner = HelpersForUsers.CreateUser(userData);
 
             AssertBrokenRule<ExaminerMustBeTeacherRule>(() =>
@@ -233,11 +229,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
         {
             ExaminationTestData data = new();
             Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
-            UserTestData userData = new()
-            {
-                ID = 1000,
-                InitialRole = UserRole.TEACHER
-            };
+            UserTestData userData = new(){ InitialRole = UserRole.TEACHER };
             User examiner = HelpersForUsers.CreateUser(userData);
 
             AssertBrokenRule<ExaminerMustBeAuthorOrContributorOfTheTestRule>(() =>

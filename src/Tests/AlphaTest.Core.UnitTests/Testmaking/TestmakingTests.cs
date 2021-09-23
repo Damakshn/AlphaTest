@@ -174,7 +174,6 @@ namespace AlphaTest.Core.UnitTests.Testmaking
 
             UserTestData udata1 = new()
             {
-                ID = 1,
                 FirstName = "Иванов",
                 LastName = "Иван",
                 MiddleName = "Иванович",
@@ -182,7 +181,6 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             };
             UserTestData udata2 = new()
             {
-                ID = 2,
                 FirstName = "Смирнова",
                 LastName = "Елена",
                 MiddleName = "Сергеевна",
