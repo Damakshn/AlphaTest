@@ -8,10 +8,10 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
     {
         #region Создание вопросов со стандартными данными
         public static Func<QuestionTestData, Question> CreateSingleChoiceQuestion { get; } =
-            data => data.Test.AddSingleChoiceQuestion(data.Text, data.Score, data.Options, data.NumberOfQuestionInTest);
+            data => data.Test.AddSingleChoiceQuestion(data.Text, data.Score, data.OptionsData, data.NumberOfQuestionInTest);
 
         public static Func<QuestionTestData, Question> CreateMultiChoiceQuestion { get; } =
-            data => data.Test.AddMultiChoiceQuestion(data.Text, data.Score, data.Options, data.NumberOfQuestionInTest);
+            data => data.Test.AddMultiChoiceQuestion(data.Text, data.Score, data.OptionsData, data.NumberOfQuestionInTest);
 
         public static Func<QuestionTestData, Question> CreateQuestionWithTextualAnswer { get; } =
             data => data.Test.AddQuestionWithTextualAnswer(data.Text, data.Score, data.TextualAnswer, data.NumberOfQuestionInTest);

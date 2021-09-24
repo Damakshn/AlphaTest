@@ -6,15 +6,15 @@ namespace AlphaTest.Core.Tests.Questions.Rules
 {
     public class AtLeastOneQuestionOptionMustBeRightRule : IBusinessRule
     {
-        private IEnumerable<QuestionOption> _options;
+        private IEnumerable<(string text, uint number, bool isRight)> _optionsData;
 
-        public AtLeastOneQuestionOptionMustBeRightRule(IEnumerable<QuestionOption> options)
+        public AtLeastOneQuestionOptionMustBeRightRule(IEnumerable<(string text, uint number, bool isRight)> optionsData)
         {
-            _options = options;
+            _optionsData = optionsData;
         }
 
         public string Message => "Хотя бы один вариант ответа должен быть верным.";
 
-        public bool IsBroken => _options.Any(o => o.IsRight) == false;
+        public bool IsBroken => _optionsData.Any(o => o.isRight) == false;
     }
 }

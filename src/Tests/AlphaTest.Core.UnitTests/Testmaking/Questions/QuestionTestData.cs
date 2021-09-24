@@ -25,12 +25,12 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 
         internal decimal NumericAnswer { get; set; } = 1789;
 
-        internal List<QuestionOption> Options { get; set; } = new List<QuestionOption>
-            {
-                new QuestionOption("Первый вариант", 1, true),
-                new QuestionOption("Второй вариант", 2, false),
-                new QuestionOption("Третий вариант", 3, false),
-            };
+        internal List<(string text, uint number, bool isRight)> OptionsData { get; set; } = new()
+        {
+            new("Первый вариант", 1, true),
+            new("Второй вариант", 2, false),
+            new("Третий вариант", 3, false),
+        };
 
         internal uint NumberOfQuestionInTest { get; set; } = 0;
 
