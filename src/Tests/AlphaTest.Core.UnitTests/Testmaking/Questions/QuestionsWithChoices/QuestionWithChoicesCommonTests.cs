@@ -13,7 +13,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         [MemberData(nameof(QuestionTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionTestSamples))]
         public void CreateAnyQuestionWithChoices_WithoutOptions_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
-            QuestionTestData data = new() { Options = null };
+            QuestionTestData data = new() { OptionsData = null };
 
             AssertBrokenRule<QuestionOptionsMustBeSpecifiedRule>(() =>
                 createQuestionDelegate(data)
@@ -24,7 +24,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         [MemberData(nameof(QuestionTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionTestSamples))]
         public void CreateAnyQuestionWithChoices_WithTooManyOptions_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
-            QuestionTestData data = new() { Options = QuestionWithChoicesTestSamples.QuestionOptionsTooMany };
+            QuestionTestData data = new() { OptionsData = QuestionWithChoicesTestSamples.OptionsDataTooMany };
 
             AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(() =>
                 createQuestionDelegate(data)
@@ -35,7 +35,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
         [MemberData(nameof(QuestionTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionTestSamples))]
         public void CreateAnyQuestionWithChoices_WithTooFewOptions_IsNotPossible(Func<QuestionTestData, Question> createQuestionDelegate)
         {
-            QuestionTestData data = new() { Options = QuestionWithChoicesTestSamples.QuestionOptionsTooFew };
+            QuestionTestData data = new() { OptionsData = QuestionWithChoicesTestSamples.OptionsDataTooFew };
 
             AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(() =>
                 createQuestionDelegate(data)
@@ -52,7 +52,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
 
             Assert.Equal(data.Test.ID, question.TestID);
             Assert.Equal(data.Score, question.Score);
-            Assert.Equal(data.Options.Count, question.Options.Count);
+            Assert.Equal(data.OptionsData.Count, question.Options.Count);
         }
 
         [Theory]
@@ -75,7 +75,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
             
             QuestionWithChoices question = createQuestionDelegate(data) as QuestionWithChoices;
 
-            AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(() => question.ChangeOptions(QuestionWithChoicesTestSamples.QuestionOptionsTooMany));
+            AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(() => question.ChangeOptions(QuestionWithChoicesTestSamples.OptionsDataTooMany));
         }
 
         [Theory]
@@ -86,7 +86,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
 
             QuestionWithChoices question = createQuestionDelegate(data) as QuestionWithChoices;
 
-            AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(() => question.ChangeOptions(QuestionWithChoicesTestSamples.QuestionOptionsTooFew));
+            AssertBrokenRule<NumberOfOptionsForQiestionMustBeInRangeRule>(() => question.ChangeOptions(QuestionWithChoicesTestSamples.OptionsDataTooFew));
         }
 
         [Theory]
@@ -96,10 +96,9 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions.QuestionsWithChoices
             QuestionTestData data = new();
 
             QuestionWithChoices question = createQuestionDelegate(data) as QuestionWithChoices;
-
-            List<QuestionOption> newOptions = QuestionWithChoicesTestSamples.QuestionOptionsMinimum;
-            question.ChangeOptions(QuestionWithChoicesTestSamples.QuestionOptionsMinimum);
-            Assert.Equal(newOptions.Count, question.Options.Count);
+            
+            question.ChangeOptions(QuestionWithChoicesTestSamples.OptionsDataMinimum);
+            Assert.Equal(QuestionWithChoicesTestSamples.OptionsDataMinimum.Count, question.Options.Count);
         }
        
     }

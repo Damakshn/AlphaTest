@@ -24,7 +24,6 @@ namespace AlphaTest.Core.Tests.Questions
             QuestionWithTextualAnswer replica = (QuestionWithTextualAnswer)this.MemberwiseClone();
             replica.ID = Guid.NewGuid();
             replica.TestID = newEdition.ID;
-            replica.ID = default;
             return replica;
         }
     }

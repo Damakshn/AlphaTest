@@ -156,19 +156,27 @@ namespace AlphaTest.Core.Tests
         #endregion
 
         #region Работа с вопросами
-        public SingleChoiceQuestion AddSingleChoiceQuestion(QuestionText text, QuestionScore score, List<QuestionOption> options, uint numberOfQuestionsInTest)
+        public SingleChoiceQuestion AddSingleChoiceQuestion(
+            QuestionText text,
+            QuestionScore score,
+            List<(string text, uint number, bool isRight)> optionsData,
+            uint numberOfQuestionsInTest)
         {
             CheckRule(new NonDraftTestCannotBeEditedRule(this));
             uint questionNumber = numberOfQuestionsInTest + 1;
-            SingleChoiceQuestion question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), options);
+            SingleChoiceQuestion question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), optionsData);
             return question;
         }
 
-        public MultiChoiceQuestion AddMultiChoiceQuestion(QuestionText text, QuestionScore score, List<QuestionOption> options, uint numberOfQuestionsInTest)
+        public MultiChoiceQuestion AddMultiChoiceQuestion(
+            QuestionText text,
+            QuestionScore score,
+            List<(string text, uint number, bool isRight)> optionsData,
+            uint numberOfQuestionsInTest)
         {
             CheckRule(new NonDraftTestCannotBeEditedRule(this));
             uint questionNumber = numberOfQuestionsInTest + 1;
-            MultiChoiceQuestion question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), options);
+            MultiChoiceQuestion question = new(this.ID, text, questionNumber, CalculateActualQuestionScore(score), optionsData);
             return question;
         }
 
