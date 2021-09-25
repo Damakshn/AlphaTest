@@ -6,18 +6,18 @@ namespace AlphaTest.Core.Checking
 {
     public class CheckResult: Entity
     {
-        public CheckResult(int id, Answer answer, int? teacherID, CheckResultType type, decimal score)
+        public CheckResult(Answer answer, int? teacherID, PreliminaryResult adjustedResult)
         {
             // ToDo answer must not be revoked
-            ID = id;
+            ID = Guid.NewGuid();
             AnswerID = answer.ID;
             TeacherID = teacherID;
             CreatedAt = DateTime.Now;
-            Type = type;
-            Score = score;
+            Type = adjustedResult.CheckResultType;
+            Score = adjustedResult.Score;
         }
 
-        public int ID { get; private set; }
+        public Guid ID { get; private set; }
 
         public Guid AnswerID { get; private set; }
 
