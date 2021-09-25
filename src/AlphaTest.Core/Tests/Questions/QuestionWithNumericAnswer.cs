@@ -7,7 +7,7 @@ namespace AlphaTest.Core.Tests.Questions
     {
         private QuestionWithNumericAnswer() { }
 
-        internal QuestionWithNumericAnswer(int testID, QuestionText text, uint number, QuestionScore score, decimal rightAnswer) :
+        internal QuestionWithNumericAnswer(Guid testID, QuestionText text, uint number, QuestionScore score, decimal rightAnswer) :
             base(testID, text, number, score, rightAnswer) { }
 
         public override void ChangeRightAnswer(decimal newRightAnswer)
@@ -18,8 +18,8 @@ namespace AlphaTest.Core.Tests.Questions
         public override QuestionWithNumericAnswer ReplicateForNewEdition(Test newEdition)
         {
             QuestionWithNumericAnswer replica = (QuestionWithNumericAnswer)this.MemberwiseClone();
+            replica.ID = Guid.NewGuid();
             replica.TestID = newEdition.ID;
-            replica.ID = default;
             return replica;
         }
 

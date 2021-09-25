@@ -15,7 +15,6 @@ namespace AlphaTest.Core.UnitTests.Examinations
         {
             UserTestData authorData = new() 
             {
-                ID = 1,
                 InitialRole = UserRole.TEACHER,
                 FirstName = It.IsAny<string>(),
                 LastName = It.IsAny<string>(),
@@ -23,7 +22,6 @@ namespace AlphaTest.Core.UnitTests.Examinations
             };
             UserTestData contributorData = new()
             {
-                ID = 2,
                 InitialRole = UserRole.TEACHER,
                 FirstName = It.IsAny<string>(),
                 LastName = It.IsAny<string>(),
@@ -33,25 +31,21 @@ namespace AlphaTest.Core.UnitTests.Examinations
             Contributor = HelpersForUsers.CreateUser(contributorData);
             Examiner = TestAuthor;
             // MAYBE перенести в HelpersForTests с возможностью настраивать автора
-            Test = new(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), TestAuthor.ID, false);
+            Test = new(It.IsAny<string>(), It.IsAny<string>(), TestAuthor.ID, false);
             Test.AddContributor(Contributor);
             HelpersForTests.SetNewStatusForTest(Test, TestStatus.Published);
             Group group1 = new(
-                1,
                 "Первая группа",
                 DateTime.Now.AddDays(1),
                 DateTime.Now.AddDays(100),
                 false);
             Group group2 = new(
-                2,
                 "Вторая группа",
                 DateTime.Now.AddDays(1),
                 DateTime.Now.AddDays(100),
                 false);
             Groups = new List<Group>() { group1, group2 };
         }
-
-        public int ID { get; set; }
 
         public DateTime StartsAt { get; set; } = DateTime.Now.AddDays(1);
 

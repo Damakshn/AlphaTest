@@ -30,7 +30,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 
             // act
             HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test newEdition = test.Replicate(It.IsAny<int>());
+            Test newEdition = test.Replicate();
             Question replica = source.ReplicateForNewEdition(newEdition);
 
             // assert
@@ -48,28 +48,13 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             QuestionTestData data = new();
             Question source = createQuestionDelegate(data);
             
-            Test newEdition = test.Replicate(It.IsAny<int>());
+            Test newEdition = test.Replicate();
             Question replica = source.ReplicateForNewEdition(newEdition);
 
             Assert.NotEqual(test.ID, replica.TestID);
             Assert.Equal(newEdition.ID, replica.TestID);
         }
-
-        [Theory]
-        [MemberData(nameof(QuestionTestSamples.InstanceAllTypesOfQuestions), MemberType = typeof(QuestionTestSamples))]
-        public void Replicated_question_ID_is_reset_to_default(Func<QuestionTestData, Question> createQuestionDelegate)
-        {
-            Test test = HelpersForTests.GetDefaultTest();
-            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            QuestionTestData data = new();
-            Question source = createQuestionDelegate(data);
-
-            Test newEdition = test.Replicate(It.IsAny<int>());
-            Question replica = source.ReplicateForNewEdition(newEdition);
-
-            Assert.Equal(default, replica.ID);
-        }
-
+                
         [Fact]        
         public void Replicated_question_with_numeric_answer_has_same_right_answer_as_source_question()
         {
@@ -86,7 +71,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
             
             // act
             HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test newEdition = test.Replicate(It.IsAny<int>());
+            Test newEdition = test.Replicate();
             QuestionWithNumericAnswer replica = source.ReplicateForNewEdition(newEdition);
 
             // assert
@@ -109,7 +94,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 
             // act
             HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test newEdition = test.Replicate(It.IsAny<int>());
+            Test newEdition = test.Replicate();
             QuestionWithTextualAnswer replica = source.ReplicateForNewEdition(newEdition);
 
             // assert
@@ -118,32 +103,27 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
 
         [Theory]
         [MemberData(nameof(QuestionTestSamples.InstanceQuestionsWithChoices), MemberType = typeof(QuestionTestSamples))]
-        public void Replicated_question_with_choices_has_same_set_of_options_with_ID_reset_to_default(Func<QuestionTestData, Question> createQuestionDelegate)
+        public void Replicated_question_with_choices_has_same_set_of_options(Func<QuestionTestData, Question> createQuestionDelegate)
         {
             // arrange
             Test test = HelpersForTests.GetDefaultTest();
             QuestionTestData data = new()
             {
                 Test = test,
-                Options = new List<QuestionOption>
+                OptionsData = new List<(string text, uint number, bool isRight)>
                 {
-                    new QuestionOption("Раз", 1, true),
-                    new QuestionOption("Два", 2, false),
-                    new QuestionOption("Три", 3, false),
-                    new QuestionOption("Четыре", 4, false),
-                    new QuestionOption("Пять", 5, false),
+                    new ("Раз", 1, true),
+                    new ("Два", 2, false),
+                    new ("Три", 3, false),
+                    new ("Четыре", 4, false),
+                    new ("Пять", 5, false),
                 }
             };
             QuestionWithChoices source = (QuestionWithChoices)createQuestionDelegate(data);
-            int optionID = 1;
-            foreach (var option in source.Options)
-            {
-                EntityIDSetter.SetIDTo(option, optionID++);
-            }
-
+            
             // act
             HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test newEdition = test.Replicate(It.IsAny<int>());
+            Test newEdition = test.Replicate();
             QuestionWithChoices replica = (QuestionWithChoices)source.ReplicateForNewEdition(newEdition);
 
             // assert
@@ -153,10 +133,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Questions
                 Assert.NotNull(replicatedOption);
                 Assert.Equal(option.Text, replicatedOption.Text);
                 Assert.Equal(option.IsRight, replicatedOption.IsRight);
-                Assert.Equal(default, replicatedOption.ID);
             }
         }
-
-
     }
 }

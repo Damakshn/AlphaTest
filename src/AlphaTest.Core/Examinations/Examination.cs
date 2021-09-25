@@ -31,6 +31,7 @@ namespace AlphaTest.Core.Examinations
             CheckCommonRulesForExaminer(examiner, test);
             CheckRule(new DisbandedOrInactiveGroupsCannotParticipateExamRule(groups));
             // ToDo группы должны существовать на момент проведения экзамена
+            ID = Guid.NewGuid();
             TestID = test.ID;
             ExaminerID = examiner.ID;
             StartsAt = startsAt;
@@ -45,11 +46,11 @@ namespace AlphaTest.Core.Examinations
         #endregion
 
         #region Свойства
-        public int ID { get; private set; }
+        public Guid ID { get; private set; }
 
-        public int TestID { get; private set; }
+        public Guid TestID { get; private set; }
 
-        public int ExaminerID { get; private set; }
+        public Guid ExaminerID { get; private set; }
 
         public DateTime StartsAt {get; private set; }
 

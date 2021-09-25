@@ -14,7 +14,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
         public void Non_teacher_user_cannot_be_set_as_new_test_author(UserRole role)
         {
             Test test = HelpersForTests.GetDefaultTest();
-            UserTestData userTestData = new() { ID = 5, InitialRole = role };
+            UserTestData userTestData = new() { InitialRole = role };
             User newAuthor = HelpersForUsers.CreateUser(userTestData);
             AssertBrokenRule<OnlyTeacherCanBeSetAsNewAuthorOrContributorRule>(() =>
                 test.SwitchAuthor(newAuthor)

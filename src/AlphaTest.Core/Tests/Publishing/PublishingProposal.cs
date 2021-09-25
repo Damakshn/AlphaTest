@@ -9,20 +9,21 @@ namespace AlphaTest.Core.Tests.Publishing
     {
 		private PublishingProposal() { }
 
-		internal PublishingProposal(int testID)
+		internal PublishingProposal(Guid testID)
         {
 			TestID = testID;
 			// TBD можно ли использовать DateTime.Now
 			SentAt = DateTime.Now;
 			Status = ProposalStatus.NEW;
+			ID = Guid.NewGuid();
 			// ToDo Domain event
 		}
 
-		public int ID { get; private set; }
+		public Guid ID { get; private set; }
 
-        public int TestID { get; private set; }
+        public Guid TestID { get; private set; }
 
-		public int AssigneeID { get; private set; }
+		public Guid AssigneeID { get; private set; }
 
 		public ProposalStatus Status { get; private set; }
 

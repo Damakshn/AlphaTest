@@ -25,9 +25,9 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             // arrange
             string title = It.IsAny<string>();
             string topic = It.IsAny<string>();
-            int authorID = It.IsAny<int>();
+            Guid authorID = Guid.NewGuid();
             // act
-            Test t = new(It.IsAny<int>(), title, topic, authorID, false);
+            Test t = new(title, topic, authorID, false);
             // assert
             Assert.Equal(1, t.Version);
         }
@@ -38,10 +38,10 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             // arrange
             string title = It.IsAny<string>();
             string topic = It.IsAny<string>();
-            int authorID = It.IsAny<int>();
+            Guid authorID = Guid.NewGuid();
             
             // act
-            Action act = () => { Test t = new(It.IsAny<int>(), title, topic, authorID, true); };
+            Action act = () => { Test t = new(title, topic, authorID, true); };
 
             // assert
             Assert.Throws<BusinessException>(act);
@@ -53,13 +53,13 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             // arrange
             string intialTitle = "Политология как наука";
             string initialTopic = "Политология";
-            int authorID = It.IsAny<int>();
+            Guid authorID = Guid.NewGuid();
 
             string newTitle = "Политическая система";
             string newTopic = "Политология";
 
             // act
-            Test t = new(It.IsAny<int>(), intialTitle, initialTopic, authorID, false);
+            Test t = new(intialTitle, initialTopic, authorID, false);
             Action act = () => t.ChangeTitleAndTopic(newTitle, newTopic, true);
 
             // assert
@@ -155,7 +155,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             test.ChangeAttemptsLimit(3);
 
             HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test replica = test.Replicate(It.IsAny<int>());
+            Test replica = test.Replicate();
 
             Assert.Equal(test.WorkCheckingMethod, replica.WorkCheckingMethod);
             Assert.Equal(test.CheckingPolicy, replica.CheckingPolicy);
@@ -174,7 +174,6 @@ namespace AlphaTest.Core.UnitTests.Testmaking
 
             UserTestData udata1 = new()
             {
-                ID = 1,
                 FirstName = "Иванов",
                 LastName = "Иван",
                 MiddleName = "Иванович",
@@ -182,7 +181,6 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             };
             UserTestData udata2 = new()
             {
-                ID = 2,
                 FirstName = "Смирнова",
                 LastName = "Елена",
                 MiddleName = "Сергеевна",
@@ -194,7 +192,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             test.AddContributor(user2);
 
             HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test replica = test.Replicate(It.IsAny<int>());
+            Test replica = test.Replicate();
 
             Assert.Equal(1, replica.Contributions.Count(c => c.TeacherID == user1.ID));
             Assert.Equal(1, replica.Contributions.Count(c => c.TeacherID == user2.ID));
@@ -205,7 +203,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
         {
             Test test = HelpersForTests.GetDefaultTest();
             HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test replica = test.Replicate(It.IsAny<int>());
+            Test replica = test.Replicate();
             Assert.Equal(TestStatus.Draft, replica.Status);
         }
 
@@ -214,7 +212,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
         {
             Test test = HelpersForTests.GetDefaultTest();
             HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test replica = test.Replicate(It.IsAny<int>());
+            Test replica = test.Replicate();
             Assert.Equal(test.Version + 1, replica.Version);
         }
 
@@ -223,7 +221,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking
         {
             Test test = HelpersForTests.GetDefaultTest();
             AssertBrokenRule<OnlyPublishedTestsCanBeReplicatedRule>(() =>
-                test.Replicate(It.IsAny<int>())
+                test.Replicate()
             );
         }
 

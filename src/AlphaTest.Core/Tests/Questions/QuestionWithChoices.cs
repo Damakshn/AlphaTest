@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using AlphaTest.Core.Answers;
 using AlphaTest.Core.Tests.Questions.Rules;
 
@@ -10,27 +12,40 @@ namespace AlphaTest.Core.Tests.Questions
         
         protected QuestionWithChoices(): base() { }
 
-        protected QuestionWithChoices(int testID, QuestionText text, uint number, QuestionScore score, List<QuestionOption> options) 
+        protected QuestionWithChoices(
+            Guid testID,
+            QuestionText text,
+            uint number,
+            QuestionScore score,
+            List<(string text, uint number, bool isRight)> optionsData)
             : base(testID, text, number, score)
         {
-            CheckCommonRulesForOptions(options);
-            CheckSpecificRulesForOptions(options);
+            CheckCommonRulesForOptions(optionsData);
+            CheckSpecificRulesForOptions(optionsData);
+            List<QuestionOption> options =
+                optionsData
+                    .Select(o => new QuestionOption(this.ID, o.text, o.number, o.isRight))
+                        .ToList();
             Options = options;
         }
 
-        public void ChangeOptions(List<QuestionOption> newOptions)
+        public void ChangeOptions(List<(string text, uint number, bool isRight)> newOptionsData)
         {
-            CheckCommonRulesForOptions(newOptions);
-            CheckSpecificRulesForOptions(newOptions);
-            Options = newOptions;
+            CheckCommonRulesForOptions(newOptionsData);
+            CheckSpecificRulesForOptions(newOptionsData);
+            List<QuestionOption> options =
+                newOptionsData
+                    .Select(o => new QuestionOption(this.ID, o.text, o.number, o.isRight))
+                        .ToList();
+            Options = options;
         }
 
-        protected abstract void CheckSpecificRulesForOptions(List<QuestionOption> options);
+        protected abstract void CheckSpecificRulesForOptions(List<(string text, uint number, bool isRight)> optionsData);
 
-        private void CheckCommonRulesForOptions(List<QuestionOption> options)
+        private void CheckCommonRulesForOptions(List<(string text, uint number, bool isRight)> optionsData)
         {
-            CheckRule(new QuestionOptionsMustBeSpecifiedRule(options));
-            CheckRule(new NumberOfOptionsForQiestionMustBeInRangeRule(options));
+            CheckRule(new QuestionOptionsMustBeSpecifiedRule(optionsData));
+            CheckRule(new NumberOfOptionsForQiestionMustBeInRangeRule(optionsData));
         }
 
         public abstract bool IsRight(Answer answer);

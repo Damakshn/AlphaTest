@@ -12,26 +12,32 @@ namespace AlphaTest.Core.Tests.Questions
     {
         private SingleChoiceQuestion() : base() { }
 
-        internal SingleChoiceQuestion(int testID, QuestionText text, uint number, QuestionScore score, List<QuestionOption> options):
-            base(testID, text, number, score, options){ }
+        internal SingleChoiceQuestion(
+            Guid testID,
+            QuestionText text,
+            uint number,
+            QuestionScore score,
+            List<(string text, uint number, bool isRight)> optionsData) :
+            base(testID, text, number, score, optionsData)
+        { }
 
         public override SingleChoiceQuestion ReplicateForNewEdition(Test newEdition)
         {
             SingleChoiceQuestion replica = (SingleChoiceQuestion)this.MemberwiseClone();
+            replica.ID = Guid.NewGuid();
             replica.TestID = newEdition.ID;
             List<QuestionOption> copiedOptions = new();
             foreach(var option in this.Options)
             {
-                copiedOptions.Add(new QuestionOption(option.Text, option.Number, option.IsRight));
+                copiedOptions.Add(new QuestionOption(this.ID, option.Text, option.Number, option.IsRight));
             }
             replica.Options = copiedOptions;
-            replica.ID = default;
             return replica;
         }
 
-        protected override void CheckSpecificRulesForOptions(List<QuestionOption> options)
+        protected override void CheckSpecificRulesForOptions(List<(string text, uint number, bool isRight)> optionsData)
         {
-            CheckRule(new ForSingleChoiceQuestionMustBeExactlyOneRightOptionRule(options));
+            CheckRule(new ForSingleChoiceQuestionMustBeExactlyOneRightOptionRule(optionsData));
         }
 
         public override bool IsRight(Answer answer)

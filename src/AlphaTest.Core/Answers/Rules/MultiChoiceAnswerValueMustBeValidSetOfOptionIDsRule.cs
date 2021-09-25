@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AlphaTest.Core.Common;
 using AlphaTest.Core.Tests.Questions;
@@ -9,9 +10,9 @@ namespace AlphaTest.Core.Answers.Rules
     {
         private readonly MultiChoiceQuestion _question;
 
-        private readonly List<int> _value;
+        private readonly List<Guid> _value;
 
-        public MultiChoiceAnswerValueMustBeValidSetOfOptionIDsRule(MultiChoiceQuestion question, List<int> value)
+        public MultiChoiceAnswerValueMustBeValidSetOfOptionIDsRule(MultiChoiceQuestion question, List<Guid> value)
         {
             _question = question;
             _value = value;

@@ -2,6 +2,7 @@
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Attempts;
 using AlphaTest.Core.Answers.Rules;
+using System;
 
 namespace AlphaTest.Core.Answers
 {
@@ -9,13 +10,13 @@ namespace AlphaTest.Core.Answers
     {
         private MultiChoiceAnswer(): base() {}
 
-        public MultiChoiceAnswer(int id, MultiChoiceQuestion question, Attempt attempt, List<int> rightOptions)
-            :base(id, attempt, question)
+        public MultiChoiceAnswer(MultiChoiceQuestion question, Attempt attempt, List<Guid> rightOptions)
+            :base(attempt, question)
         {
             CheckRule(new MultiChoiceAnswerValueMustBeValidSetOfOptionIDsRule(question, rightOptions));
             RightOptions = rightOptions;
         }
 
-        public List<int> RightOptions { get; private set; }
+        public List<Guid> RightOptions { get; private set; }
     }
 }
