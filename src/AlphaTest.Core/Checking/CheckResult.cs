@@ -19,7 +19,7 @@ namespace AlphaTest.Core.Checking
 
         public int ID { get; private set; }
 
-        public int AnswerID { get; private set; }
+        public Guid AnswerID { get; private set; }
 
         public int? TeacherID { get; private set; }
 

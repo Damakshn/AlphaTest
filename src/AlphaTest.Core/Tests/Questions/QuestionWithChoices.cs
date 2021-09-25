@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using AlphaTest.Core.Answers;
+using AlphaTest.Core.Checking;
 using AlphaTest.Core.Tests.Questions.Rules;
 
 namespace AlphaTest.Core.Tests.Questions
 {
-    public abstract class QuestionWithChoices: Question, IAutoCheckQuestion
+    public abstract class QuestionWithChoices : Question, IAutoCheckQuestion
     {   
         public List<QuestionOption> Options { get; protected set; }
         
@@ -49,5 +50,6 @@ namespace AlphaTest.Core.Tests.Questions
         }
 
         public abstract bool IsRight(Answer answer);
+        public abstract PreliminaryResult CheckAnswer(Answer answer);
     }
 }

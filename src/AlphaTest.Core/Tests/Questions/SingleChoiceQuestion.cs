@@ -3,8 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using AlphaTest.Core.Answers;
 using AlphaTest.Core.Tests.Questions.Rules;
-
-
+using AlphaTest.Core.Checking;
 
 namespace AlphaTest.Core.Tests.Questions
 {
@@ -46,8 +45,23 @@ namespace AlphaTest.Core.Tests.Questions
                 throw new ArgumentNullException(nameof(answer));
             if (answer is not SingleChoiceAnswer convertedAnswer)
                 throw new InvalidOperationException("Тип вопроса и тип ответа не соответствуют.");
-            int rightOptionID = Options.Where(o => o.IsRight).Select(o => o.ID).First();
+            Guid rightOptionID = Options.Where(o => o.IsRight).Select(o => o.ID).First();
             return convertedAnswer.RightOptionID == rightOptionID;
+        }
+
+        public override PreliminaryResult CheckAnswer(Answer answer)
+        {
+            // MAYBE стоит куда-то вынести, так как похоже на нарушение SRP
+            if (answer is null)
+                throw new ArgumentNullException(nameof(answer));
+            if (answer is not SingleChoiceAnswer convertedAnswer)
+                throw new InvalidOperationException("Тип вопроса и тип ответа не соответствуют.");
+            bool isRight = Options.Where(o => o.IsRight).Select(o => o.ID).First() == convertedAnswer.RightOptionID;
+
+            if (isRight)
+                return new PreliminaryResult(Score.Value, CheckResultType.Credited, Score);
+            else
+                return new PreliminaryResult(0, CheckResultType.NotCredited, Score);
         }
     }
 }

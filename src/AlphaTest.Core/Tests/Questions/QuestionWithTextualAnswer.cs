@@ -1,4 +1,5 @@
 ﻿using AlphaTest.Core.Answers;
+using AlphaTest.Core.Checking;
 using AlphaTest.Core.Tests.Questions.Rules;
 using System;
 
@@ -35,6 +36,19 @@ namespace AlphaTest.Core.Tests.Questions
             if (answer is not ExactTextualAnswer convertedAnswer)
                 throw new InvalidOperationException("Тип вопроса и тип ответа не соответствуют.");
             return RightAnswer == convertedAnswer.Value;
+        }
+
+        public override PreliminaryResult CheckAnswer(Answer answer)
+        {
+            if (answer is null)
+                throw new ArgumentNullException(nameof(answer));
+            if (answer is not ExactTextualAnswer convertedAnswer)
+                throw new InvalidOperationException("Тип вопроса и тип ответа не соответствуют.");
+
+            if (RightAnswer == convertedAnswer.Value)
+                return new PreliminaryResult(Score.Value, CheckResultType.Credited, Score);
+            else
+                return new PreliminaryResult(0, CheckResultType.NotCredited, Score);
         }
     }
 }
