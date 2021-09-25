@@ -10,18 +10,12 @@ namespace AlphaTest.Core.UnitTests.Fixtures.Questions
     {
         public void Customize(IFixture fixture)
         {
-            List<QuestionOption> options = new()
-            {
-                new QuestionOption("Первый вариант", 1, true),
-                new QuestionOption("Второй вариант", 2, false),
-                new QuestionOption("Третий вариант", 3, false)
-            };
             fixture.Customize<SingleChoiceQuestion>(c =>
                 c.FromFactory(
-                    (Test test, QuestionText text, uint number) =>
+                    (Test test, QuestionText text, uint number, List<(string text, uint number, bool isRight)> optionsData) =>
                     {
                         HelpersForTests.SetNewStatusForTest(test, TestStatus.Draft);
-                        return test.AddSingleChoiceQuestion(text, new QuestionScore(1), options, number);
+                        return test.AddSingleChoiceQuestion(text, new QuestionScore(1), optionsData, number);
                     }
             ));
         }

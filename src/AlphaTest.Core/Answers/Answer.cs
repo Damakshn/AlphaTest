@@ -38,7 +38,7 @@ namespace AlphaTest.Core.Answers
         #endregion
 
         #region Методы
-        public void Revoke(Test test, Attempt attempt, int retriesUsed)
+        public void Revoke(Test test, Attempt attempt, uint retriesUsed)
         {
             CheckRule(new AnswerCannotBeRevokedIfRevokeIsNotAllowedRule(test));
             CheckRule(new AnswerCannotBeRevokedIfNumberOfRetriesIsExhaustedRule(test, retriesUsed));
