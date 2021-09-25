@@ -7,7 +7,7 @@ using AlphaTest.Core.Checking;
 
 namespace AlphaTest.Core.Tests.Questions
 {
-    public class SingleChoiceQuestion: QuestionWithChoices
+    public class SingleChoiceQuestion : QuestionWithChoices
     {
         private SingleChoiceQuestion() : base() { }
 
@@ -39,29 +39,9 @@ namespace AlphaTest.Core.Tests.Questions
             CheckRule(new ForSingleChoiceQuestionMustBeExactlyOneRightOptionRule(optionsData));
         }
 
-        public override bool IsRight(Answer answer)
+        public override PreliminaryResult AcceptCheckingVisitor(CheckingVisitor visitor)
         {
-            if (answer is null)
-                throw new ArgumentNullException(nameof(answer));
-            if (answer is not SingleChoiceAnswer convertedAnswer)
-                throw new InvalidOperationException("Тип вопроса и тип ответа не соответствуют.");
-            Guid rightOptionID = Options.Where(o => o.IsRight).Select(o => o.ID).First();
-            return convertedAnswer.RightOptionID == rightOptionID;
-        }
-
-        public override PreliminaryResult CheckAnswer(Answer answer)
-        {
-            // MAYBE стоит куда-то вынести, так как похоже на нарушение SRP
-            if (answer is null)
-                throw new ArgumentNullException(nameof(answer));
-            if (answer is not SingleChoiceAnswer convertedAnswer)
-                throw new InvalidOperationException("Тип вопроса и тип ответа не соответствуют.");
-            bool isRight = Options.Where(o => o.IsRight).Select(o => o.ID).First() == convertedAnswer.RightOptionID;
-
-            if (isRight)
-                return new PreliminaryResult(Score.Value, CheckResultType.Credited, Score);
-            else
-                return new PreliminaryResult(0, CheckResultType.NotCredited, Score);
+            return visitor.CheckSingleChoiceQuestion(this);
         }
     }
 }

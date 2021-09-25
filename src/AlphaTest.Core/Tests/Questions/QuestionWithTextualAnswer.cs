@@ -5,7 +5,7 @@ using System;
 
 namespace AlphaTest.Core.Tests.Questions
 {
-    public class QuestionWithTextualAnswer: QuestionWithExactAnswer<string>
+    public class QuestionWithTextualAnswer : QuestionWithExactAnswer<string>
     {
         private QuestionWithTextualAnswer() { }
 
@@ -29,26 +29,9 @@ namespace AlphaTest.Core.Tests.Questions
             return replica;
         }
 
-        public override bool IsRight(Answer answer)
+        public override PreliminaryResult AcceptCheckingVisitor(CheckingVisitor visitor)
         {
-            if (answer is null)
-                throw new ArgumentNullException(nameof(answer));
-            if (answer is not ExactTextualAnswer convertedAnswer)
-                throw new InvalidOperationException("Тип вопроса и тип ответа не соответствуют.");
-            return RightAnswer == convertedAnswer.Value;
-        }
-
-        public override PreliminaryResult CheckAnswer(Answer answer)
-        {
-            if (answer is null)
-                throw new ArgumentNullException(nameof(answer));
-            if (answer is not ExactTextualAnswer convertedAnswer)
-                throw new InvalidOperationException("Тип вопроса и тип ответа не соответствуют.");
-
-            if (RightAnswer == convertedAnswer.Value)
-                return new PreliminaryResult(Score.Value, CheckResultType.Credited, Score);
-            else
-                return new PreliminaryResult(0, CheckResultType.NotCredited, Score);
+            return visitor.CheckQuestionWithTextualAnswer(this);
         }
     }
 }

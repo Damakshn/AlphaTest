@@ -19,7 +19,7 @@ namespace AlphaTest.Core.Tests.Questions
         }
 
         public abstract void ChangeRightAnswer(TDecimalOrString newRightAnswer);
-        public abstract bool IsRight(Answer answer);
-        public abstract PreliminaryResult CheckAnswer(Answer answer);
+        
+        public abstract PreliminaryResult AcceptCheckingVisitor(CheckingVisitor visitor);
     }
 }

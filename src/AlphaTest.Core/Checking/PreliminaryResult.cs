@@ -1,23 +1,39 @@
-﻿using AlphaTest.Core.Common.Abstractions;
+﻿using AlphaTest.Core.Answers;
+using AlphaTest.Core.Common.Abstractions;
 using AlphaTest.Core.Tests;
+using AlphaTest.Core.Tests.Questions;
 
 namespace AlphaTest.Core.Checking
 {
     public class PreliminaryResult: ValueObject
     {
-        public PreliminaryResult(decimal score, CheckResultType checkResultType, QuestionScore fullScore)
+
+        public PreliminaryResult (PreliminaryResult other)
         {
-            // ToDo add checks
-            // MAYBE передавать вопрос целиком
-            Score = score;
-            CheckResultType = checkResultType;
-            FullScore = fullScore;
+            Score = other.Score;
+            CheckResultType = other.CheckResultType;
+            Question = other.Question;
+            Answer = other.Answer;
         }
 
-        public decimal Score { get; private set; }
+        public PreliminaryResult(Question question, Answer answer, decimal score, CheckResultType checkResultType)
+        {
+            // ToDo add checks
+            // revoked answer not allowed
+            Score = score;
+            CheckResultType = checkResultType;
+            Question = question;
+            Answer = answer;
+        }
 
-        public CheckResultType CheckResultType { get; private set; }
+        public decimal Score { get; init; }
 
-        public QuestionScore FullScore { get; private set; }
+        public CheckResultType CheckResultType { get; init; }
+
+        public Question Question { get; private set; }
+
+        public Answer Answer { get; private set; }
+
+        public QuestionScore FullScore => Question.Score;
     }
 }

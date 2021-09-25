@@ -49,7 +49,6 @@ namespace AlphaTest.Core.Tests.Questions
             CheckRule(new NumberOfOptionsForQiestionMustBeInRangeRule(optionsData));
         }
 
-        public abstract bool IsRight(Answer answer);
-        public abstract PreliminaryResult CheckAnswer(Answer answer);
+        public abstract PreliminaryResult AcceptCheckingVisitor(CheckingVisitor visitor);
     }
 }
