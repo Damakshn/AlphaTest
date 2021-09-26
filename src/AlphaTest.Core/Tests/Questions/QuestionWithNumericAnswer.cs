@@ -1,8 +1,10 @@
-﻿using System;
+﻿using AlphaTest.Core.Answers;
+using AlphaTest.Core.Checking;
+using System;
 
 namespace AlphaTest.Core.Tests.Questions
 {
-    public class QuestionWithNumericAnswer: QuestionWithExactAnswer<decimal>
+    public class QuestionWithNumericAnswer : QuestionWithExactAnswer<decimal>
     {
         private QuestionWithNumericAnswer() { }
 
@@ -20,6 +22,11 @@ namespace AlphaTest.Core.Tests.Questions
             replica.ID = Guid.NewGuid();
             replica.TestID = newEdition.ID;
             return replica;
+        }
+
+        public override PreliminaryResult AcceptCheckingVisitor(CheckingVisitor visitor)
+        {
+            return visitor.CheckQuestionWithNumericAnswer(this);
         }
     }
 }

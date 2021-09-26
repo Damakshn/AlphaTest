@@ -1,9 +1,11 @@
-﻿using AlphaTest.Core.Tests.Questions.Rules;
+﻿using AlphaTest.Core.Answers;
+using AlphaTest.Core.Checking;
+using AlphaTest.Core.Tests.Questions.Rules;
 using System;
 
 namespace AlphaTest.Core.Tests.Questions
 {
-    public class QuestionWithTextualAnswer: QuestionWithExactAnswer<string>
+    public class QuestionWithTextualAnswer : QuestionWithExactAnswer<string>
     {
         private QuestionWithTextualAnswer() { }
 
@@ -25,6 +27,11 @@ namespace AlphaTest.Core.Tests.Questions
             replica.ID = Guid.NewGuid();
             replica.TestID = newEdition.ID;
             return replica;
+        }
+
+        public override PreliminaryResult AcceptCheckingVisitor(CheckingVisitor visitor)
+        {
+            return visitor.CheckQuestionWithTextualAnswer(this);
         }
     }
 }

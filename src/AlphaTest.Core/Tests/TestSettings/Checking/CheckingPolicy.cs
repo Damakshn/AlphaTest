@@ -1,4 +1,5 @@
 ﻿using AlphaTest.Core.Common.Abstractions;
+using AlphaTest.Core.Checking;
 
 namespace AlphaTest.Core.Tests.TestSettings.Checking
 {
@@ -13,5 +14,20 @@ namespace AlphaTest.Core.Tests.TestSettings.Checking
         #endregion
 
         public CheckingPolicy(int id, string name) : base(id, name) { }
+
+        public AdjustedResult AdjustPreliminaryResult(PreliminaryResult preliminaryResult)
+        {
+            // MAYBE третий параметр в конструкторе PreliminaryResult здесь выглядит лишним
+            // жёсткая оценка - за любой ответ, отличный от верного, баллы снимаются
+            if (this == HARD && preliminaryResult.CheckResultType != CheckResultType.Credited)
+                return new AdjustedResult(preliminaryResult.Answer.ID, preliminaryResult.FullScore.Value * -1, CheckResultType.NotCredited);
+            
+            // стандартная оценка - частично верный результат трактуется как неверный, баллы не начисляются
+            if (this == STANDARD && preliminaryResult.CheckResultType == CheckResultType.PartiallyCredited)
+                return new AdjustedResult(preliminaryResult.Answer.ID, 0, CheckResultType.NotCredited);
+            
+            
+            return new AdjustedResult(preliminaryResult);
+        }
     }
 }

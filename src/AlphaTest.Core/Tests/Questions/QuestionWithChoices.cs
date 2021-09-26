@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AlphaTest.Core.Answers;
+using AlphaTest.Core.Checking;
 using AlphaTest.Core.Tests.Questions.Rules;
 
 namespace AlphaTest.Core.Tests.Questions
 {
-    public abstract class QuestionWithChoices: Question
+    public abstract class QuestionWithChoices : Question, IAutoCheckQuestion
     {   
         public List<QuestionOption> Options { get; protected set; }
         
@@ -47,5 +49,6 @@ namespace AlphaTest.Core.Tests.Questions
             CheckRule(new NumberOfOptionsForQiestionMustBeInRangeRule(optionsData));
         }
 
+        public abstract PreliminaryResult AcceptCheckingVisitor(CheckingVisitor visitor);
     }
 }

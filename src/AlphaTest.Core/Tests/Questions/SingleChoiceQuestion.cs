@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
+using AlphaTest.Core.Answers;
 using AlphaTest.Core.Tests.Questions.Rules;
-
+using AlphaTest.Core.Checking;
 
 namespace AlphaTest.Core.Tests.Questions
 {
-    public class SingleChoiceQuestion: QuestionWithChoices
+    public class SingleChoiceQuestion : QuestionWithChoices
     {
         private SingleChoiceQuestion() : base() { }
 
@@ -35,6 +37,11 @@ namespace AlphaTest.Core.Tests.Questions
         protected override void CheckSpecificRulesForOptions(List<(string text, uint number, bool isRight)> optionsData)
         {
             CheckRule(new ForSingleChoiceQuestionMustBeExactlyOneRightOptionRule(optionsData));
+        }
+
+        public override PreliminaryResult AcceptCheckingVisitor(CheckingVisitor visitor)
+        {
+            return visitor.CheckSingleChoiceQuestion(this);
         }
     }
 }

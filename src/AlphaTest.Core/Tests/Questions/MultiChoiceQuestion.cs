@@ -1,10 +1,13 @@
-﻿using System;
+﻿using AlphaTest.Core.Answers;
+using AlphaTest.Core.Checking;
 using AlphaTest.Core.Tests.Questions.Rules;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AlphaTest.Core.Tests.Questions
 {
-    public class MultiChoiceQuestion: QuestionWithChoices
+    public class MultiChoiceQuestion : QuestionWithChoices
     {
         private MultiChoiceQuestion() : base() { }
 
@@ -33,6 +36,11 @@ namespace AlphaTest.Core.Tests.Questions
         protected override void CheckSpecificRulesForOptions(List<(string text, uint number, bool isRight)> optionsData)
         {
             CheckRule(new AtLeastOneQuestionOptionMustBeRightRule(optionsData));
+        }
+
+        public override PreliminaryResult AcceptCheckingVisitor(CheckingVisitor visitor)
+        {
+            return visitor.CheckMultiChoiceQuestion(this);
         }
     }
 }
