@@ -15,22 +15,19 @@ namespace AlphaTest.Core.Tests.TestSettings.Checking
 
         public CheckingPolicy(int id, string name) : base(id, name) { }
 
-        public PreliminaryResult AdjustPreliminaryResult(PreliminaryResult preliminaryResult)
+        public AdjustedResult AdjustPreliminaryResult(PreliminaryResult preliminaryResult)
         {
             // MAYBE третий параметр в конструкторе PreliminaryResult здесь выглядит лишним
             // жёсткая оценка - за любой ответ, отличный от верного, баллы снимаются
-            if (this == CheckingPolicy.HARD && preliminaryResult.CheckResultType != CheckResultType.Credited)
-                return new(preliminaryResult)
-                {
-                    Score = preliminaryResult.FullScore.Value * -1,
-                    CheckResultType = CheckResultType.NotCredited
-                };
+            if (this == HARD && preliminaryResult.CheckResultType != CheckResultType.Credited)
+                return new AdjustedResult(preliminaryResult.Answer.ID, preliminaryResult.FullScore.Value * -1, CheckResultType.NotCredited);
             
             // стандартная оценка - частично верный результат трактуется как неверный, баллы не начисляются
-            if (this == CheckingPolicy.STANDARD && preliminaryResult.CheckResultType == CheckResultType.PartiallyCredited)
-                return new(preliminaryResult) { Score = 0, CheckResultType = CheckResultType.NotCredited };
+            if (this == STANDARD && preliminaryResult.CheckResultType == CheckResultType.PartiallyCredited)
+                return new AdjustedResult(preliminaryResult.Answer.ID, 0, CheckResultType.NotCredited);
             
-            return preliminaryResult;
+            
+            return new AdjustedResult(preliminaryResult);
         }
     }
 }

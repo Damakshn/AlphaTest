@@ -1,17 +1,16 @@
 ﻿using System;
 using AlphaTest.Core.Common.Abstractions;
-using AlphaTest.Core.Answers;
 
 namespace AlphaTest.Core.Checking
 {
     public class CheckResult: Entity
     {
-        public CheckResult(PreliminaryResult adjustedResult, int? teacherID = null)
+        public CheckResult(AdjustedResult adjustedResult, int? teacherID = null)
         {
             ID = Guid.NewGuid();
-            AnswerID = adjustedResult.Answer.ID;
             TeacherID = teacherID;
             CreatedAt = DateTime.Now;
+            AnswerID = adjustedResult.AnswerID;
             Type = adjustedResult.CheckResultType;
             Score = adjustedResult.Score;
         }

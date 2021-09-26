@@ -2,38 +2,36 @@
 using AlphaTest.Core.Common.Abstractions;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
+using AlphaTest.Core.Tests.TestSettings.Checking;
+using AlphaTest.Core.Checking.Rules;
 
 namespace AlphaTest.Core.Checking
 {
     public class PreliminaryResult: ValueObject
     {
 
-        public PreliminaryResult (PreliminaryResult other)
-        {
-            Score = other.Score;
-            CheckResultType = other.CheckResultType;
-            Question = other.Question;
-            Answer = other.Answer;
-        }
-
         public PreliminaryResult(Question question, Answer answer, decimal score, CheckResultType checkResultType)
         {
-            // ToDo add checks
-            // revoked answer not allowed
+            CheckRule(new RevokedAnswersCannotBeCheckedRule(answer));
             Score = score;
             CheckResultType = checkResultType;
             Question = question;
             Answer = answer;
         }
 
-        public decimal Score { get; init; }
+        public decimal Score { get; private set; }
 
-        public CheckResultType CheckResultType { get; init; }
+        public CheckResultType CheckResultType { get; private set; }
 
         public Question Question { get; private set; }
 
         public Answer Answer { get; private set; }
 
         public QuestionScore FullScore => Question.Score;
+
+        public AdjustedResult AdjustWithCheckingPolicy(CheckingPolicy checkingPolicy)
+        {
+            return checkingPolicy.AdjustPreliminaryResult(this);
+        }
     }
 }

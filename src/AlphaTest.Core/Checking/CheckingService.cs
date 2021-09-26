@@ -15,10 +15,11 @@ namespace AlphaTest.Core.Checking
             CheckingVisitor checkingVisitor = new(activeAnswersInAttempt);
 
             foreach(var question in questionsInTest.Where(q => q is IAutoCheckQuestion))
-            {
-                // MAYBE использовать ФП?
-                PreliminaryResult preliminaryResult = (question as IAutoCheckQuestion).AcceptCheckingVisitor(checkingVisitor);
-                PreliminaryResult adjustedResult = test.CheckingPolicy.AdjustPreliminaryResult(preliminaryResult);
+            {   
+                AdjustedResult adjustedResult = (question as IAutoCheckQuestion)
+                    .AcceptCheckingVisitor(checkingVisitor)
+                    .AdjustWithCheckingPolicy(test.CheckingPolicy);
+                    
                 results.Add(new(adjustedResult));
             }
 
