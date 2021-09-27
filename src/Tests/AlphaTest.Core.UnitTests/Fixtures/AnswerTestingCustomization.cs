@@ -3,6 +3,7 @@ using AlphaTest.Core.Users;
 using AlphaTest.Core.UnitTests.Fixtures.Tests;
 using AlphaTest.Core.UnitTests.Fixtures.Questions;
 using AlphaTest.Core.UnitTests.Fixtures.Examinations;
+using AlphaTest.Core.UnitTests.Fixtures.Answers;
 
 namespace AlphaTest.Core.UnitTests.Fixtures
 {
@@ -21,6 +22,8 @@ namespace AlphaTest.Core.UnitTests.Fixtures
             fixture.Customize(new DefaultQuestionWithTextualAnswerCustomization());
             fixture.Customize(new DefaultQuestionWithDetailedAnswerCustomization());
             fixture.Customize(new DefaultExaminationCustomization());
+            fixture.Customize(new DefaultMultiChoiceAnswerCustomization());
+            fixture.Customize(new DefaultSingleChoiceAnswerCustomization());
         }
     }
 }

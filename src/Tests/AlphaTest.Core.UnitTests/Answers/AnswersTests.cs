@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
-using AlphaTest.Core.UnitTests.Common;
 using AlphaTest.Core.Answers;
-using AutoFixture;
+using AlphaTest.Core.Answers.Rules;
 using AlphaTest.Core.Attempts;
 using AlphaTest.Core.Tests;
-using AlphaTest.Core.UnitTests.Fixtures;
 using AlphaTest.Core.Tests.Questions;
-using AlphaTest.Core.Answers.Rules;
-using System.Linq;
-using AlphaTest.Core.UnitTests.Common.Helpers;
 using AlphaTest.Core.Tests.TestSettings.TestFlow;
+using AlphaTest.Core.UnitTests.Fixtures;
+using AlphaTest.Core.UnitTests.Common;
+using AlphaTest.Core.UnitTests.Common.Helpers;
 
 namespace AlphaTest.Core.UnitTests.Answers
 {
@@ -126,18 +125,12 @@ namespace AlphaTest.Core.UnitTests.Answers
         [Theory, AnswerTestData]
         public void None_answer_can_be_revoked_if_revoke_is_not_enabled(Attempt attempt,
             Test test,
-            SingleChoiceQuestion singleChoiceQuestion,
-            MultiChoiceQuestion multiChoiceQuestion,
-            QuestionWithNumericAnswer questionWithNumericAnswer,
-            QuestionWithTextualAnswer questionWithTextualAnswer,
-            QuestionWithDetailedAnswer questionWithDetailedAnswer)
-        {   
-            SingleChoiceAnswer singleChoiceAnswer = new(singleChoiceQuestion, attempt, singleChoiceQuestion.Options[0].ID);
-            MultiChoiceAnswer multiChoiceAnswer = new(multiChoiceQuestion, attempt, new List<Guid> { multiChoiceQuestion.Options[0].ID });
-            ExactNumericAnswer exactNumericAnswer = new(questionWithNumericAnswer, attempt, 50);
-            ExactTextualAnswer exactTextualAnswer = new(questionWithTextualAnswer, attempt, "Правильный ответ");
-            DetailedAnswer detailedAnswer = new(questionWithDetailedAnswer, attempt, "Развёрнутый ответ");
-
+            SingleChoiceAnswer singleChoiceAnswer,
+            MultiChoiceAnswer multiChoiceAnswer,
+            ExactNumericAnswer exactNumericAnswer,
+            ExactTextualAnswer exactTextualAnswer,
+            DetailedAnswer detailedAnswer)
+        {
             List<Answer> answers = new() { singleChoiceAnswer, multiChoiceAnswer, exactNumericAnswer, exactTextualAnswer, detailedAnswer };
             test.ChangeRevokePolicy(new RevokePolicy(false));
 
@@ -150,18 +143,12 @@ namespace AlphaTest.Core.UnitTests.Answers
         [Theory, AnswerTestData]
         public void None_answer_can_be_revoked_if_attempt_is_already_finished(Attempt attempt,
             Test test,
-            SingleChoiceQuestion singleChoiceQuestion,
-            MultiChoiceQuestion multiChoiceQuestion,
-            QuestionWithNumericAnswer questionWithNumericAnswer,
-            QuestionWithTextualAnswer questionWithTextualAnswer,
-            QuestionWithDetailedAnswer questionWithDetailedAnswer)
-        {   
-            SingleChoiceAnswer singleChoiceAnswer = new(singleChoiceQuestion, attempt, singleChoiceQuestion.Options[0].ID);
-            MultiChoiceAnswer multiChoiceAnswer = new(multiChoiceQuestion, attempt, new List<Guid> { multiChoiceQuestion.Options[0].ID });
-            ExactNumericAnswer exactNumericAnswer = new(questionWithNumericAnswer, attempt, 50);
-            ExactTextualAnswer exactTextualAnswer = new(questionWithTextualAnswer, attempt, "Правильный ответ");
-            DetailedAnswer detailedAnswer = new(questionWithDetailedAnswer, attempt, "Развёрнутый ответ");
-
+            SingleChoiceAnswer singleChoiceAnswer,
+            MultiChoiceAnswer multiChoiceAnswer,
+            ExactNumericAnswer exactNumericAnswer,
+            ExactTextualAnswer exactTextualAnswer,
+            DetailedAnswer detailedAnswer)
+        {
             List<Answer> answers = new() { singleChoiceAnswer, multiChoiceAnswer, exactNumericAnswer, exactTextualAnswer, detailedAnswer };
             test.ChangeRevokePolicy(new RevokePolicy(true, 2));
             HelpersForAttempts.SetAttemptForcedEndDate(attempt, DateTime.Now);
@@ -176,18 +163,12 @@ namespace AlphaTest.Core.UnitTests.Answers
         [Theory, AnswerTestData]
         public void None_answer_can_be_revoked_if_limit_of_retries_is_exhausted(Attempt attempt,
             Test test,
-            SingleChoiceQuestion singleChoiceQuestion,
-            MultiChoiceQuestion multiChoiceQuestion,
-            QuestionWithNumericAnswer questionWithNumericAnswer,
-            QuestionWithTextualAnswer questionWithTextualAnswer,
-            QuestionWithDetailedAnswer questionWithDetailedAnswer)
+            SingleChoiceAnswer singleChoiceAnswer,
+            MultiChoiceAnswer multiChoiceAnswer,
+            ExactNumericAnswer exactNumericAnswer,
+            ExactTextualAnswer exactTextualAnswer,
+            DetailedAnswer detailedAnswer)
         {
-            SingleChoiceAnswer singleChoiceAnswer = new(singleChoiceQuestion, attempt, singleChoiceQuestion.Options[0].ID);
-            MultiChoiceAnswer multiChoiceAnswer = new(multiChoiceQuestion, attempt, new List<Guid> { multiChoiceQuestion.Options[0].ID });
-            ExactNumericAnswer exactNumericAnswer = new(questionWithNumericAnswer, attempt, 50);
-            ExactTextualAnswer exactTextualAnswer = new(questionWithTextualAnswer, attempt, "Правильный ответ");
-            DetailedAnswer detailedAnswer = new(questionWithDetailedAnswer, attempt, "Развёрнутый ответ");
-
             List<Answer> answers = new() { singleChoiceAnswer, multiChoiceAnswer, exactNumericAnswer, exactTextualAnswer, detailedAnswer };
             uint maxRetries = 2;
             test.ChangeRevokePolicy(new RevokePolicy(true, maxRetries));
@@ -199,21 +180,16 @@ namespace AlphaTest.Core.UnitTests.Answers
         }
 
         [Theory, AnswerTestData]
-        public void Answer_can_be_revoked(Attempt attempt,
+        public void Answer_can_be_revoked(
             Test test,
-            SingleChoiceQuestion singleChoiceQuestion,
-            MultiChoiceQuestion multiChoiceQuestion,
-            QuestionWithNumericAnswer questionWithNumericAnswer,
-            QuestionWithTextualAnswer questionWithTextualAnswer,
-            QuestionWithDetailedAnswer questionWithDetailedAnswer)
+            Attempt attempt,
+            SingleChoiceAnswer singleChoiceAnswer,
+            MultiChoiceAnswer multiChoiceAnswer,
+            ExactTextualAnswer exactTextualAnswer,
+            ExactNumericAnswer exactNumericAnswer,
+            DetailedAnswer detailedAnswer)
         {
-            SingleChoiceAnswer singleChoiceAnswer = new(singleChoiceQuestion, attempt, singleChoiceQuestion.Options[0].ID);
-            MultiChoiceAnswer multiChoiceAnswer = new(multiChoiceQuestion, attempt, new List<Guid> { multiChoiceQuestion.Options[0].ID });
-            ExactNumericAnswer exactNumericAnswer = new(questionWithNumericAnswer, attempt, 50);
-            ExactTextualAnswer exactTextualAnswer = new(questionWithTextualAnswer, attempt, "Правильный ответ");
-            DetailedAnswer detailedAnswer = new(questionWithDetailedAnswer, attempt, "Развёрнутый ответ");
-
-            List<Answer> answers = new() { singleChoiceAnswer, multiChoiceAnswer, exactNumericAnswer, exactTextualAnswer, detailedAnswer };
+            List<Answer> answers = new() { singleChoiceAnswer, multiChoiceAnswer, exactTextualAnswer, exactNumericAnswer, detailedAnswer };
             test.ChangeRevokePolicy(new RevokePolicy(true, 2));
 
             foreach (Answer answer in answers)
