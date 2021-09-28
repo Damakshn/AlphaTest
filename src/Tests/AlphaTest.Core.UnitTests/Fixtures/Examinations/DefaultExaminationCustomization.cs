@@ -23,10 +23,12 @@ namespace AlphaTest.Core.UnitTests.Fixtures.Examinations
                     {
                         HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
                         EntityIDSetter.SetIDTo(examiner, test.AuthorID);
-                        return new Examination(test, start, end, examiner, noGroups);
+                        var exam = new Examination(test, start, end, examiner, noGroups);
+                        HelpersForTests.SetNewStatusForTest(test, TestStatus.Draft);
+                        return exam;
                     }
-                        
             ));
+            fixture.Freeze<Examination>();
         }
     }
 }

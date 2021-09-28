@@ -10,8 +10,14 @@ namespace AlphaTest.Core.UnitTests.Fixtures.Tests
         {
             fixture.Customize<Test>(composer =>
                composer.FromFactory(
-                   (string title, string topic, Guid authorID) => new Test(title, topic, authorID, false))
+                   (string title, string topic, Guid authorID) =>
+                   {
+                    var test = new Test(title, topic, authorID, false);
+                    return test;
+                   })
+                   
             );
+            fixture.Freeze<Test>();
         }
     }
 }
