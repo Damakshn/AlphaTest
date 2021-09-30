@@ -7,9 +7,9 @@ namespace AlphaTest.Core.Answers.Rules
     {
         private readonly Test _test;
 
-        private readonly int _retriesUsed;
+        private readonly uint _retriesUsed;
 
-        public AnswerCannotBeRevokedIfNumberOfRetriesIsExhaustedRule(Test test, int retriesUsed)
+        public AnswerCannotBeRevokedIfNumberOfRetriesIsExhaustedRule(Test test, uint retriesUsed)
         {
             _test = test;
             _retriesUsed = retriesUsed;
