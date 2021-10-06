@@ -1,9 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
+using Microsoft.AspNetCore.Identity;
+using AlphaTest.Infrastructure.Auth;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace AlphaTest.Infrastructure.Database
 {
-    public partial class AlphaTestContext: DbContext
+    public partial class AlphaTestContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     {
         #region Свойства
         private static string DATABASE_NAME => "AlphaTest";
@@ -21,6 +25,7 @@ namespace AlphaTest.Infrastructure.Database
         #region Методы
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             // modelBuilder.ApplyConfiguration(...);
         }
         
