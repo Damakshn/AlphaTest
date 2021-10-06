@@ -1,9 +1,11 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using AlphaTest.Infrastructure.Auth;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using AlphaTest.Infrastructure.Auth;
+using AlphaTest.Infrastructure.Database.EntityMapping.Enumerations;
+using AlphaTest.Core.Tests;
 
 namespace AlphaTest.Infrastructure.Database
 {
@@ -26,7 +28,7 @@ namespace AlphaTest.Infrastructure.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // modelBuilder.ApplyConfiguration(...);
+            ApplyEntityConfigurations(modelBuilder);
         }
         
 

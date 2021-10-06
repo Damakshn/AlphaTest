@@ -5,6 +5,11 @@ namespace AlphaTest.Core.Tests.TestSettings.Checking
 {
     public class CheckingPolicy: Enumeration<CheckingPolicy>
     {
+        public CheckingPolicy(int id, string name) : base(id, name) { }
+
+        // для EF
+        private CheckingPolicy() : base() { }
+
         #region Опции
         public static readonly CheckingPolicy STANDARD = new(1, "Стандартная");
 
@@ -12,8 +17,6 @@ namespace AlphaTest.Core.Tests.TestSettings.Checking
 
         public static readonly CheckingPolicy HARD = new(3, "Жёсткая");
         #endregion
-
-        public CheckingPolicy(int id, string name) : base(id, name) { }
 
         public AdjustedResult AdjustPreliminaryResult(PreliminaryResult preliminaryResult)
         {
