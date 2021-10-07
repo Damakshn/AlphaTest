@@ -13,6 +13,8 @@ namespace AlphaTest.Infrastructure.Database
             modelBuilder.ApplyConfiguration(new GroupEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ExaminationEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ExamParticipationEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new AttemptEntityTypeConfiguration());
+            
         }
     }
 }
