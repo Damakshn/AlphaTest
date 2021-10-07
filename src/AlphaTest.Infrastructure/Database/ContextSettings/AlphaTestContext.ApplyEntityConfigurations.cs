@@ -5,6 +5,7 @@ using AlphaTest.Core.Tests.TestSettings.Checking;
 using AlphaTest.Core.Tests.TestSettings.TestFlow;
 using AlphaTest.Core.Checking;
 using AlphaTest.Core.Tests.Publishing;
+using AlphaTest.Infrastructure.Database.EntityMapping;
 
 namespace AlphaTest.Infrastructure.Database
 {
@@ -12,15 +13,9 @@ namespace AlphaTest.Infrastructure.Database
     {
         protected void ApplyEntityConfigurations(ModelBuilder modelBuilder)
         {
-            #region Перечисления
-            modelBuilder.ApplyConfiguration(new EnumerationEntityTypeConfiguration<CheckResultType>());
-            modelBuilder.ApplyConfiguration(new EnumerationEntityTypeConfiguration<ProposalStatus>());
-            modelBuilder.ApplyConfiguration(new EnumerationEntityTypeConfiguration<CheckingPolicy>());
-            modelBuilder.ApplyConfiguration(new EnumerationEntityTypeConfiguration<ScoreDistributionMethod>());
-            modelBuilder.ApplyConfiguration(new EnumerationEntityTypeConfiguration<WorkCheckingMethod>());
-            modelBuilder.ApplyConfiguration(new EnumerationEntityTypeConfiguration<NavigationMode>());
-            modelBuilder.ApplyConfiguration(new EnumerationEntityTypeConfiguration<TestStatus>());
-            #endregion
+           
+            modelBuilder.ApplyConfiguration(new TestEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ContributionEntityTypeConfiguration());
         }
     }
 }
