@@ -1,13 +1,9 @@
-﻿using AlphaTest.Core.Tests;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Ownership;
 using AlphaTest.Infrastructure.Auth;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping
 {
