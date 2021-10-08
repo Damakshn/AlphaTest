@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AlphaTest.Core.Groups;
-
+using AlphaTest.Infrastructure.Auth;
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping
 {
@@ -15,6 +15,17 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
             builder.Property(g => g.BeginDate).IsRequired();
             builder.Property(g => g.EndDate).IsRequired();
             builder.Property(g => g.IsDisbanded).IsRequired();
+
+            // список членов группы входит в агрегат
+            builder.OwnsMany<Membership>(
+                "_members", y => 
+                {
+                    y.WithOwner().HasForeignKey(m => m.GroupID);
+                    y.HasOne<AppUser>().WithMany().HasForeignKey(m => m.StudentID);
+                    y.HasKey(m => new { m.GroupID, m.StudentID });
+                    y.ToTable("GroupMembership");
+                });
+
             builder.Ignore(g => g.Memberships);
         }
     }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Tests;
 using AlphaTest.Infrastructure.Auth;
+using AlphaTest.Core.Groups;
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping
 {
@@ -17,6 +18,16 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
             builder.Property(e => e.StartsAt).IsRequired();
             builder.Property(e => e.EndsAt).IsRequired();
             builder.Property(e => e.IsCanceled).IsRequired();
+
+            // список групп, сдающих экзамен, входит в агрегат
+            builder.OwnsMany<ExamParticipation>(
+                "_participations", y =>
+                {
+                    y.WithOwner().HasForeignKey(p => p.ExaminationID);
+                    y.HasOne<Group>().WithMany().HasForeignKey(p => p.GroupID).OnDelete(DeleteBehavior.Restrict);
+                    y.HasKey(p => new { p.ExaminationID, p.GroupID });
+                    y.ToTable("ExamParticipation");
+                });
             builder.Ignore(e => e.Participations);
         }
     }

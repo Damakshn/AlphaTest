@@ -4,6 +4,7 @@ using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.TestSettings.Checking;
 using AlphaTest.Core.Tests.TestSettings.TestFlow;
 using AlphaTest.Infrastructure.Auth;
+using AlphaTest.Core.Tests.Ownership;
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping
 {
@@ -26,6 +27,17 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
                     a.Property(rp => rp.InfiniteRetriesEnabled).IsRequired();
                     a.Property(rp => rp.RevokeEnabled).IsRequired();
                 }).Navigation(t => t.RevokePolicy).IsRequired();
+
+            // список составителей входит в агрегат
+            builder.OwnsMany<Contribution>(
+                "_contributions", y => 
+                { 
+                    y.WithOwner().HasForeignKey(c => c.TestID);
+                    y.HasOne<AppUser>().WithMany().HasForeignKey(c => c.TeacherID).OnDelete(DeleteBehavior.Restrict);
+                    y.HasKey(c => new { c.TestID, c.TeacherID });
+                    y.ToTable("Contribution");
+
+                });
             #endregion
 
             #region Много перечислений, конвертация значений

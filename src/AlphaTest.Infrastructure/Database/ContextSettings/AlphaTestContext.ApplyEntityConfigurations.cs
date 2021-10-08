@@ -8,13 +8,10 @@ namespace AlphaTest.Infrastructure.Database
         protected void ApplyEntityConfigurations(ModelBuilder modelBuilder)
         {  
             modelBuilder.ApplyConfiguration(new TestEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new ContributionEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new MembershipEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GroupEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ExaminationEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new ExamParticipationEntityTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new ExamParticipationEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new AttemptEntityTypeConfiguration());
-            
         }
     }
 }
