@@ -6,11 +6,11 @@ namespace AlphaTest.Infrastructure.Database
     public partial class AlphaTestContext
     {
         protected void ApplyEntityConfigurations(ModelBuilder modelBuilder)
-        {  
+        {
+            modelBuilder.ApplyConfiguration(new AppUserEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new TestEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GroupEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ExaminationEntityTypeConfiguration());
-            //modelBuilder.ApplyConfiguration(new ExamParticipationEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new AttemptEntityTypeConfiguration());
         }
     }
