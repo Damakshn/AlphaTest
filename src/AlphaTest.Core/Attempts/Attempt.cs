@@ -11,7 +11,7 @@ namespace AlphaTest.Core.Attempts
         #region Конструкторы
         private Attempt(){ }
 
-        public Attempt(Test test, Examination examination, int studentID)
+        public Attempt(Test test, Examination examination, Guid studentID)
         {
             CheckRule(new NewAttemptCannotBeStartedIfExamIsClosedRule(examination));
             CheckRule(new NewAttemptCannotBeStartedIfExaminationIsAreadyEndedRule(examination));
@@ -39,7 +39,7 @@ namespace AlphaTest.Core.Attempts
 
         public Guid ExaminationID { get; private set; }
 
-        public int StudentID { get; private set; }
+        public Guid StudentID { get; private set; }
 
         public DateTime StartedAt { get; private set; }
 

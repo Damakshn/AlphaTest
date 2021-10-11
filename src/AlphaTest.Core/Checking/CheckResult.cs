@@ -5,7 +5,7 @@ namespace AlphaTest.Core.Checking
 {
     public class CheckResult: Entity
     {
-        public CheckResult(AdjustedResult adjustedResult, int? teacherID = null)
+        public CheckResult(AdjustedResult adjustedResult, Guid? teacherID = null)
         {
             ID = Guid.NewGuid();
             TeacherID = teacherID;
@@ -15,11 +15,14 @@ namespace AlphaTest.Core.Checking
             Score = adjustedResult.Score;
         }
 
+        // для EF
+        private CheckResult() { }
+
         public Guid ID { get; private set; }
 
         public Guid AnswerID { get; private set; }
 
-        public int? TeacherID { get; private set; }
+        public Guid? TeacherID { get; private set; }
 
         public DateTime CreatedAt { get; private set; }
 
