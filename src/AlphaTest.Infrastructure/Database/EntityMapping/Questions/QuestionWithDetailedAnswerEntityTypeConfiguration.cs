@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AlphaTest.Infrastructure.Database.EntityMapping
+namespace AlphaTest.Infrastructure.Database.EntityMapping.Questions
 {
     internal class QuestionWithDetailedAnswerEntityTypeConfiguration : IEntityTypeConfiguration<QuestionWithDetailedAnswer>
     {

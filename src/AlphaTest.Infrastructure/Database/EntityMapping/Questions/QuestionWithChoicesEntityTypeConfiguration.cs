@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AlphaTest.Infrastructure.Database.EntityMapping
+namespace AlphaTest.Infrastructure.Database.EntityMapping.Questions
 {
     internal class QuestionWithChoicesEntityTypeConfiguration<TQuestionWithChoices> 
         : IEntityTypeConfiguration<TQuestionWithChoices> where TQuestionWithChoices : QuestionWithChoices
