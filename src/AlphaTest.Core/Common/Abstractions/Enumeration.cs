@@ -10,7 +10,7 @@ namespace AlphaTest.Core.Common.Abstractions
         IComparable<Enumeration<TEnum>>
         where TEnum : Enumeration<TEnum>
     {
-        public int ID { get; }
+        public int ID { get; private set; }
 
         public string Name { get; private set; }
 
