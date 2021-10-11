@@ -39,6 +39,11 @@ namespace AlphaTest.Infrastructure.Database
             modelBuilder.ApplyConfiguration(new ExactTextualAnswerEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DetailedAnswerEntityTypeConfiguration());
             #endregion
+
+            #region Оценки
+            modelBuilder.ApplyConfiguration(new CheckResultEntityTypeConfiguration());
+            #endregion
+
         }
     }
 }
