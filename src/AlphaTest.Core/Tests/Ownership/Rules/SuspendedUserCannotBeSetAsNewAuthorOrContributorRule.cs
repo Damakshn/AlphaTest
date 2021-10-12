@@ -5,9 +5,9 @@ namespace AlphaTest.Core.Tests.Ownership.Rules
 {
     public class SuspendedUserCannotBeSetAsNewAuthorOrContributorRule : IBusinessRule
     {
-        private readonly User _user;
+        private readonly IAlphaTestUser _user;
 
-        public SuspendedUserCannotBeSetAsNewAuthorOrContributorRule(User user)
+        public SuspendedUserCannotBeSetAsNewAuthorOrContributorRule(IAlphaTestUser user)
         {
             _user = user;
         }

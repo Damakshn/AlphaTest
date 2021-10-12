@@ -9,7 +9,7 @@ namespace AlphaTest.Core.Tests.Ownership
     {
         private Contribution() { }
 
-        internal Contribution(Test test, User teacher)
+        internal Contribution(Test test, IAlphaTestUser teacher)
         {
             CheckRule(new OnlyTeacherCanBeSetAsNewAuthorOrContributorRule(teacher));
             CheckRule(new SuspendedUserCannotBeSetAsNewAuthorOrContributorRule(teacher));

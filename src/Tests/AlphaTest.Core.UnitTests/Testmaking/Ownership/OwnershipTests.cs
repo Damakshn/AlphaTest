@@ -4,32 +4,31 @@ using AlphaTest.Core.UnitTests.Common.Helpers;
 using AlphaTest.Core.Users;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Ownership.Rules;
+using AlphaTest.Core.UnitTests.Fixtures;
+using Moq;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
 {
     public class OwnershipTests: UnitTestBase
     {
         [Theory]
-        [MemberData(nameof(HelpersForUsers.NonTeacherRoles), MemberType = typeof(HelpersForUsers))]
-        public void Non_teacher_user_cannot_be_set_as_new_test_author(UserRole role)
+        [TestmakingTestsData]
+        public void Non_teacher_user_cannot_be_set_as_new_test_author(Test test, Mock<IAlphaTestUser> mockedUser)
         {
-            Test test = HelpersForTests.GetDefaultTest();
-            UserTestData userTestData = new() { InitialRole = role };
-            User newAuthor = HelpersForUsers.CreateUser(userTestData);
+            mockedUser.Setup(u => u.IsTeacher).Returns(false);
             AssertBrokenRule<OnlyTeacherCanBeSetAsNewAuthorOrContributorRule>(() =>
-                test.SwitchAuthor(newAuthor)
+                test.SwitchAuthor(mockedUser.Object)
             );
         }
 
-        [Fact]
-        public void Suspended_user_cannot_be_set_as_new_test_author()
+        [Theory]
+        [TestmakingTestsData]
+        public void Suspended_user_cannot_be_set_as_new_test_author(Test test, Mock<IAlphaTestUser> mockedUser)
         {
-            Test test = HelpersForTests.GetDefaultTest();
-            UserTestData userTestData = new() { InitialRole = UserRole.TEACHER };
-            User newAuthor = HelpersForUsers.CreateUser(userTestData);
-            newAuthor.Suspend();
+            mockedUser.Setup(u => u.IsTeacher).Returns(true);
+            mockedUser.Setup(u => u.IsSuspended).Returns(true);
             AssertBrokenRule<SuspendedUserCannotBeSetAsNewAuthorOrContributorRule>(() =>
-                test.SwitchAuthor(newAuthor)
+                test.SwitchAuthor(mockedUser.Object)
             );
         }
     }
