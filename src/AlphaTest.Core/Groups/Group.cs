@@ -17,7 +17,7 @@ namespace AlphaTest.Core.Groups
         private Group() { }
 
         public Group(string name, DateTime beginDate, DateTime endDate, bool groupAlreadyExists)
-        {   
+        {
             CheckRule(new GroupMustBeUniqueRule(groupAlreadyExists));
             CheckCommonRulesForDates(beginDate, endDate);
             CheckRule(new GroupNameMustBeProvidedRule(name));
@@ -50,7 +50,7 @@ namespace AlphaTest.Core.Groups
         #region Методы
 
         #region Редактирование
-        public void AddStudent(User student)
+        public void AddStudent(IAlphaTestUser student)
         {
             CheckRule(new DisbandedGroupCannotBeModifiedRule(this));
             CheckRule(new InactiveGroupCannotBeModifiedRule(this));
@@ -60,7 +60,7 @@ namespace AlphaTest.Core.Groups
             // ToDo domain event
         }
 
-        public void ExcludeStudent(User student)
+        public void ExcludeStudent(IAlphaTestUser student)
         {
             CheckRule(new DisbandedGroupCannotBeModifiedRule(this));
             CheckRule(new InactiveGroupCannotBeModifiedRule(this));

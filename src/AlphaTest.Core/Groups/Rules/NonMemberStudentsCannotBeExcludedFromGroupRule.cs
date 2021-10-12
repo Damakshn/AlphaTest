@@ -9,9 +9,9 @@ namespace AlphaTest.Core.Groups.Rules
     {
         private readonly Group _group;
 
-        private readonly User _studentToExclude;
+        private readonly IAlphaTestUser _studentToExclude;
 
-        public NonMemberStudentsCannotBeExcludedFromGroupRule(Group group, User studentToExclude)
+        public NonMemberStudentsCannotBeExcludedFromGroupRule(Group group, IAlphaTestUser studentToExclude)
         {
             _group = group;
             _studentToExclude = studentToExclude;
