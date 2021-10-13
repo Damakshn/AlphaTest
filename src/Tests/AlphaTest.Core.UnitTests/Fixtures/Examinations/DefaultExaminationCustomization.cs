@@ -3,10 +3,9 @@ using System;
 using System.Collections.Generic;
 using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Tests;
-using AlphaTest.Core.Users;
 using AlphaTest.Core.Groups;
 using AlphaTest.Core.UnitTests.Common.Helpers;
-using AlphaTest.TestingHelpers;
+using AlphaTest.Core.UnitTests.Fixtures.FixtureExtensions;
 
 namespace AlphaTest.Core.UnitTests.Fixtures.Examinations
 {
@@ -19,11 +18,13 @@ namespace AlphaTest.Core.UnitTests.Fixtures.Examinations
             List<Group> noGroups = new();
             fixture.Customize<Examination>(c =>
                 c.FromFactory(
-                    (Test test, User examiner) =>
+                    (Test test) =>
                     {
+                        var examiner = fixture.CreateUserMock();
+                        examiner.Setup(e => e.IsTeacher).Returns(true);
+                        examiner.Setup(e => e.ID).Returns(test.AuthorID);
                         HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-                        EntityIDSetter.SetIDTo(examiner, test.AuthorID);
-                        var exam = new Examination(test, start, end, examiner, noGroups);
+                        var exam = new Examination(test, start, end, examiner.Object, noGroups);
                         HelpersForTests.SetNewStatusForTest(test, TestStatus.Draft);
                         return exam;
                     }
