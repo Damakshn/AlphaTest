@@ -5,15 +5,15 @@ namespace AlphaTest.Core.Groups.Rules
 {
     public class OnlyStudentsCanBeIncludedIntoGroupRule : IBusinessRule
     {
-        private readonly User _candidate;
+        private readonly IAlphaTestUser _candidate;
 
-        public OnlyStudentsCanBeIncludedIntoGroupRule(User candidate)
+        public OnlyStudentsCanBeIncludedIntoGroupRule(IAlphaTestUser candidate)
         {
             _candidate = candidate;
         }
 
         public string Message => "В состав группы могут входить только студенты.";
 
-        public bool IsBroken => _candidate.IsInRole(UserRole.STUDENT) == false;
+        public bool IsBroken => _candidate.IsStudent == false;
     }
 }

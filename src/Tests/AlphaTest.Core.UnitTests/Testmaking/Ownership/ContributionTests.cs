@@ -1,89 +1,79 @@
 ﻿using System.Linq;
 using Xunit;
-using Moq;
-using AlphaTest.Core.Users;
 using AlphaTest.Core.Tests;
-using AlphaTest.Core.Tests.Ownership;
 using AlphaTest.Core.Tests.Ownership.Rules;
 using AlphaTest.Core.UnitTests.Common;
-using AlphaTest.Core.UnitTests.Common.Helpers;
 using System;
+using AlphaTest.Core.UnitTests.Fixtures;
+using AlphaTest.Core.UnitTests.Fixtures.FixtureExtensions;
+using AutoFixture;
+
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
 {
     public class ContributionTests: UnitTestBase
     {
-        [Theory]
-        [MemberData(nameof(HelpersForUsers.NonTeacherRoles), MemberType = typeof(HelpersForUsers))]
-        public void Non_teacher_user_cannot_be_set_as_contributor(UserRole role)
+        [Theory, TestmakingTestsData]
+        public void Non_teacher_user_cannot_be_set_as_contributor(Test sut, IFixture fixture)
         {
-            Test test = HelpersForTests.GetDefaultTest();
-            UserTestData data = new() { InitialRole = role };
-            User contributor = HelpersForUsers.CreateUser(data);
+            var mockedUser = fixture.CreateUserMock();
+            mockedUser.Setup(u => u.IsTeacher).Returns(false);
+            var contributor = mockedUser.Object;
             AssertBrokenRule<OnlyTeacherCanBeSetAsNewAuthorOrContributorRule>(() =>
-                test.AddContributor(contributor)
+                sut.AddContributor(contributor)
             );
         }
 
-        [Fact]
-        public void Suspended_user_cannot_be_set_as_contributor()
+        [Theory, TestmakingTestsData]
+        public void Suspended_user_cannot_be_set_as_contributor(Test sut, IFixture fixture)
         {
-            Test test = HelpersForTests.GetDefaultTest();
-            UserTestData data = new() { InitialRole = UserRole.TEACHER };
-            User contributor = HelpersForUsers.CreateUser(data);
-            contributor.Suspend();
+            var mockedUser = fixture.CreateUserMock();
+            mockedUser.Setup(u => u.IsTeacher).Returns(true);
+            mockedUser.Setup(u => u.IsSuspended).Returns(true);
             AssertBrokenRule<SuspendedUserCannotBeSetAsNewAuthorOrContributorRule>(() =>
-                test.AddContributor(contributor)
+                sut.AddContributor(mockedUser.Object)
             );
         }
 
-        [Fact]
-        public void Active_teacher_user_can_be_set_as_contributor()
-        {
-            Test test = HelpersForTests.GetDefaultTest();
-            UserTestData data = new() { InitialRole = UserRole.TEACHER };
-            User contributor = HelpersForUsers.CreateUser(data);
+        [Theory, TestmakingTestsData]
+        public void Active_teacher_user_can_be_set_as_contributor(Test sut, IFixture fixture)
+        {   
+            var contributor = fixture.CreateTeacher();
             
-            test.AddContributor(contributor);
+            sut.AddContributor(contributor);
 
-            Assert.Equal(1, test.Contributions.Count(c => c.TeacherID == contributor.ID));
+            Assert.Equal(1, sut.Contributions.Count(c => c.TeacherID == contributor.ID));
         }
 
-        [Fact]
-        public void Teacher_can_be_added_to_contributors_only_once()
-        {
-            Test test = HelpersForTests.GetDefaultTest();
-            UserTestData data = new() { InitialRole = UserRole.TEACHER };
-            User contributor = HelpersForUsers.CreateUser(data);
+        [Theory, TestmakingTestsData]
+        public void Teacher_can_be_added_to_contributors_only_once(Test sut, IFixture fixture)
+        {   
+            var contributor = fixture.CreateTeacher();
 
-            test.AddContributor(contributor);
+            sut.AddContributor(contributor);
 
             AssertBrokenRule<TeacherCanBeAddedToContributorsOnlyOnceRule>(() =>
-                test.AddContributor(contributor)    
+                sut.AddContributor(contributor)    
             );
         }
 
-        [Fact]
-        public void Non_contributor_teacher_cannot_be_removed_from_contributors()
+        [Theory, TestmakingTestsData]
+        public void Non_contributor_teacher_cannot_be_removed_from_contributors(Test sut)
         {
-            Test test = HelpersForTests.GetDefaultTest();
-
             AssertBrokenRule<NonContributorTeacherCannotBeRemovedFromContributorsRule>(() =>
-                test.RemoveContributor(Guid.NewGuid())
+                sut.RemoveContributor(Guid.NewGuid())
             );
         }
 
-        [Fact]
-        public void Teacher_can_be_removed_from_contributors()
-        {
-            Test test = HelpersForTests.GetDefaultTest();
-            UserTestData data = new() { InitialRole = UserRole.TEACHER };
-            User contributor = HelpersForUsers.CreateUser(data);
-            test.AddContributor(contributor);
+        [Theory, TestmakingTestsData]
+        public void Teacher_can_be_removed_from_contributors(Test sut, IFixture fixture)
+        {   
+            var contributor = fixture.CreateTeacher();
+            sut.AddContributor(contributor);
 
-            Assert.Equal(1, test.Contributions.Count(c => c.TeacherID == contributor.ID));
-            test.RemoveContributor(contributor.ID);
-            Assert.Equal(0, test.Contributions.Count(c => c.TeacherID == contributor.ID));
+            Assert.Equal(1, sut.Contributions.Count(c => c.TeacherID == contributor.ID));
+            sut.RemoveContributor(contributor.ID);
+            Assert.Equal(0, sut.Contributions.Count(c => c.TeacherID == contributor.ID));
         }
     }
 }

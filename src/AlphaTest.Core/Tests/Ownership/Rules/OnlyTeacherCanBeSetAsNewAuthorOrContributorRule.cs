@@ -6,15 +6,15 @@ namespace AlphaTest.Core.Tests.Ownership.Rules
 {
     public class OnlyTeacherCanBeSetAsNewAuthorOrContributorRule : IBusinessRule
     {
-        private readonly User _user;
+        private readonly IAlphaTestUser _user;
 
-        public OnlyTeacherCanBeSetAsNewAuthorOrContributorRule(User user)
+        public OnlyTeacherCanBeSetAsNewAuthorOrContributorRule(IAlphaTestUser user)
         {
             _user = user;
         }
 
         public string Message => "Только преподаватель может быть назначен автором теста.";
 
-        public bool IsBroken => _user.IsInRole(UserRole.TEACHER) == false;
+        public bool IsBroken => _user.IsTeacher == false;
     }
 }

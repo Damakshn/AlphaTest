@@ -6,11 +6,11 @@ namespace AlphaTest.Core.Tests.Ownership.Rules
 {
     public class TeacherCanBeAddedToContributorsOnlyOnceRule : IBusinessRule
     {
-        private readonly User _candidate;
+        private readonly IAlphaTestUser _candidate;
 
         private readonly Test _test;
 
-        public TeacherCanBeAddedToContributorsOnlyOnceRule(User candidate, Test test)
+        public TeacherCanBeAddedToContributorsOnlyOnceRule(IAlphaTestUser candidate, Test test)
         {
             _candidate = candidate;
             _test = test;

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using AlphaTest.Core.Groups;
 using AlphaTest.Core.Users;
 using System.Linq;
+using Moq;
 
 namespace AlphaTest.Core.UnitTests.Examinations
 {
@@ -66,12 +67,16 @@ namespace AlphaTest.Core.UnitTests.Examinations
             );
         }
 
-        [Theory]
-        [MemberData(nameof(HelpersForUsers.NonTeacherRoles), MemberType = typeof(HelpersForUsers))]
-        public void Examiner_must_be_teacher(UserRole role)
+        [Fact]
+        public void Examiner_must_be_teacher()
         {
-            UserTestData examinerData = new() { InitialRole = role };
-            User examiner = HelpersForUsers.CreateUser(examinerData);
+            var mockedUser = new Mock<IAlphaTestUser>();
+            mockedUser.Setup(u => u.ID).Returns(Guid.NewGuid());
+            mockedUser.Setup(u => u.IsSuspended).Returns(false);
+            mockedUser.Setup(u => u.IsTeacher).Returns(false);
+
+            IAlphaTestUser examiner = mockedUser.Object;
+
             ExaminationTestData data = new() { Examiner = examiner };
 
             AssertBrokenRule<ExaminerMustBeTeacherRule>(() =>
@@ -82,8 +87,12 @@ namespace AlphaTest.Core.UnitTests.Examinations
         [Fact]
         public void Examiner_must_be_author_or_contributor_of_the_test()
         {
-            UserTestData examinerData = new() { InitialRole = UserRole.TEACHER };
-            User examiner = HelpersForUsers.CreateUser(examinerData);
+            var mockedUser = new Mock<IAlphaTestUser>();
+            mockedUser.Setup(u => u.ID).Returns(Guid.NewGuid());
+            mockedUser.Setup(u => u.IsSuspended).Returns(false);
+            mockedUser.Setup(u => u.IsTeacher).Returns(true);
+
+            IAlphaTestUser examiner = mockedUser.Object;
             ExaminationTestData data = new() { Examiner = examiner };
 
             AssertBrokenRule<ExaminerMustBeAuthorOrContributorOfTheTestRule>(() =>
@@ -186,11 +195,11 @@ namespace AlphaTest.Core.UnitTests.Examinations
         public void Examination_can_be_canceled()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
-            examination.Cancel();
+            sut.Cancel();
 
-            Assert.True(examination.IsCanceled);
+            Assert.True(sut.IsCanceled);
         }
 
         [Fact]
@@ -201,25 +210,28 @@ namespace AlphaTest.Core.UnitTests.Examinations
                 StartsAt = DateTime.Now.AddDays(1),
                 EndsAt = DateTime.Now.AddDays(10)
             };
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
             // с помощью рефлексии сдвигаем начало экзамена в прошлое
-            HelpersForExaminations.SetExaminationDates(examination, DateTime.Now.AddMinutes(-1), examination.EndsAt);
-            examination.Cancel();
+            HelpersForExaminations.SetExaminationDates(sut, DateTime.Now.AddMinutes(-1), sut.EndsAt);
+            sut.Cancel();
 
-            Assert.True(examination.IsCanceled);
+            Assert.True(sut.IsCanceled);
         }
 
-        [Theory]
-        [MemberData(nameof(HelpersForUsers.NonTeacherRoles), MemberType = typeof(HelpersForUsers))]
-        public void Examiner_cannot_be_switched_if_he_is_not_teacher(UserRole role)
+        [Fact]
+        public void Examiner_cannot_be_switched_if_new_examiner_is_not_teacher()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
-            UserTestData userData = new(){InitialRole = role};
-            User examiner = HelpersForUsers.CreateUser(userData);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            
+            var mockedUser = new Mock<IAlphaTestUser>();
+            mockedUser.Setup(u => u.ID).Returns(Guid.NewGuid());
+            mockedUser.Setup(u => u.IsSuspended).Returns(false);
+            mockedUser.Setup(u => u.IsTeacher).Returns(false);
+            IAlphaTestUser examiner = mockedUser.Object;
 
             AssertBrokenRule<ExaminerMustBeTeacherRule>(() =>
-                examination.SwitchExaminer(examiner, data.Test)
+                sut.SwitchExaminer(examiner, data.Test)
             );
 
         }
@@ -228,12 +240,15 @@ namespace AlphaTest.Core.UnitTests.Examinations
         public void New_examiner_must_be_author_or_contributor()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
-            UserTestData userData = new(){ InitialRole = UserRole.TEACHER };
-            User examiner = HelpersForUsers.CreateUser(userData);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            var mockedUser = new Mock<IAlphaTestUser>();
+            mockedUser.Setup(u => u.ID).Returns(Guid.NewGuid());
+            mockedUser.Setup(u => u.IsSuspended).Returns(false);
+            mockedUser.Setup(u => u.IsTeacher).Returns(true);
+            IAlphaTestUser examiner = mockedUser.Object;
 
             AssertBrokenRule<ExaminerMustBeAuthorOrContributorOfTheTestRule>(() =>
-                examination.SwitchExaminer(examiner, data.Test)
+                sut.SwitchExaminer(examiner, data.Test)
             );
         }
 
@@ -242,11 +257,11 @@ namespace AlphaTest.Core.UnitTests.Examinations
         {
             ExaminationTestData data = new();
             data.Examiner = data.Contributor;
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
-            examination.SwitchExaminer(data.TestAuthor, data.Test);
+            sut.SwitchExaminer(data.TestAuthor, data.Test);
 
-            Assert.Equal(data.TestAuthor.ID, examination.ExaminerID);
+            Assert.Equal(data.TestAuthor.ID, sut.ExaminerID);
         }
 
         [Fact]
@@ -254,24 +269,24 @@ namespace AlphaTest.Core.UnitTests.Examinations
         {
             ExaminationTestData data = new();
             data.Examiner = data.TestAuthor;
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
-            examination.SwitchExaminer(data.Contributor, data.Test);
+            sut.SwitchExaminer(data.Contributor, data.Test);
 
-            Assert.Equal(data.Contributor.ID, examination.ExaminerID);
+            Assert.Equal(data.Contributor.ID, sut.ExaminerID);
         }
 
         [Fact]
         public void Disbanded_group_cannot_participate_the_examination()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
             Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData());
             oneMoreGroup.Disband();
 
             AssertBrokenRule<DisbandedOrInactiveGroupsCannotParticipateExamRule>(() =>
-                examination.AddGroup(oneMoreGroup)
+                sut.AddGroup(oneMoreGroup)
             );
         }
 
@@ -279,14 +294,14 @@ namespace AlphaTest.Core.UnitTests.Examinations
         public void Outdated_group_cannot_participate_the_examination()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
             Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData());
             // подменяем срок существования группы как будто она уже давно не активна
             HelpersForGroups.SetGroupDates(oneMoreGroup, DateTime.Now.AddDays(-365), DateTime.Now.AddDays(-100));
 
             AssertBrokenRule<DisbandedOrInactiveGroupsCannotParticipateExamRule>(() =>
-                examination.AddGroup(oneMoreGroup)
+                sut.AddGroup(oneMoreGroup)
             );
         }
 
@@ -294,13 +309,13 @@ namespace AlphaTest.Core.UnitTests.Examinations
         public void Group_can_be_added_to_exam_only_once()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
             Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData());
-            examination.AddGroup(oneMoreGroup);
+            sut.AddGroup(oneMoreGroup);
 
             AssertBrokenRule<GroupCanBeAddedToExamOnlyOnceRule>(() =>
-                examination.AddGroup(oneMoreGroup)
+                sut.AddGroup(oneMoreGroup)
             );
         }
         
@@ -308,18 +323,18 @@ namespace AlphaTest.Core.UnitTests.Examinations
         public void Group_can_be_added_to_exam_after_creation()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
             Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData());
-            examination.AddGroup(oneMoreGroup);
-            Assert.Equal(1, examination.Participations.Count(p => p.GroupID == oneMoreGroup.ID));
+            sut.AddGroup(oneMoreGroup);
+            Assert.Equal(1, sut.Participations.Count(p => p.GroupID == oneMoreGroup.ID));
         }
 
         [Fact]
         public void Multiple_groups_cannot_be_added_if_at_least_one_of_them_is_disbanded()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
             List<Group> groups = new()
             {
@@ -331,7 +346,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             groups[1].Disband();
 
             AssertBrokenRule<DisbandedOrInactiveGroupsCannotParticipateExamRule>(() =>
-                examination.AddGroups(groups)
+                sut.AddGroups(groups)
             );
         }
 
@@ -339,7 +354,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
         public void Multiple_groups_cannot_be_added_if_at_least_one_of_them_is_outdated()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
             List<Group> groups = new()
             {
@@ -350,7 +365,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             HelpersForGroups.SetGroupDates(groups[0], DateTime.Now.AddDays(-365), DateTime.Now.AddDays(-100));
 
             AssertBrokenRule<DisbandedOrInactiveGroupsCannotParticipateExamRule>(() =>
-                examination.AddGroups(groups)
+                sut.AddGroups(groups)
             );
         }
 
@@ -358,7 +373,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
         public void Multiple_groups_cannot_be_added_to_exam_if_at_least_one_of_them_is_already_in_list()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
             List<Group> groups = new()
             {
@@ -368,7 +383,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             };
 
             AssertBrokenRule<GroupCanBeAddedToExamOnlyOnceRule>(() =>
-                examination.AddGroups(groups)
+                sut.AddGroups(groups)
             );
         }
 
@@ -376,7 +391,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
         public void Multiple_groups_can_be_added_to_exam_after_creation()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
             List<Group> groups = new()
             {
@@ -386,20 +401,20 @@ namespace AlphaTest.Core.UnitTests.Examinations
             };
             Guid[] ids = groups.Select(g => g.ID).ToArray();
 
-            examination.AddGroups(groups);
+            sut.AddGroups(groups);
 
-            Assert.Equal(3, examination.Participations.Count(p => ids.Contains(p.GroupID)));
+            Assert.Equal(3, sut.Participations.Count(p => ids.Contains(p.GroupID)));
         }
 
         [Fact]
         public void Group_cannot_be_removed_from_exam_if_it_not_participating()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
             Group oneMoreGroup = HelpersForGroups.CreateGroup(new GroupTestData());
 
             AssertBrokenRule<NonParticipatingGroupsCannotBeExcludedFromExamRule>(() =>
-                examination.RemoveGroup(oneMoreGroup)
+                sut.RemoveGroup(oneMoreGroup)
             );
         }
 
@@ -407,18 +422,18 @@ namespace AlphaTest.Core.UnitTests.Examinations
         public void Group_can_be_exluded_from_exam()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
-            examination.RemoveGroup(data.Groups[0]);
+            sut.RemoveGroup(data.Groups[0]);
 
-            Assert.Equal(0, examination.Participations.Count(p => p.GroupID == data.Groups[0].ID));
+            Assert.Equal(0, sut.Participations.Count(p => p.GroupID == data.Groups[0].ID));
         }
 
         [Fact]
         public void Multiple_groups_cannot_be_excluded_from_exam_if_at_least_one_of_them_is_not_participating()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
             List<Group> groups = new()
             {
                 HelpersForGroups.CreateGroup(new GroupTestData()),
@@ -427,7 +442,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             };
 
             AssertBrokenRule<NonParticipatingGroupsCannotBeExcludedFromExamRule>(() =>
-                examination.RemoveGroups(groups)
+                sut.RemoveGroups(groups)
             );
         }
 
@@ -435,16 +450,16 @@ namespace AlphaTest.Core.UnitTests.Examinations
         public void Multiple_groups_can_be_excluded_from_exam()
         {
             ExaminationTestData data = new();
-            Examination examination = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
             List<Group> groups = new()
             {
                 data.Groups[0],
                 data.Groups[1]
             };
 
-            examination.RemoveGroups(groups);
+            sut.RemoveGroups(groups);
 
-            Assert.Equal(0, examination.Participations.Count);
+            Assert.Equal(0, sut.Participations.Count);
         }
 
         [Theory]
@@ -452,16 +467,16 @@ namespace AlphaTest.Core.UnitTests.Examinations
         public void Exam_cannot_be_modified_if_it_is_already_ended(Action<ExaminationTestData, Examination> examEditingDelegate)
         {
             ExaminationTestData data = new();
-            Examination exam = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
             var pastBegin = DateTime.Now.AddDays(-15);
             var pastEnd = DateTime.Now.AddDays(-10);
 
             // через рефлексию уносим экзамен в прошлое
-            HelpersForExaminations.SetExaminationDates(exam, pastBegin, pastEnd);
+            HelpersForExaminations.SetExaminationDates(sut, pastBegin, pastEnd);
 
             AssertBrokenRule<EndedExamCannotBeModifiedRule>(() =>
-                examEditingDelegate(data,exam)
+                examEditingDelegate(data,sut)
             );
         }
 
@@ -470,12 +485,12 @@ namespace AlphaTest.Core.UnitTests.Examinations
         public void Exam_cannot_be_modified_if_it_is_canceled(Action<ExaminationTestData, Examination> examEditingDelegate)
         {
             ExaminationTestData data = new();
-            Examination exam = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
+            Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
-            exam.Cancel();
+            sut.Cancel();
 
             AssertBrokenRule<CanceledExaminationCannotBeModifiedRule>(() =>
-                examEditingDelegate(data, exam)
+                examEditingDelegate(data, sut)
             );
         }
 
