@@ -1,9 +1,7 @@
 ﻿using AlphaTest.Core.Answers;
+using AlphaTest.Core.Tests.Questions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Linq;
-
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping.Answers
 {
@@ -12,14 +10,20 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping.Answers
         public void Configure(EntityTypeBuilder<MultiChoiceAnswer> builder)
         {
             builder.ToTable("Answers");
+                        
+            builder.Ignore(a => a.RightOptions);
 
-            // ToDo промежуточная таблица (нужно править тесты)
-            builder
-                .Property(a => a.RightOptions)
-                .HasConversion(
-                    v => string.Join(',', v),
-                    v => v.Split(new char[] { ',' }).Select(s => Guid.Parse(s)).ToList()
-                );
+            builder.OwnsMany<ChosenOption>("_chosenOptions", y =>
+                {
+                    y.ToTable("ChosenOptions");
+                    y.HasKey(o => new { o.AnswerID, o.OptionID });
+                    y.WithOwner().HasForeignKey(o => o.AnswerID);
+                    y.HasOne<QuestionOption>()
+                        .WithMany()
+                        .HasForeignKey(o => o.OptionID)
+                        .OnDelete(DeleteBehavior.Restrict);
+                }
+            );
         }
     }
 }
