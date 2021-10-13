@@ -1,6 +1,5 @@
 ﻿using AutoFixture;
 using AlphaTest.Core.UnitTests.Fixtures.Tests;
-using AlphaTest.Core.UnitTests.Fixtures.Users;
 
 namespace AlphaTest.Core.UnitTests.Fixtures
 {
@@ -9,7 +8,6 @@ namespace AlphaTest.Core.UnitTests.Fixtures
         public void Customize(IFixture fixture)
         {   
             fixture.Customize(new DefaultTestCustomization());
-            fixture.Customize(new IAlphaTestUserMockCustomization());
         }
     }
 }

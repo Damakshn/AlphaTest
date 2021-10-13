@@ -7,23 +7,29 @@ namespace AlphaTest.Core.UnitTests.Fixtures.FixtureExtensions
 {
     internal static partial class FixtureExtensions
     {
+        /*
+        Методы расширения, создающие пользователей, используют Moq напрямую,
+        кастомизации Autofixture на них никак не влияют.
+        Это сделано из-за https://github.com/AutoFixture/AutoFixture/issues/1082#issuecomment-444630742
+        Пока не придумал, как решить по-другому
+        */
         public static IAlphaTestUser CreateStudent(this IFixture fixture)
         {
-            var mockedStudent = fixture.Create<Mock<IAlphaTestUser>>();
+            var mockedStudent = fixture.CreateUserMock();
             mockedStudent.Setup(m => m.IsStudent).Returns(true);
             return mockedStudent.Object;
         }
 
         public static IAlphaTestUser CreateTeacher(this IFixture fixture)
         {
-            var mockedStudent = fixture.Create<Mock<IAlphaTestUser>>();
+            var mockedStudent = fixture.CreateUserMock();
             mockedStudent.Setup(m => m.IsTeacher).Returns(true);
             return mockedStudent.Object;
         }
 
         public static IAlphaTestUser CreateAdmin(this IFixture fixture)
         {
-            var mockedStudent = fixture.Create<Mock<IAlphaTestUser>>();
+            var mockedStudent = fixture.CreateUserMock();
             mockedStudent.Setup(m => m.IsAdmin).Returns(true);
             return mockedStudent.Object;
         }

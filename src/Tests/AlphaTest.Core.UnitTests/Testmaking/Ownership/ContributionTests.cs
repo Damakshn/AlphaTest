@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using Xunit;
-using Moq;
-using AlphaTest.Core.Users;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Ownership.Rules;
 using AlphaTest.Core.UnitTests.Common;
@@ -16,8 +14,9 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
     public class ContributionTests: UnitTestBase
     {
         [Theory, TestmakingTestsData]
-        public void Non_teacher_user_cannot_be_set_as_contributor(Test sut, Mock<IAlphaTestUser> mockedUser)
+        public void Non_teacher_user_cannot_be_set_as_contributor(Test sut, IFixture fixture)
         {
+            var mockedUser = fixture.CreateUserMock();
             mockedUser.Setup(u => u.IsTeacher).Returns(false);
             var contributor = mockedUser.Object;
             AssertBrokenRule<OnlyTeacherCanBeSetAsNewAuthorOrContributorRule>(() =>
@@ -26,8 +25,9 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
         }
 
         [Theory, TestmakingTestsData]
-        public void Suspended_user_cannot_be_set_as_contributor(Test sut, Mock<IAlphaTestUser> mockedUser)
+        public void Suspended_user_cannot_be_set_as_contributor(Test sut, IFixture fixture)
         {
+            var mockedUser = fixture.CreateUserMock();
             mockedUser.Setup(u => u.IsTeacher).Returns(true);
             mockedUser.Setup(u => u.IsSuspended).Returns(true);
             AssertBrokenRule<SuspendedUserCannotBeSetAsNewAuthorOrContributorRule>(() =>

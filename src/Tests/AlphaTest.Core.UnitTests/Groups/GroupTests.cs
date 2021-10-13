@@ -67,29 +67,24 @@ namespace AlphaTest.Core.UnitTests.Groups
         }
 
         [Theory, GroupTestsData]
-        public void Group_maximum_size_is_limited(Group group)
+        public void Group_maximum_size_is_limited(Group group, IFixture fixture)
         {
             for (int i = 0; i < 100; i++)
-            {
-                // WORKAROUND приходится использовать Moq напрямую из-за этого:
-                // https://github.com/AutoFixture/AutoFixture/issues/1082#issuecomment-444630742
-                // как лечить - непонятно
-                var student = new Mock<IAlphaTestUser>();
-                student.Setup(s => s.IsStudent).Returns(true);
-                student.Setup(s => s.IsSuspended).Returns(false);
-                group.AddStudent(student.Object);
+            {  
+                group.AddStudent(fixture.CreateStudent());
             }
-            var extraStudent = new Mock<IAlphaTestUser>();
-            extraStudent.Setup(s => s.IsStudent).Returns(true);
-            extraStudent.Setup(s => s.IsSuspended).Returns(false);
+
+            var extraStudent = fixture.CreateStudent();
+            
             AssertBrokenRule<GroupSizeIsLimitedRule>(() =>
-                group.AddStudent(extraStudent.Object)
+                group.AddStudent(extraStudent)
             );
         }
 
         [Theory, GroupTestsData]
-        public void Only_students_can_be_members_of_group(Group group, Mock<IAlphaTestUser> mockedUser)
+        public void Only_students_can_be_members_of_group(Group group, IFixture fixture)
         {
+            var mockedUser = fixture.CreateUserMock();
             mockedUser.Setup(u => u.IsStudent).Returns(false);
 
             AssertBrokenRule<OnlyStudentsCanBeIncludedIntoGroupRule>(() =>
