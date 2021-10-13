@@ -7,10 +7,10 @@ namespace AlphaTest.Core.Examinations.Rules
 {
     public class ExaminerMustBeAuthorOrContributorOfTheTestRule : IBusinessRule
     {
-        private readonly User _examiner;
+        private readonly IAlphaTestUser _examiner;
         private readonly Test _test;
 
-        public ExaminerMustBeAuthorOrContributorOfTheTestRule(User examiner, Test test)
+        public ExaminerMustBeAuthorOrContributorOfTheTestRule(IAlphaTestUser examiner, Test test)
         {
             _examiner = examiner;
             _test = test;

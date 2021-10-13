@@ -18,7 +18,7 @@ namespace AlphaTest.Core.Examinations
         #region Конструкторы
         private Examination() { }
         
-        public Examination(Test test, DateTime startsAt, DateTime endsAt, User examiner, IEnumerable<Group> groups)
+        public Examination(Test test, DateTime startsAt, DateTime endsAt, IAlphaTestUser examiner, IEnumerable<Group> groups)
         {
             /*
             ToDo
@@ -93,7 +93,7 @@ namespace AlphaTest.Core.Examinations
             // ToDo domain event
         }
 
-        public void SwitchExaminer(User newExaminer, Test test)
+        public void SwitchExaminer(IAlphaTestUser newExaminer, Test test)
         {
             CheckCommonRulesForModification();
             CheckCommonRulesForExaminer(newExaminer, test);
@@ -145,7 +145,7 @@ namespace AlphaTest.Core.Examinations
         #endregion
 
         #region Сгруппированные проверки правил
-        private void CheckCommonRulesForExaminer(User examiner, Test test)
+        private void CheckCommonRulesForExaminer(IAlphaTestUser examiner, Test test)
         {
             CheckRule(new ExaminerMustBeTeacherRule(examiner));
             CheckRule(new ExaminerMustBeAuthorOrContributorOfTheTestRule(examiner, test));

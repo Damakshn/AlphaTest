@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Moq;
 using AlphaTest.Core.Groups;
 using AlphaTest.Core.Tests;
-using AlphaTest.Core.UnitTests.Common;
 using AlphaTest.Core.UnitTests.Common.Helpers;
 using AlphaTest.Core.Users;
 
@@ -12,23 +11,18 @@ namespace AlphaTest.Core.UnitTests.Examinations
     public class ExaminationTestData
     {
         public ExaminationTestData()
-        {
-            UserTestData authorData = new() 
+        {   
+            Mock<IAlphaTestUser> createTeacher() 
             {
-                InitialRole = UserRole.TEACHER,
-                FirstName = It.IsAny<string>(),
-                LastName = It.IsAny<string>(),
-                MiddleName = It.IsAny<string>()
+                var mockedTeacher = new Mock<IAlphaTestUser>();
+                mockedTeacher.Setup(m => m.ID).Returns(Guid.NewGuid());
+                mockedTeacher.Setup(m => m.IsTeacher).Returns(true);
+                mockedTeacher.Setup(m => m.IsSuspended).Returns(false);
+                return mockedTeacher;
             };
-            UserTestData contributorData = new()
-            {
-                InitialRole = UserRole.TEACHER,
-                FirstName = It.IsAny<string>(),
-                LastName = It.IsAny<string>(),
-                MiddleName = It.IsAny<string>()
-            };
-            TestAuthor = HelpersForUsers.CreateUser(authorData);
-            Contributor = HelpersForUsers.CreateUser(contributorData);
+
+            TestAuthor = createTeacher().Object;
+            Contributor = createTeacher().Object;
             Examiner = TestAuthor;
             // MAYBE перенести в HelpersForTests с возможностью настраивать автора
             Test = new(It.IsAny<string>(), It.IsAny<string>(), TestAuthor.ID, false);
@@ -51,13 +45,13 @@ namespace AlphaTest.Core.UnitTests.Examinations
 
         public DateTime EndsAt { get; set; } = DateTime.Now.AddDays(8);
 
-        public User Examiner { get; set; }
+        public IAlphaTestUser Examiner { get; set; }
 
         public Test Test { get; set; }
 
-        public User TestAuthor { get; set; }
+        public IAlphaTestUser TestAuthor { get; set; }
 
-        public User Contributor { get; set; }
+        public IAlphaTestUser Contributor { get; set; }
 
         public List<Group> Groups { get; set; }
     }
