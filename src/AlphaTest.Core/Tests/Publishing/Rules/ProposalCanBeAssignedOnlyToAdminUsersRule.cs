@@ -5,15 +5,15 @@ namespace AlphaTest.Core.Tests.Publishing.Rules
 {
     public class ProposalCanBeAssignedOnlyToAdminUsersRule : IBusinessRule
     {
-        private readonly User _user;
+        private readonly IAlphaTestUser _user;
 
-        public ProposalCanBeAssignedOnlyToAdminUsersRule(User user)
+        public ProposalCanBeAssignedOnlyToAdminUsersRule(IAlphaTestUser user)
         {
             _user = user;
         }
 
         public string Message => "Заявку может обработать только администратор.";
 
-        public bool IsBroken => _user.IsInRole(UserRole.ADMIN) == false;
+        public bool IsBroken => _user.IsAdmin == false;
     }
 }

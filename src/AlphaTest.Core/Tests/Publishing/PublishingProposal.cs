@@ -35,7 +35,7 @@ namespace AlphaTest.Core.Tests.Publishing
 
 		public string Remark { get; private set; }
 
-		public void AssignTo(User admin)
+		public void AssignTo(IAlphaTestUser admin)
         {
 			CheckRule(new ProposalCanBeAssignedOnlyToAdminUsersRule(admin));
 			AssignedAt = DateTime.Now;
