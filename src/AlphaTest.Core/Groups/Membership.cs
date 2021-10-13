@@ -9,7 +9,7 @@ namespace AlphaTest.Core.Groups
     {
         private Membership() { }
 
-        internal Membership(Group group, User student)
+        internal Membership(Group group, IAlphaTestUser student)
         {
             CheckRule(new OnlyStudentsCanBeIncludedIntoGroupRule(student));
             CheckRule(new SuspendedUsersCannotBeIncludedIntoGroupRule(student));

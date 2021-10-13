@@ -1,6 +1,5 @@
 ﻿using Xunit;
 using AlphaTest.Core.UnitTests.Common;
-using AlphaTest.Core.UnitTests.Common.Helpers;
 using AlphaTest.Core.Users;
 using AlphaTest.Core.Tests.Publishing;
 using AlphaTest.Core.Tests.Publishing.Rules;
@@ -8,26 +7,28 @@ using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.UnitTests.Testmaking.Questions;
 using System.Collections.Generic;
+using AlphaTest.Core.UnitTests.Fixtures;
+using AutoFixture;
+using AlphaTest.Core.UnitTests.Fixtures.FixtureExtensions;
 
 namespace AlphaTest.Core.UnitTests.Testmaking.Publishing
 {
     public class PublishingProposalTests: UnitTestBase
     {
-        [Theory]
-        [MemberData(nameof(HelpersForUsers.NonAdminRoles), MemberType = typeof(HelpersForUsers))]
-        public void Publishing_proposal_cannot_be_assigned_to_non_admin_user(UserRole role)
+        [Theory, TestmakingTestsData]
+        public void Publishing_proposal_cannot_be_assigned_to_non_admin_user(Test test, IFixture fixture)
         {
-            Test test = HelpersForTests.GetDefaultTest();
             QuestionTestData data = new() { Test = test, Score = new(10) };
             SingleChoiceQuestion question = QuestionTestSamples.CreateSingleChoiceQuestion(data) as SingleChoiceQuestion;
             test.ChangePassingScore(10);
-            PublishingProposal proposal = test.ProposeForPublishing(new List<Question>() { question });
+            PublishingProposal sut = test.ProposeForPublishing(new List<Question>() { question });
 
-            UserTestData userData = new() {InitialRole = role };
-            User assignee = HelpersForUsers.CreateUser(userData);
+            var mockedUser = fixture.CreateUserMock();
+            mockedUser.Setup(u => u.IsAdmin).Returns(false);
+            IAlphaTestUser assignee = mockedUser.Object;
 
             AssertBrokenRule<ProposalCanBeAssignedOnlyToAdminUsersRule>(() =>
-                proposal.AssignTo(assignee)
+                sut.AssignTo(assignee)
             );
         }
     }

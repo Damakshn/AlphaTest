@@ -2,9 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using Xunit;
-using Moq;
 using AlphaTest.Core.Tests;
-using AlphaTest.Core.Common.Exceptions;
 using AlphaTest.Core.Tests.Rules;
 using AlphaTest.Core.Tests.TestSettings.Checking;
 using AlphaTest.Core.UnitTests.Common;
@@ -13,124 +11,91 @@ using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.UnitTests.Testmaking.Questions;
 using AlphaTest.Core.UnitTests.Common.Helpers;
 using AlphaTest.Core.Users;
+using AlphaTest.Core.UnitTests.Fixtures;
+using AutoFixture;
+using AlphaTest.Core.UnitTests.Fixtures.FixtureExtensions;
 
 namespace AlphaTest.Core.UnitTests.Testmaking
 {
-    // ToDo проверка сообщений об ошибках
     public class TestmakingTests: UnitTestBase
     {
-        [Fact]
-        public void When_TestCreated_Expect_TestHasVersionOne()
+        [Theory, TestmakingTestsData]
+        public void New_test_has_version_one(string title, string topic, Guid authorID)
         {
-            // arrange
-            string title = It.IsAny<string>();
-            string topic = It.IsAny<string>();
-            Guid authorID = Guid.NewGuid();
-            // act
-            Test t = new(title, topic, authorID, false);
-            // assert
-            Assert.Equal(1, t.Version);
+            Test sut = new(title, topic, authorID, false);
+
+            Assert.Equal(1, sut.Version);
         }
 
-        [Fact]
-        public void When_TestAlreadyExists_Expect_CreatingAnotherTest_IsNotPossible()
-        {
-            // arrange
-            string title = It.IsAny<string>();
-            string topic = It.IsAny<string>();
-            Guid authorID = Guid.NewGuid();
-            
-            // act
-            Action act = () => { Test t = new(title, topic, authorID, true); };
-
-            // assert
-            Assert.Throws<BusinessException>(act);
+        [Theory, TestmakingTestsData]
+        public void Test_cannot_be_created_if_such_test_already_exists(string title, string topic, Guid authorID)
+        {   
+            AssertBrokenRule<TestMustBeUniqueRule>(() => { Test sut = new(title, topic, authorID, true); });
         }
 
-        [Fact]
-        public void ChangingTitleAndTopic_When_SimilarTestExists_IsNotPossible()
+        [Theory, TestmakingTestsData]
+        public void Title_and_topic_cannot_be_changed_if_such_test_already_exists(Test sut, string newTitle, string newTopic)
         {
-            // arrange
-            string intialTitle = "Политология как наука";
-            string initialTopic = "Политология";
-            Guid authorID = Guid.NewGuid();
-
-            string newTitle = "Политическая система";
-            string newTopic = "Политология";
-
-            // act
-            Test t = new(intialTitle, initialTopic, authorID, false);
-            Action act = () => t.ChangeTitleAndTopic(newTitle, newTopic, true);
-
-            // assert
-            Assert.Throws<BusinessException>(act);
+            AssertBrokenRule<TestMustBeUniqueRule>(() => sut.ChangeTitleAndTopic(newTitle, newTopic, true));
         }
 
-        [Fact]
-        public void When_ChangingTimeLimit_ValueMustBeInRange()
-        {
-            // arrange
-            Test t = HelpersForTests.GetDefaultTest();
-
-            // act
+        [Theory, TestmakingTestsData]
+        public void Time_limit_for_test_must_be_in_range(Test sut)
+        {   
             TimeSpan oneSecond = new(0, 0, 1);
             TimeSpan tooBig = TimeLimitMustBeInRangeRule.MAX_LIMIT + oneSecond;
             TimeSpan tooSmall = TimeLimitMustBeInRangeRule.MIN_LIMIT - oneSecond;
-            Action setTooBig = () => t.ChangeTimeLimit(tooBig);
-            Action setTooSmall = () => t.ChangeTimeLimit(tooSmall);
+            void setTooBig() => sut.ChangeTimeLimit(tooBig);
+            void setTooSmall() => sut.ChangeTimeLimit(tooSmall);
 
-            // assert
-            Assert.Throws<BusinessException>(setTooBig);
-            Assert.Throws<BusinessException>(setTooSmall);
+            AssertBrokenRule<TimeLimitMustBeInRangeRule>(setTooBig);
+            AssertBrokenRule<TimeLimitMustBeInRangeRule>(setTooSmall);
         }
 
-        [Fact]
-        public void When_ChangingNumberOfAttempts_ValueMustBeInRange()
+        [Theory, TestmakingTestsData]
+        public void Number_of_attempts_for_passing_test_must_be_in_range(Test sut)
         {
-            // arrange
-            Test t = HelpersForTests.GetDefaultTest();
-
-            // act
             uint tooManyAttempts = AttemptsLimitForTestMustBeInRangeRule.MAX_ATTEMPTS_PER_TEST + 1;
             uint tooFewAttempts = AttemptsLimitForTestMustBeInRangeRule.MIN_ATTEMPTS_PER_TEST - 1;
-            Action setTooManyAttempts = () => t.ChangeAttemptsLimit(tooManyAttempts);
-            Action setTooFewAttempts = () => t.ChangeAttemptsLimit(tooFewAttempts);
+            void setTooManyAttempts() => sut.ChangeAttemptsLimit(tooManyAttempts);
+            void setTooFewAttempts() => sut.ChangeAttemptsLimit(tooFewAttempts);
 
-            // assert
-            Assert.Throws<BusinessException>(setTooManyAttempts);
-            Assert.Throws<BusinessException>(setTooFewAttempts);
+            AssertBrokenRule<AttemptsLimitForTestMustBeInRangeRule>(setTooManyAttempts);
+            AssertBrokenRule<AttemptsLimitForTestMustBeInRangeRule>(setTooFewAttempts);
         }
 
-        [Fact]
-        public void SetUnifiedScoreDistribution_WithoutScore_IsNotPossible()
-        {
-            Test t = HelpersForTests.GetDefaultTest();
+        [Theory, TestmakingTestsData]
+        public void Unified_score_value_must_be_provided(Test sut)
+        {   
             AssertBrokenRule<ScorePerQuestionMustBeSpecifiedForUnifiedDistributionRule>(() =>
-                t.ConfigureScoreDistribution(ScoreDistributionMethod.UNIFIED, null)
+                sut.ConfigureScoreDistribution(ScoreDistributionMethod.UNIFIED, null)
             );
         }
 
-        [Fact]
-        public void SetUnifiedScoreDistribution_WithScore_IsOk()
+        [Theory, TestmakingTestsData]
+        public void Unified_score_can_be_defined_in_test_settings(Test sut)
         {
-            Test t = HelpersForTests.GetDefaultTest();
             QuestionScore unifiedScore = new(50);
-            t.ConfigureScoreDistribution(ScoreDistributionMethod.UNIFIED, unifiedScore);
-            Assert.Equal(unifiedScore, t.ScorePerQuestion);
+
+            sut.ConfigureScoreDistribution(ScoreDistributionMethod.UNIFIED, unifiedScore);
+
+            Assert.Equal(unifiedScore, sut.ScorePerQuestion);
         }
 
+        // ToDo autofixture
         [Theory]
         [MemberData(nameof(AllSettingsEditingActions))]
-        public void EditAnySettings_WhenTestIsPublished_IsNotPossible(Action<Test> editingDelegate)
+        public void Test_cannot_be_modified_after_publishing(Action<Test> editingDelegate)
         {
             Test test = HelpersForTests.GetDefaultTest();
             HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
             AssertBrokenRule<NonDraftTestCannotBeEditedRule>(() => editingDelegate(test));
         }
 
+        // ToDo autofixture
         [Theory]
         [MemberData(nameof(QuestionTestSamples.InstanceAllTypesOfQuestions), MemberType = typeof(QuestionTestSamples))]
-        public void AddAnyQuestion_WhenTestIsPublished_IsNotPossible(Func<QuestionTestData, Question> addQuestionDelegate)
+        public void Questions_cannot_be_added_when_test_is_published(Func<QuestionTestData, Question> addQuestionDelegate)
         {
             // ToDo выглядит плохо, надо будет исправить
             // MAYBE перенести в тесты для вопросов
@@ -139,89 +104,66 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             AssertBrokenRule<NonDraftTestCannotBeEditedRule>(() => addQuestionDelegate(data));
         }
 
-
-        // ToDo NAMING
-        [Fact]
-        public void Replicated_test_has_same_checking_and_procedure_settings_as_source_test() 
+        [Theory, TestmakingTestsData]
+        public void Replicated_test_has_same_checking_and_procedure_settings_as_source_test(Test sut) 
         {
-            Test test = HelpersForTests.GetDefaultTest();
+            sut.ChangeWorkCheckingMethod(WorkCheckingMethod.AUTOMATIC, new List<Question>());
+            sut.ChangeCheckingPolicy(CheckingPolicy.HARD);
+            sut.ChangeNavigationMode(NavigationMode.FREE);
+            sut.ChangePassingScore(250);
+            sut.ChangeTimeLimit(new TimeSpan(2, 0, 0));
+            sut.ChangeTitleAndTopic("Новое название", "Новая тема", false);
+            sut.ChangeAttemptsLimit(3);
 
-            test.ChangeWorkCheckingMethod(WorkCheckingMethod.AUTOMATIC, new List<Question>());
-            test.ChangeCheckingPolicy(CheckingPolicy.HARD);
-            test.ChangeNavigationMode(NavigationMode.FREE);
-            test.ChangePassingScore(250);
-            test.ChangeTimeLimit(new TimeSpan(2, 0, 0));
-            test.ChangeTitleAndTopic("Новое название", "Новая тема", false);
-            test.ChangeAttemptsLimit(3);
+            HelpersForTests.SetNewStatusForTest(sut, TestStatus.Published);
+            Test replica = sut.Replicate();
 
-            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test replica = test.Replicate();
-
-            Assert.Equal(test.WorkCheckingMethod, replica.WorkCheckingMethod);
-            Assert.Equal(test.CheckingPolicy, replica.CheckingPolicy);
-            Assert.Equal(test.NavigationMode, replica.NavigationMode);
-            Assert.Equal(test.PassingScore, replica.PassingScore);
-            Assert.Equal(test.TimeLimit, replica.TimeLimit);
-            Assert.Equal(test.Title, replica.Title);
-            Assert.Equal(test.Topic, replica.Topic);
-            Assert.Equal(test.AttemptsLimit, replica.AttemptsLimit);
+            Assert.Equal(sut.WorkCheckingMethod, replica.WorkCheckingMethod);
+            Assert.Equal(sut.CheckingPolicy, replica.CheckingPolicy);
+            Assert.Equal(sut.NavigationMode, replica.NavigationMode);
+            Assert.Equal(sut.PassingScore, replica.PassingScore);
+            Assert.Equal(sut.TimeLimit, replica.TimeLimit);
+            Assert.Equal(sut.Title, replica.Title);
+            Assert.Equal(sut.Topic, replica.Topic);
+            Assert.Equal(sut.AttemptsLimit, replica.AttemptsLimit);
         }
 
-        [Fact]
-        public void Replicated_test_has_same_set_of_contributors_as_source_test()
-        {
-            Test test = HelpersForTests.GetDefaultTest();
+        [Theory, TestmakingTestsData]
+        public void Replicated_test_has_same_set_of_contributors_as_source_test(Test sut, IFixture fixture)
+        {   
+            IAlphaTestUser user1 = fixture.CreateTeacher();
+            IAlphaTestUser user2 = fixture.CreateTeacher();
+            sut.AddContributor(user1);
+            sut.AddContributor(user2);
 
-            UserTestData udata1 = new()
-            {
-                FirstName = "Иванов",
-                LastName = "Иван",
-                MiddleName = "Иванович",
-                InitialRole = UserRole.TEACHER
-            };
-            UserTestData udata2 = new()
-            {
-                FirstName = "Смирнова",
-                LastName = "Елена",
-                MiddleName = "Сергеевна",
-                InitialRole = UserRole.TEACHER
-            };
-            User user1 = HelpersForUsers.CreateUser(udata1);
-            User user2 = HelpersForUsers.CreateUser(udata2);
-            test.AddContributor(user1);
-            test.AddContributor(user2);
-
-            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test replica = test.Replicate();
+            HelpersForTests.SetNewStatusForTest(sut, TestStatus.Published);
+            Test replica = sut.Replicate();
 
             Assert.Equal(1, replica.Contributions.Count(c => c.TeacherID == user1.ID));
             Assert.Equal(1, replica.Contributions.Count(c => c.TeacherID == user2.ID));
         }
 
-        [Fact]
-        public void Replicated_test_is_always_draft()
+        [Theory, TestmakingTestsData]
+        public void Replicated_test_is_always_draft(Test sut)
         {
-            Test test = HelpersForTests.GetDefaultTest();
-            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test replica = test.Replicate();
+            HelpersForTests.SetNewStatusForTest(sut, TestStatus.Published);
+            Test replica = sut.Replicate();
             Assert.Equal(TestStatus.Draft, replica.Status);
         }
 
-        [Fact]
-        public void Replicated_test_version_is_higher_than_source_test_version_for_one()
+        [Theory, TestmakingTestsData]
+        public void Replicated_test_version_is_higher_than_source_test_version_for_one(Test sut)
         {
-            Test test = HelpersForTests.GetDefaultTest();
-            HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
-            Test replica = test.Replicate();
-            Assert.Equal(test.Version + 1, replica.Version);
+            HelpersForTests.SetNewStatusForTest(sut, TestStatus.Published);
+            Test replica = sut.Replicate();
+            Assert.Equal(sut.Version + 1, replica.Version);
         }
 
-        [Fact]
-        public void Only_published_test_can_be_replicated_for_new_version()
+        [Theory, TestmakingTestsData]
+        public void Only_published_test_can_be_replicated_for_new_version(Test sut)
         {
-            Test test = HelpersForTests.GetDefaultTest();
             AssertBrokenRule<OnlyPublishedTestsCanBeReplicatedRule>(() =>
-                test.Replicate()
+                sut.Replicate()
             );
         }
 

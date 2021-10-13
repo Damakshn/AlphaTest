@@ -236,14 +236,14 @@ namespace AlphaTest.Core.Tests
         #endregion
 
         #region Авторство
-        public void SwitchAuthor(User newAuthor)
+        public void SwitchAuthor(IAlphaTestUser newAuthor)
         {
             CheckRule(new OnlyTeacherCanBeSetAsNewAuthorOrContributorRule(newAuthor));
             CheckRule(new SuspendedUserCannotBeSetAsNewAuthorOrContributorRule(newAuthor));
             AuthorID = newAuthor.ID;
         }
 
-        public void AddContributor(User contributor)
+        public void AddContributor(IAlphaTestUser contributor)
         {
             CheckRule(new TeacherCanBeAddedToContributorsOnlyOnceRule(contributor, this));
             Contribution contribution = new(this, contributor);

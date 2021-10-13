@@ -5,9 +5,9 @@ namespace AlphaTest.Core.Groups.Rules
 {
     public class SuspendedUsersCannotBeIncludedIntoGroupRule : IBusinessRule
     {
-        private readonly User _candidate;
+        private readonly IAlphaTestUser _candidate;
 
-        public SuspendedUsersCannotBeIncludedIntoGroupRule(User candidate)
+        public SuspendedUsersCannotBeIncludedIntoGroupRule(IAlphaTestUser candidate)
         {
             _candidate = candidate;
         }

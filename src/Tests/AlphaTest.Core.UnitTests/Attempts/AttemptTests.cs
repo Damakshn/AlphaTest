@@ -20,7 +20,7 @@ namespace AlphaTest.Core.UnitTests.Attempts
             examination.Cancel();
 
             AssertBrokenRule<NewAttemptCannotBeStartedIfExamIsClosedRule>(() => 
-                new Attempt(test, examination, It.IsAny<int>()));
+                new Attempt(test, examination, Guid.NewGuid()));
         }
 
         [Theory, AttemptTestsData]
@@ -29,13 +29,13 @@ namespace AlphaTest.Core.UnitTests.Attempts
             HelpersForExaminations.SetExaminationDates(examination, DateTime.Now.AddDays(-25), DateTime.Now.AddDays(-10));
 
             AssertBrokenRule<NewAttemptCannotBeStartedIfExaminationIsAreadyEndedRule>(() =>
-                new Attempt(test, examination, It.IsAny<int>()));
+                new Attempt(test, examination, Guid.NewGuid()));
         }
 
         [Theory, AttemptTestsData]
         public void New_attempt_can_be_started(Test test, Examination examination)
         {
-            Attempt attempt = new(test, examination, It.IsAny<int>());
+            Attempt attempt = new(test, examination, Guid.NewGuid());
 
             Assert.Equal(examination.ID, attempt.ExaminationID);
             Assert.Equal(DateTime.Now, attempt.StartedAt, TimeSpan.FromSeconds(1));
@@ -60,7 +60,7 @@ namespace AlphaTest.Core.UnitTests.Attempts
                 DateTime.Now + examTimeRemained
             );
 
-            Attempt attempt = new(test, examination, It.IsAny<int>());
+            Attempt attempt = new(test, examination, Guid.NewGuid());
 
             Assert.Equal(DateTime.Now + expected, attempt.ForceEndAt, TimeSpan.FromSeconds(10));
         }

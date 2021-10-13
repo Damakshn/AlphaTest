@@ -6,8 +6,10 @@ using AlphaTest.Core.Groups;
 using AlphaTest.Core.UnitTests.Common.Helpers;
 using AlphaTest.Core.Users;
 using System.Linq;
-using System.Collections.Generic;
 using AlphaTest.Core.UnitTests.Fixtures;
+using AutoFixture;
+using Moq;
+using AlphaTest.Core.UnitTests.Fixtures.FixtureExtensions;
 
 namespace AlphaTest.Core.UnitTests.Groups
 {
@@ -65,48 +67,44 @@ namespace AlphaTest.Core.UnitTests.Groups
         }
 
         [Theory, GroupTestsData]
-        public void Group_maximum_size_is_limited(Group group)
+        public void Group_maximum_size_is_limited(Group group, IFixture fixture)
         {
             for (int i = 0; i < 100; i++)
-            {
-                UserTestData userData = new() { InitialRole = UserRole.STUDENT };
-                group.AddStudent(HelpersForUsers.CreateUser(userData));
+            {  
+                group.AddStudent(fixture.CreateStudent());
             }
 
-            UserTestData moreUserData = new() { InitialRole = UserRole.STUDENT };
-            User extraStudent = HelpersForUsers.CreateUser(moreUserData);
+            var extraStudent = fixture.CreateStudent();
+            
             AssertBrokenRule<GroupSizeIsLimitedRule>(() =>
                 group.AddStudent(extraStudent)
             );
         }
 
-        [Theory]
-        [GroupTestsMemberData(nameof(NonStudentRoles))]
-        public void Only_students_can_be_members_of_group(int roleID, Group group)
+        [Theory, GroupTestsData]
+        public void Only_students_can_be_members_of_group(Group group, IFixture fixture)
         {
-            UserTestData userData = new() { InitialRole = UserRole.ParseFromID(roleID) };
-            User candidate = HelpersForUsers.CreateUser(userData);
+            var mockedUser = fixture.CreateUserMock();
+            mockedUser.Setup(u => u.IsStudent).Returns(false);
 
             AssertBrokenRule<OnlyStudentsCanBeIncludedIntoGroupRule>(() =>
-                group.AddStudent(candidate)
+                group.AddStudent(mockedUser.Object)
             );
         }
 
         [Theory, GroupTestsData]
-        public void Students_can_be_added_to_group(Group group)
+        public void Students_can_be_added_to_group(Group group, IFixture fixture)
         {
-            UserTestData userData = new() {InitialRole = UserRole.STUDENT };
-            User candidate = HelpersForUsers.CreateUser(userData);
+            var candidate = fixture.CreateStudent();
             group.AddStudent(candidate);
 
             Assert.Equal(1, group.Memberships.Count(m => m.StudentID == candidate.ID));
         }
 
         [Theory, GroupTestsData]
-        public void Students_cannot_be_added_to_disbanded_group(Group group)
-        {
-            UserTestData userData = new() { InitialRole = UserRole.STUDENT };
-            User candidate = HelpersForUsers.CreateUser(userData);
+        public void Students_cannot_be_added_to_disbanded_group(Group group, IFixture fixture)
+        {   
+            var candidate = fixture.CreateStudent();
             group.Disband();
 
             AssertBrokenRule<DisbandedGroupCannotBeModifiedRule>(() =>
@@ -115,10 +113,9 @@ namespace AlphaTest.Core.UnitTests.Groups
         }
 
         [Theory, GroupTestsData]
-        public void Students_cannot_be_added_to_outdated_group(Group group)
+        public void Students_cannot_be_added_to_outdated_group(Group group, IFixture fixture)
         {
-            UserTestData userData = new() { InitialRole = UserRole.STUDENT };
-            User candidate = HelpersForUsers.CreateUser(userData);
+            var candidate = fixture.CreateStudent();
             HelpersForGroups.SetGroupDates(group, DateTime.Now.AddDays(-365), DateTime.Now.AddDays(-100));
             
             AssertBrokenRule<InactiveGroupCannotBeModifiedRule>(() => group.AddStudent(candidate));
@@ -177,12 +174,13 @@ namespace AlphaTest.Core.UnitTests.Groups
         }
 
         [Theory, GroupTestsData]
-        public void Non_member_student_cannot_be_excluded_from_group(Group group)
+        public void Non_member_student_cannot_be_excluded_from_group(Group group, IFixture fixture)
         {
-            User userInGroup = HelpersForUsers.CreateUser(new() { InitialRole = UserRole.STUDENT });
+            var userInGroup = fixture.CreateStudent();
             group.AddStudent(userInGroup);
 
-            User userNotInGroup = HelpersForUsers.CreateUser(new() { InitialRole = UserRole.STUDENT });
+            var userNotInGroup = fixture.CreateStudent();
+            
             AssertBrokenRule<NonMemberStudentsCannotBeExcludedFromGroupRule>(() =>
                 group.ExcludeStudent(userNotInGroup)
             );
@@ -190,9 +188,9 @@ namespace AlphaTest.Core.UnitTests.Groups
         }
 
         [Theory, GroupTestsData]
-        public void Student_can_be_excluded_from_group(Group group)
+        public void Student_can_be_excluded_from_group(Group group, IFixture fixture)
         {
-            User student = HelpersForUsers.CreateUser(new() { InitialRole = UserRole.STUDENT });
+            var student = fixture.CreateStudent();
             group.AddStudent(student);
 
             Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.ID));
@@ -201,9 +199,9 @@ namespace AlphaTest.Core.UnitTests.Groups
         }
 
         [Theory, GroupTestsData]
-        public void Student_cannot_be_excluded_from_disbanded_group(Group group)
+        public void Student_cannot_be_excluded_from_disbanded_group(Group group, IFixture fixture)
         {
-            User student = HelpersForUsers.CreateUser(new() { InitialRole = UserRole.STUDENT });
+            var student = fixture.CreateStudent();
             group.AddStudent(student);
             Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.ID));
             group.Disband();
@@ -212,9 +210,9 @@ namespace AlphaTest.Core.UnitTests.Groups
         }
 
         [Theory, GroupTestsData]
-        public void Student_cannot_be_excluded_from_outdated_group(Group group)
+        public void Student_cannot_be_excluded_from_outdated_group(Group group, IFixture fixture)
         {
-            User student = HelpersForUsers.CreateUser(new() { InitialRole = UserRole.STUDENT });
+            var student = fixture.CreateStudent();
             group.AddStudent(student);
             Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.ID));
             HelpersForGroups.SetGroupDates(group, DateTime.Now.AddDays(-365), DateTime.Now.AddDays(-100));
@@ -307,12 +305,5 @@ namespace AlphaTest.Core.UnitTests.Groups
 
             AssertBrokenRule<InactiveGroupCannotBeModifiedRule>(() => group.Rename("НовоеНазвание", false));
         }
-
-        public static IEnumerable<object[]> NonStudentRoles => UserRole.All
-            .Where(r => r != UserRole.STUDENT)
-            .Select(r => new object[] { r.ID })
-            .ToList();
-
-
     }
 }

@@ -1,6 +1,5 @@
 ﻿using AutoFixture;
 using AutoFixture.Xunit2;
-using Xunit.Sdk;
 
 namespace AlphaTest.Core.UnitTests.Fixtures
 {
