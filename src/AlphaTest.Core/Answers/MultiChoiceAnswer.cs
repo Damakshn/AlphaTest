@@ -3,20 +3,23 @@ using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Attempts;
 using AlphaTest.Core.Answers.Rules;
 using System;
+using System.Linq;
 
 namespace AlphaTest.Core.Answers
 {
     public class MultiChoiceAnswer: Answer 
     {
+        private List<ChosenOption> _chosenOptions;
+
         private MultiChoiceAnswer(): base() {}
 
         public MultiChoiceAnswer(MultiChoiceQuestion question, Attempt attempt, List<Guid> rightOptions)
             :base(attempt, question)
         {
             CheckRule(new MultiChoiceAnswerValueMustBeValidSetOfOptionIDsRule(question, rightOptions));
-            RightOptions = rightOptions;
+            _chosenOptions = rightOptions.Select(o => new ChosenOption(this.ID, o)).ToList();
         }
 
-        public List<Guid> RightOptions { get; private set; }
+        public List<Guid> RightOptions => _chosenOptions.Select(o => o.OptionID).ToList();
     }
 }
