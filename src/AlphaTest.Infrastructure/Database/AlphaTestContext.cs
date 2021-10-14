@@ -4,12 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using AlphaTest.Infrastructure.Auth;
-using AlphaTest.Infrastructure.Database.EntityMapping.Enumerations;
 using AlphaTest.Core.Tests;
 
 namespace AlphaTest.Infrastructure.Database
-{
-    public partial class AlphaTestContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
+{   
+    public partial class AlphaTestContext : 
+        IdentityDbContext<AppUser, AppRole, Guid, IdentityUserClaim<Guid>, 
+            AppUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
     {
         #region Свойства
         private static string DATABASE_NAME => "AlphaTest";
@@ -17,7 +18,7 @@ namespace AlphaTest.Infrastructure.Database
 
         #region Конструкторы
         // TODO добавить в документацию пояснение - для чего используется такая схема
-        internal AlphaTestContext(string login, string password):
+        public AlphaTestContext(string login, string password):
             base(BuildOptions(login, password))
         {
 
