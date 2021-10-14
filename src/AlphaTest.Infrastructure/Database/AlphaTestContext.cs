@@ -4,7 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using AlphaTest.Infrastructure.Auth;
+using AlphaTest.Core.Answers;
+using AlphaTest.Core.Attempts;
+using AlphaTest.Core.Checking;
+using AlphaTest.Core.Examinations;
+using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Tests;
+using AlphaTest.Core.Groups;
 
 namespace AlphaTest.Infrastructure.Database
 {   
@@ -12,6 +18,23 @@ namespace AlphaTest.Infrastructure.Database
         IdentityDbContext<AppUser, AppRole, Guid, IdentityUserClaim<Guid>, 
             AppUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
     {
+       
+        #region DbSets
+        private DbSet<Test> _tests { get; set; }
+
+        private DbSet<Question> _questions { get; set; }
+
+        private DbSet<Group> _groups { get; set; }
+
+        private DbSet<Examination> _examinations { get; set; }
+
+        private DbSet<Attempt> _attempts { get; set; }
+
+        private DbSet<Answer> _answers { get; set; }
+
+        private DbSet<CheckResult> _results { get; set; }
+        #endregion
+
         #region Свойства
         private static string DATABASE_NAME => "AlphaTest";
         #endregion
@@ -21,7 +44,7 @@ namespace AlphaTest.Infrastructure.Database
         public AlphaTestContext(string login, string password):
             base(BuildOptions(login, password))
         {
-
+            Aggregates = new(this);
         }
         #endregion
 

@@ -40,8 +40,7 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping.Identity
                 .IsRequired();
             builder
                 .Property("_lastVisitedAt")
-                .HasColumnName("LastVisitedAt")
-                .IsRequired();
+                .HasColumnName("LastVisitedAt");
             builder
                 .Property("_isPasswordChanged")
                 .HasColumnName("IsPasswordChanged")
