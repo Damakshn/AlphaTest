@@ -3,6 +3,7 @@ using AlphaTest.Infrastructure.Database.EntityMapping;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Infrastructure.Database.EntityMapping.Questions;
 using AlphaTest.Infrastructure.Database.EntityMapping.Answers;
+using AlphaTest.Infrastructure.Database.EntityMapping.Identity;
 
 namespace AlphaTest.Infrastructure.Database
 {
@@ -10,8 +11,10 @@ namespace AlphaTest.Infrastructure.Database
     {
         protected void ApplyEntityConfigurations(ModelBuilder modelBuilder)
         {
-            #region Пользователь
+            #region Identity
             modelBuilder.ApplyConfiguration(new AppUserEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new AppUserRoleEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new AppRoleEntityTypeConfiguration());
             #endregion
 
             #region Тесты, группы, экзамены, попытки

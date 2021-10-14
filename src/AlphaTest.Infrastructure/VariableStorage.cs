@@ -2,7 +2,7 @@
 
 namespace AlphaTest.Infrastructure
 {
-    internal static class VariableStorage
+    public static class VariableStorage
     {
         public static string DatabaseServer => "ALPHATEST_SERVER";
 

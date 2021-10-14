@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using AlphaTest.Core.Users;
@@ -25,9 +26,30 @@ namespace AlphaTest.Infrastructure.Auth
         private bool _isPasswordChanged;
 
         private bool _isSuspended;
+
+        // TBD
+        // https://stackoverflow.com/questions/47767267/ef-core-2-how-to-include-roles-navigation-property-on-identityuser/47772406
+        // https://docs.microsoft.com/en-us/aspnet/core/migration/1x-to-2x/identity-2x?view=aspnetcore-5.0#add-identityuser-poco-navigation-properties
+        private ICollection<AppUserRole> _userRoles;
         #endregion
 
-        // ToDo добавить правильный конструктор
+        public AppUser(string firstName, string lastName, string middleName, string temporaryPassword, string email)
+        {
+            _firstName = firstName;
+            _lastName = lastName;
+            _middleName = middleName;
+            Email = email;
+            UserName = email;
+            NormalizedEmail = email.ToUpper();
+            NormalizedUserName = NormalizedEmail;
+            _temporaryPassword = temporaryPassword;
+            PasswordHash = new PasswordHasher<AppUser>().HashPassword(this, temporaryPassword);
+            _isPasswordChanged = false;
+            _isSuspended = false;
+            _registeredAt = DateTime.Now;
+            _lastVisitedAt = null;
+            _userRoles = new List<AppUserRole>();
+        }
 
         #region Свойства
         public Guid ID => this.Id;
@@ -49,19 +71,12 @@ namespace AlphaTest.Infrastructure.Auth
         public bool IsPasswordChanged => _isPasswordChanged;
 
         public bool IsSuspended => _isSuspended;
+        
+        public bool IsAdmin => HasRole("Admin");
 
-        // ToDo нужен перечень ролей и доступ к ним через навигационное свойство
-        // ToDo кастомизация IdentityRole
-        public bool IsAdmin => throw new NotImplementedException();
+        public bool IsStudent => HasRole("Student");
 
-        public bool IsStudent => throw new NotImplementedException();
-
-        public bool IsTeacher => throw new NotImplementedException();
-
-        // TBD
-        // https://stackoverflow.com/questions/47767267/ef-core-2-how-to-include-roles-navigation-property-on-identityuser/47772406
-        // https://docs.microsoft.com/en-us/aspnet/core/migration/1x-to-2x/identity-2x?view=aspnetcore-5.0#add-identityuser-poco-navigation-properties
-        public virtual ICollection<IdentityUserRole<Guid>> Roles { get; } = new List<IdentityUserRole<Guid>>();
+        public bool IsTeacher => HasRole("Teacher");
         #endregion
 
         #region Методы
@@ -78,6 +93,11 @@ namespace AlphaTest.Infrastructure.Auth
         public void Unlock()
         {
             _isSuspended = false;
+        }
+
+        private bool HasRole(string roleName)
+        {
+            return _userRoles.Where(userRole => userRole.Role.Name == roleName).FirstOrDefault() is not null;
         }
         #endregion
     }

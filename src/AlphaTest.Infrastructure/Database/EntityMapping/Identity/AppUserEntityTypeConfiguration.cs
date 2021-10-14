@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
-namespace AlphaTest.Infrastructure.Database.EntityMapping
+namespace AlphaTest.Infrastructure.Database.EntityMapping.Identity
 {
     internal class AppUserEntityTypeConfiguration : IEntityTypeConfiguration<AppUser>
     {
@@ -51,11 +51,9 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
                 .HasColumnName("IsSuspended")
                 .IsRequired();
             builder
-                .HasMany(u => u.Roles)
-                .WithOne()
-                .HasForeignKey(r => r.UserId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasMany<AppUserRole>("_userRoles")
+                .WithOne(u => u.User)
+                .HasForeignKey(u => u.UserId);
         }
     }
 }
