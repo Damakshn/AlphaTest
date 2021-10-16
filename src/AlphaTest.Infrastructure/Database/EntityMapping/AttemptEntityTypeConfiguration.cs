@@ -22,7 +22,7 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
                 .WithMany()
                 .HasForeignKey(a => a.StudentID);
             builder.Property(a => a.StartedAt).IsRequired();
-            builder.Property(a => a.FinishedAt).IsRequired();
+            builder.Property(a => a.FinishedAt);
             builder.Property(a => a.ForceEndAt).IsRequired();
         }
     }
