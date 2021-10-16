@@ -33,7 +33,7 @@ namespace AlphaTest.Infrastructure.Auth
         private ICollection<AppUserRole> _userRoles;
         #endregion
 
-        public AppUser(string firstName, string lastName, string middleName, string temporaryPassword, string email)
+        public AppUser(string firstName, string lastName, string middleName, string temporaryPassword, string email, AppRole initialRole)
         {
             _firstName = firstName;
             _lastName = lastName;
@@ -48,7 +48,10 @@ namespace AlphaTest.Infrastructure.Auth
             _isSuspended = false;
             _registeredAt = DateTime.Now;
             _lastVisitedAt = null;
-            _userRoles = new List<AppUserRole>();
+            _userRoles = new List<AppUserRole>
+            {
+                new AppUserRole() { Role = initialRole, User = this }
+            };
         }
 
         #region Свойства
