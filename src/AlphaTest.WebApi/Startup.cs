@@ -19,6 +19,8 @@ namespace AlphaTest.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddEntityFramework();
+            services.AddSystemGateway();
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,10 +36,7 @@ namespace AlphaTest.WebApi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
