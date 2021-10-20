@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AlphaTest.Infrastructure.Plugins;
+using AlphaTest.Infrastructure.Database;
 
 namespace AlphaTest.WebApi
 {
@@ -16,6 +18,7 @@ namespace AlphaTest.WebApi
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddEntityFramework();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -25,6 +28,7 @@ namespace AlphaTest.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+            SeedData.EnsurePopulated(app.ApplicationServices);
 
             app.UseRouting();
 

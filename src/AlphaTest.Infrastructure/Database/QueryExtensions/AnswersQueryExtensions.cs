@@ -6,7 +6,7 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
 {
     public static class AnswersQueryExtensions
     {
-        public IQueryable<Answer> Aggregates(this DbSet<Answer> query)
+        public static IQueryable<Answer> Aggregates(this DbSet<Answer> query)
         {
             return query;
         }
