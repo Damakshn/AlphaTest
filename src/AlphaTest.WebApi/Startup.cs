@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AlphaTest.Infrastructure.Plugins;
+using AlphaTest.Application.Mediation;
 using AlphaTest.Infrastructure.Database;
 
 namespace AlphaTest.WebApi

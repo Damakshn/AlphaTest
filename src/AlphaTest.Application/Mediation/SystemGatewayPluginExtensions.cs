@@ -1,10 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MediatR;
-using System.Reflection;
-using AlphaTest.Application;
-using AlphaTest.Infrastructure.Mediation;
 
-namespace AlphaTest.Infrastructure.Plugins
+namespace AlphaTest.Application.Mediation
 {
     public static class SystemGatewayPluginExtensions
     {

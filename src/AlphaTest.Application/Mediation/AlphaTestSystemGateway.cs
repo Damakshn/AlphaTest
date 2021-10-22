@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
-using AlphaTest.Application;
 using MediatR;
 
-namespace AlphaTest.Infrastructure.Mediation
+namespace AlphaTest.Application.Mediation
 {
     public class AlphaTestSystemGateway : ISystemGateway
     {
