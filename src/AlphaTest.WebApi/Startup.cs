@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AlphaTest.Infrastructure.Plugins;
-using AlphaTest.Application.Mediation;
 using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application;
 
 namespace AlphaTest.WebApi
 {
@@ -20,7 +20,9 @@ namespace AlphaTest.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddEntityFramework();
-            services.AddSystemGateway();
+            //services.AddMapping();
+            //services.AddSystemGateway();
+            services.AddApplicationLayer();
             services.AddControllers();
         }
 

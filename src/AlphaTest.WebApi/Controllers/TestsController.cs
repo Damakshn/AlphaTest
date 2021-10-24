@@ -4,6 +4,8 @@ using System;
 using System.Threading.Tasks;
 using AlphaTest.Application;
 using AlphaTest.Application.UseCases.Tests.Commands.CreateTest;
+using AlphaTest.Application.Models.Tests;
+using AlphaTest.Application.UseCases.Tests.Queries.ViewTestInfo;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -25,6 +27,13 @@ namespace AlphaTest.WebApi.Controllers
             // ToDo return url
             return Content(testID.ToString());
              
+        }
+
+        [HttpGet("{testID}")]
+        public async Task<TestInfo> ViewTestInfo(Guid testID)
+        {
+            var request = new ViewTestInfoQuery() { TestID = testID };
+            return await _alphaTest.ExecuteUseCaseAsync(request);
         }
     }
 }

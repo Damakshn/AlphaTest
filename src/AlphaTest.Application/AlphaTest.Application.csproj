@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
@@ -12,11 +14,6 @@
   <ItemGroup>
     <ProjectReference Include="..\AlphaTest.Core\AlphaTest.Core.csproj" />
     <ProjectReference Include="..\AlphaTest.Infrastructure\AlphaTest.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="UseCases\Tests\Queries\" />
-    <Folder Include="UseCases\Tests\Queries\ViewTestInfo\" />
   </ItemGroup>
 
 </Project>
