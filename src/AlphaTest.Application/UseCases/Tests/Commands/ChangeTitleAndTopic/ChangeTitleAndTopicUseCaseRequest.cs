@@ -1,9 +1,10 @@
 ﻿using System;
 using MediatR;
+using AlphaTest.Application.UseCases.Common;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.ChangeTitleAndTopic
 {
-    public class ChangeTitleAndTopicUseCaseRequest : IRequest
+    public class ChangeTitleAndTopicUseCaseRequest : IUseCaseRequest
     {
         public Guid TestID { get; set; }
 

@@ -1,10 +1,10 @@
 ﻿using System;
 using AlphaTest.Application.Models.Tests;
-using MediatR;
+using AlphaTest.Application.UseCases.Common;
 
 namespace AlphaTest.Application.UseCases.Tests.Queries.ViewTestInfo
 {
-    public class ViewTestInfoQuery : IRequest<TestInfo>
+    public class ViewTestInfoQuery : IUseCaseRequest<TestInfo>
     {
         public Guid TestID { get; set; }
     }

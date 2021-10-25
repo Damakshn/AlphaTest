@@ -1,11 +1,11 @@
 ﻿using System;
-using MediatR;
 using AlphaTest.Core.Tests.TestSettings.TestFlow;
+using AlphaTest.Application.UseCases.Common;
 
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.ChangeRevokePolicy
 {
-    public class ChangeRevokePolicyUseCaseRequest : IRequest
+    public class ChangeRevokePolicyUseCaseRequest : IUseCaseRequest
     {
         public ChangeRevokePolicyUseCaseRequest(Guid testID, bool revokeEnabled, uint retriesLimit, bool infiniteRetriesEnabled)
         {

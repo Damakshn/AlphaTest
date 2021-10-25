@@ -1,9 +1,9 @@
 ﻿using System;
-using MediatR;
+using AlphaTest.Application.UseCases.Common;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.ChangeTimeLimit
 {
-    public class ChangeTimeLimitUseCaseRequest : IRequest
+    public class ChangeTimeLimitUseCaseRequest : IUseCaseRequest
     {
         public ChangeTimeLimitUseCaseRequest(Guid testID, TimeSpan? timeLimit)
         {

@@ -1,9 +1,9 @@
 ﻿using System;
-using MediatR;
+using AlphaTest.Application.UseCases.Common;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.CreateTest
 {
-    public class CreateTestUseCaseRequest : IRequest<Guid>
+    public class CreateTestUseCaseRequest : IUseCaseRequest<Guid>
     {
         public string Title { get; set; }
 

@@ -4,20 +4,15 @@ using MediatR;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 using AlphaTest.Core.Tests;
-using AlphaTest.Application.Exceptions;
+using AlphaTest.Application.UseCases.Common;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.ChangeRevokePolicy
 {
-    public class ChangeRevokePolicyUseCaseHandler : IRequestHandler<ChangeRevokePolicyUseCaseRequest>
+    public class ChangeRevokePolicyUseCaseHandler : UseCaseHandlerBase<ChangeRevokePolicyUseCaseRequest>
     {
-        private AlphaTestContext _db;
+        public ChangeRevokePolicyUseCaseHandler(AlphaTestContext db): base(db) { }
 
-        public ChangeRevokePolicyUseCaseHandler(AlphaTestContext db)
-        {
-            _db = db;
-        }
-
-        public async Task<Unit> Handle(ChangeRevokePolicyUseCaseRequest request, CancellationToken cancellationToken)
+        public async override Task<Unit> Handle(ChangeRevokePolicyUseCaseRequest request, CancellationToken cancellationToken)
         {
             Test test = await _db.Tests.Aggregates().FindByID(request.TestID);
             test.ChangeRevokePolicy(request.RevokePolicy);

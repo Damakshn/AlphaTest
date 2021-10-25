@@ -2,24 +2,20 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 using AlphaTest.Core.Tests;
 using AlphaTest.Infrastructure.Auth;
 using AlphaTest.Application.Exceptions;
+using AlphaTest.Application.UseCases.Common;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.CreateTest
 {
-    public class CreateTestUseCaseHandler : IRequestHandler<CreateTestUseCaseRequest, Guid>
+    public class CreateTestUseCaseHandler : UseCaseHandlerBase<CreateTestUseCaseRequest, Guid>
     {
-        private AlphaTestContext _db;
-        public CreateTestUseCaseHandler(AlphaTestContext db)
-        {
-            _db = db;
-        }
+        public CreateTestUseCaseHandler(AlphaTestContext db) : base(db) { }
 
-        public Task<Guid> Handle(CreateTestUseCaseRequest request, CancellationToken cancellationToken)
+        public override Task<Guid> Handle(CreateTestUseCaseRequest request, CancellationToken cancellationToken)
         {
             AppUser author = _db.Users.Aggregates().Where(user => user.UserName == request.Username).FirstOrDefault();
             if (author is null)

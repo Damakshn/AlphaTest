@@ -1,12 +1,11 @@
 ﻿using System;
 using AlphaTest.Core.Tests.TestSettings.TestFlow;
-using MediatR;
+using AlphaTest.Application.UseCases.Common;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.ChangeNavigationMode
 {
-    public class ChangeNavigationModeUseCaseRequest : IRequest
+    public class ChangeNavigationModeUseCaseRequest : IUseCaseRequest
     {
-
         public ChangeNavigationModeUseCaseRequest(Guid testID, int modeID)
         {
             TestID = testID;

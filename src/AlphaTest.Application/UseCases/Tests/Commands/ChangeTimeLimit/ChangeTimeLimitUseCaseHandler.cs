@@ -4,19 +4,15 @@ using MediatR;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 using AlphaTest.Core.Tests;
+using AlphaTest.Application.UseCases.Common;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.ChangeTimeLimit
 {
-    public class ChangeTimeLimitUseCaseHandler : IRequestHandler<ChangeTimeLimitUseCaseRequest>
+    public class ChangeTimeLimitUseCaseHandler : UseCaseHandlerBase<ChangeTimeLimitUseCaseRequest>
     {
-        private AlphaTestContext _db;
+        public ChangeTimeLimitUseCaseHandler(AlphaTestContext db) : base(db) { }
 
-        public ChangeTimeLimitUseCaseHandler(AlphaTestContext db)
-        {
-            _db = db;
-        }
-
-        public async Task<Unit> Handle(ChangeTimeLimitUseCaseRequest request, CancellationToken cancellationToken)
+        public async override Task<Unit> Handle(ChangeTimeLimitUseCaseRequest request, CancellationToken cancellationToken)
         {
             Test test = await _db.Tests.Aggregates().FindByID(request.TestID);
             test.ChangeTimeLimit(request.TimeLimit);

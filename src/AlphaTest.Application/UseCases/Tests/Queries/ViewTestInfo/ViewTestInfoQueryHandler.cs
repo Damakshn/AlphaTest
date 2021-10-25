@@ -2,27 +2,19 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using AlphaTest.Infrastructure.Database;
 using AutoMapper;
 using AlphaTest.Application.Models.Tests;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
+using AlphaTest.Application.UseCases.Common;
 
 namespace AlphaTest.Application.UseCases.Tests.Queries.ViewTestInfo
 {
-    public class ViewTestInfoQueryHandler : IRequestHandler<ViewTestInfoQuery, TestInfo>
-    {
-        private AlphaTestContext _db;
-        private IMapper _mapper;
+    public class ViewTestInfoQueryHandler : UseCaseReportingHandlerBase<ViewTestInfoQuery, TestInfo>
+    {   
+        public ViewTestInfoQueryHandler(AlphaTestContext db, IMapper mapper):base(db, mapper) { }
 
-        public ViewTestInfoQueryHandler(AlphaTestContext db, IMapper mapper)
-        {
-            _db = db;
-            _db.DisableTracking();
-            _mapper = mapper;
-        }
-
-        public Task<TestInfo> Handle(ViewTestInfoQuery request, CancellationToken cancellationToken)
+        public override Task<TestInfo> Handle(ViewTestInfoQuery request, CancellationToken cancellationToken)
         {
             var query = from test in _db.Tests.Aggregates().Where(t => t.ID == request.TestID)
                     join author in _db.Users.Aggregates() on test.AuthorID equals author.Id
