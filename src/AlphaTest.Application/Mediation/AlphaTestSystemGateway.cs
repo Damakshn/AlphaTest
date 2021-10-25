@@ -16,5 +16,10 @@ namespace AlphaTest.Application.Mediation
         {
             return await _mediator.Send(request);
         }
+
+        public async Task ExecuteUseCaseAsync(IRequest request)
+        {
+            await _mediator.Send(request);
+        }
     }
 }
