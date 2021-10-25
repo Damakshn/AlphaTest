@@ -10,6 +10,7 @@ using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Groups;
+using AlphaTest.Core.Tests.Publishing;
 
 namespace AlphaTest.Infrastructure.Database
 {   
@@ -32,6 +33,8 @@ namespace AlphaTest.Infrastructure.Database
         public DbSet<Answer> Answers { get; set; }
 
         public DbSet<CheckResult> Results { get; set; }
+
+        public DbSet<PublishingProposal> PublishingProposals { get; set; }
         #endregion
                         
         protected override void OnModelCreating(ModelBuilder modelBuilder)

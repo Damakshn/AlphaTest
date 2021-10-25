@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
-using AlphaTest.Application;
 using MediatR;
 
-namespace AlphaTest.Infrastructure.Mediation
+namespace AlphaTest.Application.Mediation
 {
     public class AlphaTestSystemGateway : ISystemGateway
     {
@@ -16,6 +15,11 @@ namespace AlphaTest.Infrastructure.Mediation
         public async Task<TResponse> ExecuteUseCaseAsync<TResponse>(IRequest<TResponse> request)
         {
             return await _mediator.Send(request);
+        }
+
+        public async Task ExecuteUseCaseAsync(IRequest request)
+        {
+            await _mediator.Send(request);
         }
     }
 }

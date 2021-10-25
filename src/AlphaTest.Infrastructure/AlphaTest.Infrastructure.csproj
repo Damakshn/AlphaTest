@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AlphaTest.Application\AlphaTest.Application.csproj" />
     <ProjectReference Include="..\AlphaTest.Core\AlphaTest.Core.csproj" />
   </ItemGroup>
   
