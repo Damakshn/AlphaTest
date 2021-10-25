@@ -2,19 +2,20 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using AlphaTest.WebApi.Models.Tests;
 using AlphaTest.Application;
-using AlphaTest.Application.UseCases.Tests.Commands.CreateTest;
 using AlphaTest.Application.Models.Tests;
+using AlphaTest.Application.UseCases.Tests.Commands.CreateTest;
 using AlphaTest.Application.UseCases.Tests.Queries.ViewTestInfo;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeTitleAndTopic;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeNavigationMode;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeRevokePolicy;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeTimeLimit;
-using AlphaTest.WebApi.Models.Tests;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeAttemptsLimit;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeCheckingPolicy;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangePassingScore;
 using AlphaTest.Application.UseCases.Tests.Commands.SendPublishingProposal;
+using AlphaTest.Application.UseCases.Tests.Commands.ChangeWorkCheckingMethod;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -100,6 +101,13 @@ namespace AlphaTest.WebApi.Controllers
             await _alphaTest.ExecuteUseCaseAsync(new ChangePassingScoreUseCaseRequest(testID, request.NewScore));
             return Ok();
         }
+
+        [HttpPost("{testID}/workCheckingMethod")]
+        public async Task<IActionResult> ChangeWorkCheckingMethod([FromRoute] Guid testID, [FromBody] ChangeWorkCheckingMethodRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new ChangeWorkCheckingMethodUseCaseRequest(testID, request.WorkCheckingMethodID));
+            return Ok();
+        }
         #endregion
 
         #region Заявки
@@ -107,6 +115,7 @@ namespace AlphaTest.WebApi.Controllers
         public async Task<IActionResult> ProposeTestForPublishing([FromRoute] Guid testID)
         {
             await _alphaTest.ExecuteUseCaseAsync(new SendPublishingProposalUseCaseRequest(testID));
+            // ToDo return url
             return Ok();
         }
         #endregion
