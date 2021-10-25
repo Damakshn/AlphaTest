@@ -29,6 +29,7 @@ namespace AlphaTest.WebApi.Controllers
             _alphaTest = alphaTest;
         }
 
+        #region Создание тестов
         [HttpPost]
         public async Task<IActionResult> CreateTest([FromBody]CreateTestUseCaseRequest request)
         {
@@ -37,14 +38,18 @@ namespace AlphaTest.WebApi.Controllers
             return Content(testID.ToString());
              
         }
+        #endregion
 
+        #region Просмотр информации
         [HttpGet("{testID}")]
         public async Task<TestInfo> ViewTestInfo(Guid testID)
         {
             var request = new ViewTestInfoQuery() { TestID = testID };
             return await _alphaTest.ExecuteUseCaseAsync(request);
         }
-        
+        #endregion
+
+        #region Редактирование
         [HttpPost("{testID}/rename")]
         public async Task<IActionResult> Rename([FromRoute] Guid testID, [FromBody] ChangeTitleAndTopicRequest request)
         {
@@ -95,12 +100,15 @@ namespace AlphaTest.WebApi.Controllers
             await _alphaTest.ExecuteUseCaseAsync(new ChangePassingScoreUseCaseRequest(testID, request.NewScore));
             return Ok();
         }
+        #endregion
 
-        [HttpPost("{testID}/publishingProposals")]
+        #region Заявки
+        [HttpPost("{testID}/proposeForPublishing")]
         public async Task<IActionResult> ProposeTestForPublishing([FromRoute] Guid testID)
         {
             await _alphaTest.ExecuteUseCaseAsync(new SendPublishingProposalUseCaseRequest(testID));
             return Ok();
         }
+        #endregion
     }
 }
