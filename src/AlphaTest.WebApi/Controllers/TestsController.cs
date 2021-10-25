@@ -11,7 +11,9 @@ using AlphaTest.Application.UseCases.Tests.Commands.ChangeNavigationMode;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeRevokePolicy;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeTimeLimit;
 using AlphaTest.WebApi.Models.Tests;
-
+using AlphaTest.Application.UseCases.Tests.Commands.ChangeAttemptsLimit;
+using AlphaTest.Application.UseCases.Tests.Commands.ChangeCheckingPolicy;
+using AlphaTest.Application.UseCases.Tests.Commands.ChangePassingScore;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -65,11 +67,31 @@ namespace AlphaTest.WebApi.Controllers
             return Ok();
         }
 
-
         [HttpPost("{testID}/timeLimit")]
         public async Task<IActionResult> ChangeTimeLimit([FromRoute] Guid testID, [FromBody] ChangeTimeLimitRequest request)
         {
             await _alphaTest.ExecuteUseCaseAsync(new ChangeTimeLimitUseCaseRequest(testID, request.TimeLimit));
+            return Ok();
+        }
+
+        [HttpPost("{testID}/attemptsLimit")]
+        public async Task<IActionResult> ChangeAttemptsLimit([FromRoute]Guid testID, ChangeAttemptsLimitRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new ChangeAttemptsLimitUseCaseRequest(testID, request.AttemptsLimit));
+            return Ok();
+        }
+
+        [HttpPost("{testID}/checkingPolicy")]
+        public async Task<IActionResult> ChangeCheckingPolicy([FromRoute] Guid testID, [FromBody] ChangeCheckingPolicyRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new ChangeCheckingPolicyUseCaseRequest(testID, request.PolicyID));
+            return Ok();
+        }
+
+        [HttpPost("{testID}/passingScore")]
+        public async Task<IActionResult> ChangePassingScore([FromRoute] Guid testID, [FromBody] ChangePassingScoreRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new ChangePassingScoreUseCaseRequest(testID, request.NewScore));
             return Ok();
         }
     }
