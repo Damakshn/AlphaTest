@@ -24,6 +24,10 @@ namespace AlphaTest.Infrastructure.Database
             modelBuilder.ApplyConfiguration(new AttemptEntityTypeConfiguration());
             #endregion
 
+            #region Заявки
+            modelBuilder.ApplyConfiguration(new PublishingProposalEntityTypeConfiguration());
+            #endregion
+
             #region Вопросы
             modelBuilder.ApplyConfiguration(new QuestionEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new QuestionWithDetailedAnswerEntityTypeConfiguration());
