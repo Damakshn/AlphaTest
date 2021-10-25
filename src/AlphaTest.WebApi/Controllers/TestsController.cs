@@ -14,6 +14,7 @@ using AlphaTest.WebApi.Models.Tests;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeAttemptsLimit;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeCheckingPolicy;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangePassingScore;
+using AlphaTest.Application.UseCases.Tests.Commands.SendPublishingProposal;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -92,6 +93,13 @@ namespace AlphaTest.WebApi.Controllers
         public async Task<IActionResult> ChangePassingScore([FromRoute] Guid testID, [FromBody] ChangePassingScoreRequest request)
         {
             await _alphaTest.ExecuteUseCaseAsync(new ChangePassingScoreUseCaseRequest(testID, request.NewScore));
+            return Ok();
+        }
+
+        [HttpPost("{testID}/publishingProposals")]
+        public async Task<IActionResult> ProposeTestForPublishing([FromRoute] Guid testID)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new SendPublishingProposalUseCaseRequest(testID));
             return Ok();
         }
     }
