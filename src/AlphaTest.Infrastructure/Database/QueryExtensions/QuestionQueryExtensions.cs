@@ -1,9 +1,7 @@
 ﻿using AlphaTest.Core.Tests.Questions;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AlphaTest.Infrastructure.Database.QueryExtensions
 {
@@ -20,6 +18,11 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
         {
             return query.Where(q => q.TestID == testID);
             
+        }
+
+        public static IQueryable<Question> SortByNumber(this IQueryable<Question> query)
+        {
+            return query.OrderBy(q => q.Number);
         }
     }
 }

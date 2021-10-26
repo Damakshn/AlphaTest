@@ -18,6 +18,7 @@ using AlphaTest.Application.UseCases.Tests.Commands.ChangePassingScore;
 using AlphaTest.Application.UseCases.Tests.Commands.SendPublishingProposal;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeWorkCheckingMethod;
 using AlphaTest.Application.UseCases.Tests.Commands.AddQuestion;
+using AlphaTest.Application.UseCases.Tests.Commands.QuestionList;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -132,6 +133,13 @@ namespace AlphaTest.WebApi.Controllers
             Guid questionID = await _alphaTest.ExecuteUseCaseAsync(useCaseRequest);
             // ToDo вернуть url
             return Content(questionID.ToString());
+        }
+
+        [HttpDelete("{testID}/questions/{questionID}")]
+        public async Task<IActionResult> DeleteQuestion([FromRoute] Guid testID, [FromRoute] Guid questionID)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new DeleteQuestionUseCaseRequest(testID, questionID));
+            return Ok();
         }
         #endregion
 

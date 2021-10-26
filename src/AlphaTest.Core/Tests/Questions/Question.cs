@@ -49,7 +49,7 @@ namespace AlphaTest.Core.Tests.Questions
 
         public abstract Question ReplicateForNewEdition(Test newEdition);
 
-        internal void ChangeNumber(uint number)
+        public void ChangeNumber(uint number)
         {
             Number = number;
         }
