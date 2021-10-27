@@ -1,9 +1,7 @@
 ﻿using AlphaTest.Core.Tests.Questions;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AlphaTest.Infrastructure.Database.QueryExtensions
 {
@@ -12,14 +10,18 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
         public static IQueryable<Question> Aggregates(this DbSet<Question> query)
         {
             return query
-                .Include(q => (q as SingleChoiceQuestion).Options)
-                .Include(q => (q as MultiChoiceQuestion).Options);
+                .Include(q => (q as QuestionWithChoices).Options);
         }
 
         public static IQueryable<Question> FilterByTest(this IQueryable<Question> query, Guid testID)
         {
             return query.Where(q => q.TestID == testID);
             
+        }
+
+        public static IQueryable<Question> SortByNumber(this IQueryable<Question> query)
+        {
+            return query.OrderBy(q => q.Number);
         }
     }
 }

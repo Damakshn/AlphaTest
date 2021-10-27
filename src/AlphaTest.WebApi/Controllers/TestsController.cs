@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AlphaTest.WebApi.Models.Tests;
 using AlphaTest.Application;
@@ -16,6 +17,8 @@ using AlphaTest.Application.UseCases.Tests.Commands.ChangeCheckingPolicy;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangePassingScore;
 using AlphaTest.Application.UseCases.Tests.Commands.SendPublishingProposal;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeWorkCheckingMethod;
+using AlphaTest.Application.UseCases.Tests.Commands.AddQuestion;
+using AlphaTest.Application.UseCases.Tests.Commands.QuestionList;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -106,6 +109,48 @@ namespace AlphaTest.WebApi.Controllers
         public async Task<IActionResult> ChangeWorkCheckingMethod([FromRoute] Guid testID, [FromBody] ChangeWorkCheckingMethodRequest request)
         {
             await _alphaTest.ExecuteUseCaseAsync(new ChangeWorkCheckingMethodUseCaseRequest(testID, request.WorkCheckingMethodID));
+            return Ok();
+        }
+        #endregion
+
+        #region Вопросы
+        [HttpPost("{testID}/questions")]
+        public async Task<IActionResult> AddQuestion([FromRoute] Guid testID, [FromBody] AddQuestionRequest request)
+        {   
+            // ToDo валидация
+            //  для вопросов с точным ответом должен быть указан верный ответ, если он не пришёл, то это должно считаться ошибкой
+            // ToDo может ещё как-то улучшить
+            // ToDo кортеж почему-то не десериализуется из json, временно закостылено
+            AddQuestionUseCaseRequest useCaseRequest = request.QuestionType switch
+            {
+                "SingleChoiceQuestion" => new AddSingleChoiceQuestionUseCaseRequest(testID, request.Text, request.Score, request.OptionDatas.Select(d => (text: d.Text, number: d.Number, isRight: d.IsRight)).ToList()),
+                "MultiChoiceQuestion" => new AddMultichoiceQuestionUseCaseRequest(testID, request.Text, request.Score, request.OptionDatas.Select(d => (text: d.Text, number: d.Number, isRight: d.IsRight)).ToList()),
+                "QuestionWithTextualAnswer" => new AddQuestionWithTextualAnswerUseCaseRequest(testID, request.Text, request.Score, request.TextualAnswer),
+                "QuestionWithNumericAnswer" => new AddQuestionWithNumericAnswerUseCaseRequest(testID, request.Text, request.Score, request.NumericAnswer),
+                "QuestionWithDetailedAnswer" => new AddQuestionWithDetailedAnswerUseCaseRequest(testID, request.Text, request.Score),
+                _ => throw new ArgumentException("Не указан тип вопроса для добавления.")
+            };
+            Guid questionID = await _alphaTest.ExecuteUseCaseAsync(useCaseRequest);
+            // ToDo вернуть url
+            return Content(questionID.ToString());
+        }
+
+        [HttpDelete("{testID}/questions/{questionID}")]
+        public async Task<IActionResult> DeleteQuestion([FromRoute] Guid testID, [FromRoute] Guid questionID)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new DeleteQuestionUseCaseRequest(testID, questionID));
+            return Ok();
+        }
+
+        [HttpPost("{testID}/questions/reorder")]
+        public async Task<IActionResult> ReorderQuestions([FromRoute] Guid testID, [FromBody] ReorderQuestionsRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(
+                new MoveQuestionsUseCaseRequest(
+                    testID,
+                    request.QuestionOrder.Select(x => (x.QuestionID, x.Position)).ToList()
+                ));
+            // MAYBE return url
             return Ok();
         }
         #endregion
