@@ -141,6 +141,18 @@ namespace AlphaTest.WebApi.Controllers
             await _alphaTest.ExecuteUseCaseAsync(new DeleteQuestionUseCaseRequest(testID, questionID));
             return Ok();
         }
+
+        [HttpPost("{testID}/questions/reorder")]
+        public async Task<IActionResult> ReorderQuestions([FromRoute] Guid testID, [FromBody] ReorderQuestionsRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(
+                new MoveQuestionsUseCaseRequest(
+                    testID,
+                    request.QuestionOrder.Select(x => (x.QuestionID, x.Position)).ToList()
+                ));
+            // MAYBE return url
+            return Ok();
+        }
         #endregion
 
         #region Заявки

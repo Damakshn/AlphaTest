@@ -20,15 +20,17 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.QuestionList
             Test test = await _db.Tests.Aggregates().FindByID(request.TestID);
             List<Question> questions = await _db.Questions.Aggregates().FilterByTest(test.ID).SortByNumber().ToListAsync();
             ExecuteAction(questions, request);
+            ReorderQuestions(questions);
             await _db.SaveChangesAsync();
             return Unit.Value;
         }
 
-        public void ReorderQuestions(List<Question> questions, int start, int end)
+        public void ReorderQuestions(List<Question> questions)
         {
-            for (int i = start; i <= end; i++)
+            for (int i = 0; i < questions.Count; i++)
             {
-                questions[i].ChangeNumber((uint)i - 1);
+                if (questions[i].Number != (i + 1))
+                    questions[i].ChangeNumber((uint)i + 1);
             }
         }
 

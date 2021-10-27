@@ -10,8 +10,7 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
         public static IQueryable<Question> Aggregates(this DbSet<Question> query)
         {
             return query
-                .Include(q => (q as SingleChoiceQuestion).Options)
-                .Include(q => (q as MultiChoiceQuestion).Options);
+                .Include(q => (q as QuestionWithChoices).Options);
         }
 
         public static IQueryable<Question> FilterByTest(this IQueryable<Question> query, Guid testID)

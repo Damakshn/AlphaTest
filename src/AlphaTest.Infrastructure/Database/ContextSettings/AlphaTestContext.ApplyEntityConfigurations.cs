@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using AlphaTest.Infrastructure.Database.EntityMapping;
-using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Infrastructure.Database.EntityMapping.Questions;
 using AlphaTest.Infrastructure.Database.EntityMapping.Answers;
 using AlphaTest.Infrastructure.Database.EntityMapping.Identity;
@@ -32,8 +31,9 @@ namespace AlphaTest.Infrastructure.Database
             modelBuilder.ApplyConfiguration(new QuestionEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new QuestionWithDetailedAnswerEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new QuestionOptionEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new QuestionWithChoicesEntityTypeConfiguration<SingleChoiceQuestion>());
-            modelBuilder.ApplyConfiguration(new QuestionWithChoicesEntityTypeConfiguration<MultiChoiceQuestion>());
+            modelBuilder.ApplyConfiguration(new QuestionWithChoicesEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SingleChoiceQuestionEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new MultiChoiceQuestionEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new QuestionWithNumericAnswerEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new QuestionWithTextualAnswerEntityTypeConfiguration());
             #endregion

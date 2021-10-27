@@ -15,15 +15,8 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.QuestionList
             Question questionToDelete = questions.FirstOrDefault(q => q.ID == request.QuestionID);
             if (questionToDelete is null)
                 throw new AlphaTestApplicationException($"Операция невозможна - вопрос с ID={request.QuestionID} не найден");
-            int startIndex = questions.IndexOf(questionToDelete);
             questions.Remove(questionToDelete);
-            int endIndex = questions.Count - 1;
             _db.Questions.Remove(questionToDelete);
-
-            // не делаем перенумерацию, если был удалён последний вопрос
-            if (startIndex <= endIndex)
-                ReorderQuestions(questions, startIndex, endIndex);
-
         }
     }
 }
