@@ -19,6 +19,7 @@ using AlphaTest.Application.UseCases.Tests.Commands.SendPublishingProposal;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeWorkCheckingMethod;
 using AlphaTest.Application.UseCases.Tests.Commands.AddQuestion;
 using AlphaTest.Application.UseCases.Tests.Commands.QuestionList;
+using AlphaTest.Application.UseCases.Tests.Commands.ChangeScoreDistribution;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -109,6 +110,16 @@ namespace AlphaTest.WebApi.Controllers
         public async Task<IActionResult> ChangeWorkCheckingMethod([FromRoute] Guid testID, [FromBody] ChangeWorkCheckingMethodRequest request)
         {
             await _alphaTest.ExecuteUseCaseAsync(new ChangeWorkCheckingMethodUseCaseRequest(testID, request.WorkCheckingMethodID));
+            return Ok();
+        }
+
+        [HttpPost("{testID}/scoreDistribution")]
+        public async Task<IActionResult> ConfigureScoreDistribution([FromRoute] Guid testID, [FromBody] ConfigureScoreDistributionRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(
+                new ChangeScoreDistributionUseCaseRequest(testID,
+                request.ScoreDistributionMethodID,
+                request.Score));
             return Ok();
         }
         #endregion
