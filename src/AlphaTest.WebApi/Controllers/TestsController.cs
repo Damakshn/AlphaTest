@@ -19,6 +19,10 @@ using AlphaTest.Application.UseCases.Tests.Commands.SendPublishingProposal;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeWorkCheckingMethod;
 using AlphaTest.Application.UseCases.Tests.Commands.AddQuestion;
 using AlphaTest.Application.UseCases.Tests.Commands.QuestionList;
+using AlphaTest.Application.UseCases.Tests.Commands.ChangeScoreDistribution;
+using AlphaTest.Application.UseCases.Tests.Commands.AddContributor;
+using AlphaTest.Application.UseCases.Tests.Commands.RemoveContributor;
+using AlphaTest.Application.UseCases.Tests.Commands.SwitchAuthor;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -111,6 +115,16 @@ namespace AlphaTest.WebApi.Controllers
             await _alphaTest.ExecuteUseCaseAsync(new ChangeWorkCheckingMethodUseCaseRequest(testID, request.WorkCheckingMethodID));
             return Ok();
         }
+
+        [HttpPost("{testID}/scoreDistribution")]
+        public async Task<IActionResult> ConfigureScoreDistribution([FromRoute] Guid testID, [FromBody] ConfigureScoreDistributionRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(
+                new ChangeScoreDistributionUseCaseRequest(testID,
+                request.ScoreDistributionMethodID,
+                request.Score));
+            return Ok();
+        }
         #endregion
 
         #region Вопросы
@@ -161,6 +175,29 @@ namespace AlphaTest.WebApi.Controllers
         {
             await _alphaTest.ExecuteUseCaseAsync(new SendPublishingProposalUseCaseRequest(testID));
             // ToDo return url
+            return Ok();
+        }
+        #endregion
+
+        #region Составители
+        [HttpPost("{testID}/contributors")]
+        public async Task<IActionResult> AddContributor([FromRoute] Guid testID, [FromBody] AddContributorRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new AddContributorUseCaseRequest(testID, request.TeacherID));
+            return Ok();
+        }
+
+        [HttpDelete("{testID}/contributors/{teacherID}")]
+        public async Task<IActionResult> RemoveContributor([FromRoute] Guid testID, [FromRoute] Guid teacherID)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new RemoveContributorUseCaseRequest(testID, teacherID));
+            return Ok();
+        }
+
+        [HttpPost("{testID}/switchAuthor")]
+        public async Task<IActionResult> SwitchAuthor([FromRoute] Guid testID, [FromBody] SwitchAuthorRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new SwitchAuthorUseCaseRequest(testID, request.NewAuthorID));
             return Ok();
         }
         #endregion

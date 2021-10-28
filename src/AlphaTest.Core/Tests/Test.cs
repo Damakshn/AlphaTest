@@ -240,13 +240,26 @@ namespace AlphaTest.Core.Tests
         {
             CheckRule(new OnlyTeacherCanBeSetAsNewAuthorOrContributorRule(newAuthor));
             CheckRule(new SuspendedUserCannotBeSetAsNewAuthorOrContributorRule(newAuthor));
+            // если новый автор был составителем, убираем его оттуда
+            if (_contributions.Any(c => c.TeacherID == newAuthor.ID))
+            {
+                Contribution newAuthorContribution = _contributions.First(c => c.TeacherID == newAuthor.ID);
+                _contributions.Remove(newAuthorContribution);
+            }
+            // переводим старого автора в составители
+            // так как пользователь уже был автором теста, то мы предполагаем, что он преподаватель и не заблокирован
+            // если же нет, то контроль доступа всё равно не пропустит его
+            Contribution contribution = new(this, AuthorID);
+            _contributions.Add(contribution);
             AuthorID = newAuthor.ID;
         }
 
         public void AddContributor(IAlphaTestUser contributor)
         {
             CheckRule(new TeacherCanBeAddedToContributorsOnlyOnceRule(contributor, this));
-            Contribution contribution = new(this, contributor);
+            CheckRule(new OnlyTeacherCanBeSetAsNewAuthorOrContributorRule(contributor));
+            CheckRule(new SuspendedUserCannotBeSetAsNewAuthorOrContributorRule(contributor));
+            Contribution contribution = new(this, contributor.ID);
             _contributions.Add(contribution);
         }
 
