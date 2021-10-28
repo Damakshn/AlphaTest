@@ -13,21 +13,21 @@ namespace AlphaTest.Infrastructure.Database
             {
                 using(var context = scope.ServiceProvider.GetRequiredService<AlphaTestContext>())
                 {
-                    AppRole admin = context.Roles.Where(role => role.Name == "admin").FirstOrDefault();
+                    AppRole admin = context.Roles.Where(role => role.Name == "Admin").FirstOrDefault();
                     if (admin is null)
                     {
                         admin = new() { Name = "admin", NameInRussian = "Администратор" };
                         context.Add(admin);
                     }
 
-                    AppRole teacher = context.Roles.Where(role => role.Name == "teacher").FirstOrDefault();
+                    AppRole teacher = context.Roles.Where(role => role.Name == "Teacher").FirstOrDefault();
                     if (teacher is null)
                     {
                         teacher = new() { Name = "teacher", NameInRussian = "Преподаватель" };
                         context.Add(teacher);
                     }
 
-                    AppRole student = context.Roles.Where(role => role.Name == "student").FirstOrDefault();
+                    AppRole student = context.Roles.Where(role => role.Name == "Student").FirstOrDefault();
                     if (student is null)
                     {
                         student = new() { Name = "student", NameInRussian = "Обучающийся" };
