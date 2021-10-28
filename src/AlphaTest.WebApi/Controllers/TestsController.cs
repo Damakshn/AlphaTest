@@ -22,6 +22,7 @@ using AlphaTest.Application.UseCases.Tests.Commands.QuestionList;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeScoreDistribution;
 using AlphaTest.Application.UseCases.Tests.Commands.AddContributor;
 using AlphaTest.Application.UseCases.Tests.Commands.RemoveContributor;
+using AlphaTest.Application.UseCases.Tests.Commands.SwitchAuthor;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -190,6 +191,13 @@ namespace AlphaTest.WebApi.Controllers
         public async Task<IActionResult> RemoveContributor([FromRoute] Guid testID, [FromRoute] Guid teacherID)
         {
             await _alphaTest.ExecuteUseCaseAsync(new RemoveContributorUseCaseRequest(testID, teacherID));
+            return Ok();
+        }
+
+        [HttpPost("{testID}/switchAuthor")]
+        public async Task<IActionResult> SwitchAuthor([FromRoute] Guid testID, [FromBody] SwitchAuthorRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new SwitchAuthorUseCaseRequest(testID, request.NewAuthorID));
             return Ok();
         }
         #endregion

@@ -1,6 +1,4 @@
 ﻿using AlphaTest.Core.Common.Abstractions;
-using AlphaTest.Core.Users;
-using AlphaTest.Core.Tests.Ownership.Rules;
 using System;
 
 namespace AlphaTest.Core.Tests.Ownership
@@ -9,12 +7,10 @@ namespace AlphaTest.Core.Tests.Ownership
     {
         private Contribution() { }
 
-        internal Contribution(Test test, IAlphaTestUser teacher)
-        {
-            CheckRule(new OnlyTeacherCanBeSetAsNewAuthorOrContributorRule(teacher));
-            CheckRule(new SuspendedUserCannotBeSetAsNewAuthorOrContributorRule(teacher));
+        internal Contribution(Test test, Guid teacherID)
+        {   
             TestID = test.ID;
-            TeacherID = teacher.ID;
+            TeacherID = teacherID;
         }
 
         public Contribution ReplicateForNewEdition(Test newEdition)
