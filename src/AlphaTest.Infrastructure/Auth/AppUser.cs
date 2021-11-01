@@ -9,6 +9,8 @@ namespace AlphaTest.Infrastructure.Auth
     public class AppUser: IdentityUser<Guid>, IAlphaTestUser
     {
         #region Поля
+        public static readonly TimeSpan TemporaryPasswordLifetime = new(1, 0, 0, 0);
+
         private string _firstName;
 
         private string _lastName;
@@ -34,6 +36,7 @@ namespace AlphaTest.Infrastructure.Auth
         #endregion
 
         public AppUser(string firstName, string lastName, string middleName, string temporaryPassword, string email)
+            :base()
         {
             _firstName = firstName;
             _lastName = lastName;
@@ -49,6 +52,8 @@ namespace AlphaTest.Infrastructure.Auth
             _registeredAt = DateTime.Now;
             _lastVisitedAt = null;
             _userRoles = new List<AppUserRole>();
+            _temporaryPasswordExpirationDate = DateTime.Now + TemporaryPasswordLifetime;
+            SecurityStamp = Guid.NewGuid().ToString();
         }
 
         #region Свойства

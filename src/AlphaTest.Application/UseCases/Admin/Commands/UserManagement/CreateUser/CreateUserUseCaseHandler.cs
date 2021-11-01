@@ -17,19 +17,24 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.CreateUse
 
         public override async Task<Guid> Handle(CreateUserUseCaseRequest request, CancellationToken cancellationToken)
         {   
+            AppRole initialRole = _db.Roles.FirstOrDefault(r => r.Name == request.InitialRole);
+
+            #region Проверки
+            if (initialRole is null)
+                throw new AlphaTestApplicationException($"Операция невозможна - роль {request.InitialRole} не найдена");
+            AppUserRole newUserInRole = new() { Role = initialRole, User = newUser };
+            if (_db.Users.Any(u => u.Email == request.Email))
+                throw new AlphaTestApplicationException($"Невозможно создать учетную запись - email {request.Email} уже занят.");
+            #endregion
+
             AppUser newUser = new(
                 request.FirstName,
                 request.LastName,
                 request.MiddleName,
                 request.TemporaryPassword,
                 request.Email);
-            AppRole initialRole = _db.Roles.FirstOrDefault(r => r.Name == request.InitialRole);
-            if (initialRole is null)
-                throw new AlphaTestApplicationException($"Операция невозможна - роль {request.InitialRole} не найдена");
-            AppUserRole newUserInRole = new() { Role = initialRole, User = newUser };
             _db.Users.Add(newUser);
             _db.UserRoles.Add(newUserInRole);
-            // ToDo check if user exists
             await _db.SaveChangesAsync();
             return newUser.Id;
         }
