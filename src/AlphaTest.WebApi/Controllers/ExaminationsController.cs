@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using AlphaTest.WebApi.Models.Examinations;
 using AlphaTest.Application;
 using AlphaTest.Application.UseCases.Examinations.Commands.CreateExamination;
+using AlphaTest.Application.UseCases.Examinations.Commands.ChangeExaminationTerms;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -30,6 +31,13 @@ namespace AlphaTest.WebApi.Controllers
                     request.Groups));
             // todo return url
             return Ok(examID);
+        }
+
+        [HttpPut("{examinationID}/terms")]
+        public async Task<IActionResult> ChangeExaminationTerms([FromRoute] Guid examinationID, [FromBody] ChangeExaminationTermsRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new ChangeExaminationTermsUseCaseRequest(examinationID, request.StartsAt, request.EndsAt));
+            return Ok();
         }
     }
 }
