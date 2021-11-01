@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AlphaTest.WebApi.Models.Admin.UserManagement;
 using AlphaTest.Application;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.CreateUser;
+using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SetRoles;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -34,6 +35,13 @@ namespace AlphaTest.WebApi.Controllers
                     request.TemporaryPassword, 
                     request.InitialRole));
             return Ok(userID);
+        }
+
+        [HttpPut("users/{userID}/roles")]
+        public async Task<IActionResult> SetUserRoles([FromRoute] Guid userID, [FromBody] SetRolesRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new SetRoleUseCaseRequest(userID, request.Roles));
+            return Ok();
         }
     }
 }

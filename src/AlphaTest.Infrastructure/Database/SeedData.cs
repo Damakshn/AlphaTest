@@ -16,21 +16,21 @@ namespace AlphaTest.Infrastructure.Database
                     AppRole admin = context.Roles.Where(role => role.Name == "Admin").FirstOrDefault();
                     if (admin is null)
                     {
-                        admin = new() { Name = "admin", NameInRussian = "Администратор" };
+                        admin = new("Admin", "Администратор");
                         context.Add(admin);
                     }
 
                     AppRole teacher = context.Roles.Where(role => role.Name == "Teacher").FirstOrDefault();
                     if (teacher is null)
                     {
-                        teacher = new() { Name = "teacher", NameInRussian = "Преподаватель" };
+                        teacher = new("Teacher", "Преподаватель");
                         context.Add(teacher);
                     }
 
                     AppRole student = context.Roles.Where(role => role.Name == "Student").FirstOrDefault();
                     if (student is null)
                     {
-                        student = new() { Name = "student", NameInRussian = "Обучающийся" };
+                        student = new("Student", "Обучающийся");
                         context.Add(student);
                     }
 

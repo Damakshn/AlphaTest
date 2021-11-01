@@ -20,8 +20,7 @@ namespace AlphaTest.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddEntityFramework();
-            //services.AddMapping();
-            //services.AddSystemGateway();
+            services.AddConfiguredUserManagement();
             services.AddApplicationLayer();
             services.AddControllers();
         }
@@ -33,9 +32,13 @@ namespace AlphaTest.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+            
             SeedData.EnsurePopulated(app.ApplicationServices);
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
