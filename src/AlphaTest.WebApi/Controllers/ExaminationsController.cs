@@ -23,6 +23,7 @@ namespace AlphaTest.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNewExamination([FromBody] CreateExaminationRequest request)
         {
+            // ToDo group list validation not null
             Guid examID = await _alphaTest.ExecuteUseCaseAsync(
                 new CreateExaminationUseCaseRequest(
                     request.TestID, 
