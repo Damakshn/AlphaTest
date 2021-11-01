@@ -5,6 +5,7 @@ using AlphaTest.WebApi.Models.Examinations;
 using AlphaTest.Application;
 using AlphaTest.Application.UseCases.Examinations.Commands.CreateExamination;
 using AlphaTest.Application.UseCases.Examinations.Commands.ChangeExaminationTerms;
+using AlphaTest.Application.UseCases.Examinations.Commands.CancelExamination;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -37,6 +38,13 @@ namespace AlphaTest.WebApi.Controllers
         public async Task<IActionResult> ChangeExaminationTerms([FromRoute] Guid examinationID, [FromBody] ChangeExaminationTermsRequest request)
         {
             await _alphaTest.ExecuteUseCaseAsync(new ChangeExaminationTermsUseCaseRequest(examinationID, request.StartsAt, request.EndsAt));
+            return Ok();
+        }
+
+        [HttpDelete("{examinationID}")]
+        public async Task<IActionResult> CancelExamination([FromRoute] Guid examinationID)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new CancelExaminationUseCaseRequest(examinationID));
             return Ok();
         }
     }
