@@ -4,6 +4,7 @@ using AlphaTest.Application.UseCases.Groups.CreateGroup;
 using AlphaTest.WebApi.Models.Groups;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using AlphaTest.Application.UseCases.Groups.DisbandGroup;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -24,6 +25,13 @@ namespace AlphaTest.WebApi.Controllers
             Guid groupID = await _alphaTest.ExecuteUseCaseAsync(new CreateGroupUseCaseRequest(request.Name, request.BeginDate, request.EndDate));
             // ToDo return url
             return Ok(groupID);
+        }
+
+        [HttpDelete("{groupID}")]
+        public async Task<IActionResult> DisbandGroup([FromRoute] Guid groupID)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new DisbandGroupUseCaseRequest(groupID));
+            return Ok();
         }
     }
 }
