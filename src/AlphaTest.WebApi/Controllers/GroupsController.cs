@@ -5,6 +5,8 @@ using AlphaTest.WebApi.Models.Groups;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using AlphaTest.Application.UseCases.Groups.DisbandGroup;
+using AlphaTest.Application.UseCases.Groups.AddStudent;
+using AlphaTest.Application.UseCases.Groups.ExcluedStudent;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -31,6 +33,20 @@ namespace AlphaTest.WebApi.Controllers
         public async Task<IActionResult> DisbandGroup([FromRoute] Guid groupID)
         {
             await _alphaTest.ExecuteUseCaseAsync(new DisbandGroupUseCaseRequest(groupID));
+            return Ok();
+        }
+
+        [HttpPost("{groupID}/students")]
+        public async Task<IActionResult> AddStudent([FromRoute] Guid GroupID, [FromBody] AddStudentRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new AddStudentUseCaseRequest(GroupID, request.StudentID));
+            return Ok();
+        }
+
+        [HttpDelete("{groupID}/students/{studentID}")]
+        public async Task<IActionResult> ExcludeStudent([FromRoute] Guid groupID, [FromRoute] Guid studentID)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new ExcludeStudentUseCaseRequest(groupID, studentID));
             return Ok();
         }
     }
