@@ -22,7 +22,6 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.CreateUse
             #region Проверки
             if (initialRole is null)
                 throw new AlphaTestApplicationException($"Операция невозможна - роль {request.InitialRole} не найдена");
-            AppUserRole newUserInRole = new() { Role = initialRole, User = newUser };
             if (_db.Users.Any(u => u.Email == request.Email))
                 throw new AlphaTestApplicationException($"Невозможно создать учетную запись - email {request.Email} уже занят.");
             #endregion
@@ -34,6 +33,7 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.CreateUse
                 request.TemporaryPassword,
                 request.Email);
             _db.Users.Add(newUser);
+            AppUserRole newUserInRole = new() { Role = initialRole, User = newUser };
             _db.UserRoles.Add(newUserInRole);
             await _db.SaveChangesAsync();
             return newUser.Id;
