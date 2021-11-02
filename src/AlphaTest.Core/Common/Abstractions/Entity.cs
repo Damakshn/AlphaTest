@@ -2,7 +2,7 @@
 
 namespace AlphaTest.Core.Common.Abstractions
 {
-    public abstract class Entity
+    public abstract class Entity : ICanCheckRules
     {
         public void CheckRule(IBusinessRule rule)
         {

@@ -8,6 +8,7 @@ using AlphaTest.WebApi.Models.Admin.UserManagement;
 using AlphaTest.Application;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.CreateUser;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SetRoles;
+using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SuspendUser;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -41,6 +42,16 @@ namespace AlphaTest.WebApi.Controllers
         public async Task<IActionResult> SetUserRoles([FromRoute] Guid userID, [FromBody] SetRolesRequest request)
         {
             await _alphaTest.ExecuteUseCaseAsync(new SetRoleUseCaseRequest(userID, request.Roles));
+            return Ok();
+        }
+
+        [HttpDelete("users/{userID}")]
+        public async Task<IActionResult> SuspendUser([FromRoute] Guid userID)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(
+                new SuspendUserUseCaseRequest(
+                    userID,
+                    Guid.NewGuid())); // ToDo костыль (аутентификация)
             return Ok();
         }
     }

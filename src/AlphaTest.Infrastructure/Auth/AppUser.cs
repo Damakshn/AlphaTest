@@ -2,11 +2,15 @@
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
+using AlphaTest.Core.Common.Abstractions;
 using AlphaTest.Core.Users;
+using AlphaTest.Core.Users.Rules;
+using AlphaTest.Core.Common;
+using AlphaTest.Core.Common.Exceptions;
 
 namespace AlphaTest.Infrastructure.Auth
 {
-    public class AppUser: IdentityUser<Guid>, IAlphaTestUser
+    public class AppUser: IdentityUser<Guid>, IAlphaTestUser, ICanCheckRules
     {
         #region Поля
         public static readonly TimeSpan TemporaryPasswordLifetime = new(1, 0, 0, 0);
@@ -92,12 +96,19 @@ namespace AlphaTest.Infrastructure.Auth
 
         public void Suspend()
         {
+            CheckRule(new AdminUserCannotBeSuspendedRule(this));
             _isSuspended = true;
         }
 
         public void Unlock()
         {
             _isSuspended = false;
+        }
+
+        public void CheckRule(IBusinessRule rule)
+        {
+            if (rule.IsBroken)
+                throw new BusinessException(rule);
         }
 
         private bool HasRole(string roleName)

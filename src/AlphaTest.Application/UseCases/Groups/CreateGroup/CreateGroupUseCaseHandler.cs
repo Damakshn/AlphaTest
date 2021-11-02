@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AlphaTest.Application.UseCases.Common;
@@ -10,13 +9,15 @@ namespace AlphaTest.Application.UseCases.Groups.CreateGroup
 {
     public class CreateGroupUseCaseHandler : UseCaseHandlerBase<CreateGroupUseCaseRequest, Guid>
     {
-        public CreateGroupUseCaseHandler(AlphaTestContext db) : base(db)
+        private readonly IGroupUniquenessChecker _uniquenessChecker;
+        public CreateGroupUseCaseHandler(AlphaTestContext db, IGroupUniquenessChecker uniquenessChecker) : base(db)
         {
+            _uniquenessChecker = uniquenessChecker;
         }
 
         public override Task<Guid> Handle(CreateGroupUseCaseRequest request, CancellationToken cancellationToken)
         {
-            bool groupAlreadyExists = _db.Groups.Any(g => g.Name == request.Name && (g.BeginDate >= request.BeginDate || g.EndDate <= request.EndDate));
+            bool groupAlreadyExists = _uniquenessChecker.CheckIfGroupExists(request.Name, request.BeginDate, request.EndDate);
             Group group = new(request.Name, request.BeginDate, request.EndDate, groupAlreadyExists);
             _db.Groups.Add(group);
             _db.SaveChanges();

@@ -48,5 +48,13 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
 
             return result;
         }
+
+        public static async Task<Group> FindByID(this IQueryable<Group> query, Guid id)
+        {
+            Group group = await query.FirstOrDefaultAsync(g => g.ID == id);
+            if (group is null)
+                throw new EntityNotFoundException($"Группа с ID={id} не найдена.");
+            return group;
+        }
     }
 }
