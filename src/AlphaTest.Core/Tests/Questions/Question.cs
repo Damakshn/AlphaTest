@@ -24,7 +24,7 @@ namespace AlphaTest.Core.Tests.Questions
 
         protected Question(Guid testID, QuestionText text, uint number, QuestionScore score)
         {
-            CheckCommonRules(score);
+            CheckCommonRules(score, text);
             ID = Guid.NewGuid();
             TestID = testID;
             Text = text;
@@ -47,6 +47,15 @@ namespace AlphaTest.Core.Tests.Questions
             Score = score;
         }
 
+        public void ChangeText(Test test, QuestionText text)
+        {
+            if (test is null) throw new ArgumentNullException(nameof(test));
+            // ToDo unit test this
+            CheckRule(new NonDraftTestCannotBeEditedRule(test));
+            CheckRule(new QuestionTextMustMeSpecifiedRule(text));
+            Text = text;
+        }
+
         public abstract Question ReplicateForNewEdition(Test newEdition);
 
         public void ChangeNumber(uint number)
@@ -54,9 +63,10 @@ namespace AlphaTest.Core.Tests.Questions
             Number = number;
         }
 
-        private void CheckCommonRules(QuestionScore score)
+        private void CheckCommonRules(QuestionScore score, QuestionText text)
         {
             CheckRule(new QuestionScoreMustBeSpecifiedRule(score));
+            CheckRule(new QuestionTextMustMeSpecifiedRule(text));
         }
         #endregion
 

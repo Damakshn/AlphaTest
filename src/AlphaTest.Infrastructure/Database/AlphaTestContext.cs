@@ -24,6 +24,8 @@ namespace AlphaTest.Infrastructure.Database
 
         public DbSet<Question> Questions { get; set; }
 
+        public DbSet<QuestionOption> QuestionOptions { get; set; }
+
         public DbSet<Group> Groups { get; set; }
 
         public DbSet<Examination> Examinations { get; set; }
