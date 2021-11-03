@@ -277,12 +277,14 @@ namespace AlphaTest.Core.Tests
             CheckRule(new OnlyPublishedTestsCanBeReplicatedRule(this));
             Test replica = (Test)this.MemberwiseClone();
             replica.ID = Guid.NewGuid();
+            replica.RevokePolicy = RevokePolicy.Replicate();
             replica._contributions = new List<Contribution>();
             foreach(var source in this._contributions)
             {
                 Contribution copy = source.ReplicateForNewEdition(replica);
                 replica._contributions.Add(copy);
             }
+            Status = TestStatus.Archived;
             replica.Version = this.Version + 1;
             replica.Status = TestStatus.Draft;
             return replica;

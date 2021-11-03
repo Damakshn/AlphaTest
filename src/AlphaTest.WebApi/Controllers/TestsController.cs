@@ -24,6 +24,7 @@ using AlphaTest.Application.UseCases.Tests.Commands.AddContributor;
 using AlphaTest.Application.UseCases.Tests.Commands.RemoveContributor;
 using AlphaTest.Application.UseCases.Tests.Commands.SwitchAuthor;
 using AlphaTest.Application.UseCases.Tests.Commands.EditQuestion;
+using AlphaTest.Application.UseCases.Tests.Commands.NewEdition;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -46,6 +47,13 @@ namespace AlphaTest.WebApi.Controllers
             // ToDo return url
             return Content(testID.ToString());
              
+        }
+
+        [HttpPost("{testID}/newEdition")]
+        public async Task<IActionResult> CreateNewEdition([FromRoute] Guid testID)
+        {
+            Guid newEditionID = await _alphaTest.ExecuteUseCaseAsync(new CreateNewEditionOfTestUseCaseRequest(testID));
+            return Ok(newEditionID);
         }
         #endregion
 
