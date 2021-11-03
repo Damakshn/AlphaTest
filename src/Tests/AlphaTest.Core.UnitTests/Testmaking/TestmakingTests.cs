@@ -167,6 +167,14 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             );
         }
 
+        [Theory, TestmakingTestsData]
+        public void Old_version_of_test_is_archived_after_replication(Test sut)
+        {
+            HelpersForTests.SetNewStatusForTest(sut, TestStatus.Published);
+            _ = sut.Replicate();
+            Assert.Equal(sut.Status, TestStatus.Archived);
+        }
+
 
         #region Тестовые данные
 

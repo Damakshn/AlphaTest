@@ -56,7 +56,7 @@ namespace AlphaTest.Infrastructure.Auth
             _registeredAt = DateTime.Now;
             _lastVisitedAt = null;
             _userRoles = new List<AppUserRole>();
-            _temporaryPasswordExpirationDate = DateTime.Now + TemporaryPasswordLifetime;
+            _temporaryPasswordExpirationDate = CalculateTemporaryPasswordExpirationDate();
             SecurityStamp = Guid.NewGuid().ToString();
         }
 
@@ -91,7 +91,9 @@ namespace AlphaTest.Infrastructure.Auth
         #region Методы
         public void ResetTemporaryPassword(string newPassword)
         {
-            throw new NotImplementedException();
+            _temporaryPassword = newPassword;
+            new PasswordHasher<AppUser>().HashPassword(this, newPassword);
+            _temporaryPasswordExpirationDate = CalculateTemporaryPasswordExpirationDate();
         }
 
         public void Suspend()
@@ -114,6 +116,11 @@ namespace AlphaTest.Infrastructure.Auth
         private bool HasRole(string roleName)
         {
             return _userRoles.Where(userRole => userRole.Role.Name == roleName).FirstOrDefault() is not null;
+        }
+
+        private static DateTime CalculateTemporaryPasswordExpirationDate()
+        {
+            return DateTime.Now + TemporaryPasswordLifetime;
         }
         #endregion
     }

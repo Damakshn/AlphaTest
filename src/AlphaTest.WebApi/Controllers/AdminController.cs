@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AlphaTest.WebApi.Models.Admin.UserManagement;
 using AlphaTest.Application;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.CreateUser;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SetRoles;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SuspendUser;
+using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.GenerateTemporaryPassword;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -52,6 +50,13 @@ namespace AlphaTest.WebApi.Controllers
                 new SuspendUserUseCaseRequest(
                     userID,
                     Guid.NewGuid())); // ToDo костыль (аутентификация)
+            return Ok();
+        }
+
+        [HttpPost("users/{userID}/repeatPasswordGeneration")]
+        public async Task<IActionResult> RepeatPasswordGeneration([FromRoute] Guid userID)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new GenerateTemporaryPasswordUseCaseRequest(userID));
             return Ok();
         }
     }

@@ -2,10 +2,12 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AlphaTest.WebApi.Models.Examinations;
+using AlphaTest.WebApi.Models.Admin.Examinations;
 using AlphaTest.Application;
 using AlphaTest.Application.UseCases.Examinations.Commands.CreateExamination;
 using AlphaTest.Application.UseCases.Examinations.Commands.ChangeExaminationTerms;
 using AlphaTest.Application.UseCases.Examinations.Commands.CancelExamination;
+using AlphaTest.Application.UseCases.Admin.Commands.Examinations.SwitchExaminer;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -46,6 +48,13 @@ namespace AlphaTest.WebApi.Controllers
         public async Task<IActionResult> CancelExamination([FromRoute] Guid examinationID)
         {
             await _alphaTest.ExecuteUseCaseAsync(new CancelExaminationUseCaseRequest(examinationID));
+            return Ok();
+        }
+
+        [HttpPut("{examinationID}/examiner")]
+        public async Task<IActionResult> SwitchExaminer([FromRoute] Guid examinationID, [FromBody] SwitchExaminerRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new SwitchExaminerUseCaseRequest(examinationID, request.ExaminerID));
             return Ok();
         }
     }

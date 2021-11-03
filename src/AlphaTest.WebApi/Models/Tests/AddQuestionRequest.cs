@@ -14,7 +14,7 @@ namespace AlphaTest.WebApi.Models.Tests
 
         public List<(string text, uint number, bool isRight)> OptionsData { get; set; }
 
-        public List<OptionData> OptionDatas { get; set; }
+        public List<OptionData> Options { get; set; }
 
         public string TextualAnswer { get; set; }
 

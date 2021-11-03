@@ -1,7 +1,9 @@
 ﻿using AlphaTest.Core.Tests.Questions;
+using AlphaTest.Infrastructure.Database.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AlphaTest.Infrastructure.Database.QueryExtensions
 {
@@ -22,6 +24,14 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
         public static IQueryable<Question> SortByNumber(this IQueryable<Question> query)
         {
             return query.OrderBy(q => q.Number);
+        }
+
+        public static async Task<Question> FindByID(this IQueryable<Question> query, Guid id)
+        {
+            Question question = await query.FirstOrDefaultAsync(t => t.ID == id);
+            if (question is null)
+                throw new EntityNotFoundException($"Вопрос с ID={id} не найден.");
+            return question;
         }
     }
 }

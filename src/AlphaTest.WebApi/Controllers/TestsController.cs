@@ -23,6 +23,8 @@ using AlphaTest.Application.UseCases.Tests.Commands.ChangeScoreDistribution;
 using AlphaTest.Application.UseCases.Tests.Commands.AddContributor;
 using AlphaTest.Application.UseCases.Tests.Commands.RemoveContributor;
 using AlphaTest.Application.UseCases.Tests.Commands.SwitchAuthor;
+using AlphaTest.Application.UseCases.Tests.Commands.EditQuestion;
+using AlphaTest.Application.UseCases.Tests.Commands.NewEdition;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -45,6 +47,13 @@ namespace AlphaTest.WebApi.Controllers
             // ToDo return url
             return Content(testID.ToString());
              
+        }
+
+        [HttpPost("{testID}/newEdition")]
+        public async Task<IActionResult> CreateNewEdition([FromRoute] Guid testID)
+        {
+            Guid newEditionID = await _alphaTest.ExecuteUseCaseAsync(new CreateNewEditionOfTestUseCaseRequest(testID));
+            return Ok(newEditionID);
         }
         #endregion
 
@@ -137,8 +146,8 @@ namespace AlphaTest.WebApi.Controllers
             // ToDo кортеж почему-то не десериализуется из json, временно закостылено
             AddQuestionUseCaseRequest useCaseRequest = request.QuestionType switch
             {
-                "SingleChoiceQuestion" => new AddSingleChoiceQuestionUseCaseRequest(testID, request.Text, request.Score, request.OptionDatas.Select(d => (text: d.Text, number: d.Number, isRight: d.IsRight)).ToList()),
-                "MultiChoiceQuestion" => new AddMultichoiceQuestionUseCaseRequest(testID, request.Text, request.Score, request.OptionDatas.Select(d => (text: d.Text, number: d.Number, isRight: d.IsRight)).ToList()),
+                "SingleChoiceQuestion" => new AddSingleChoiceQuestionUseCaseRequest(testID, request.Text, request.Score, request.Options.Select(d => (text: d.Text, number: d.Number, isRight: d.IsRight)).ToList()),
+                "MultiChoiceQuestion" => new AddMultichoiceQuestionUseCaseRequest(testID, request.Text, request.Score, request.Options.Select(d => (text: d.Text, number: d.Number, isRight: d.IsRight)).ToList()),
                 "QuestionWithTextualAnswer" => new AddQuestionWithTextualAnswerUseCaseRequest(testID, request.Text, request.Score, request.TextualAnswer),
                 "QuestionWithNumericAnswer" => new AddQuestionWithNumericAnswerUseCaseRequest(testID, request.Text, request.Score, request.NumericAnswer),
                 "QuestionWithDetailedAnswer" => new AddQuestionWithDetailedAnswerUseCaseRequest(testID, request.Text, request.Score),
@@ -153,6 +162,34 @@ namespace AlphaTest.WebApi.Controllers
         public async Task<IActionResult> DeleteQuestion([FromRoute] Guid testID, [FromRoute] Guid questionID)
         {
             await _alphaTest.ExecuteUseCaseAsync(new DeleteQuestionUseCaseRequest(testID, questionID));
+            return Ok();
+        }
+
+        [HttpPatch("{testID}/questions/{questionID}")]
+        public async Task<IActionResult> EditQuestion([FromRoute] Guid testID, [FromRoute] Guid questionID, [FromBody] EditQuestionRequest request)
+        {
+            // ToDo валидация
+            // ToDo может ещё как-то улучшить
+            // ToDo кортеж почему-то не десериализуется из json, временно закостылено
+            EditQuestionUseCaseRequest useCaseRequest = request.QuestionType switch
+            {
+                var qt when
+                    qt == "SingleChoiceQuestion" ||
+                    qt == "MultiChoiceQuestion" ||
+                    qt == "QuestionWithChoices" => new EditQuestionWithChoicesUseCaseRequest(
+                        testID, 
+                        questionID, 
+                        request.Score, 
+                        request.Text, 
+                        request.Options is not null 
+                            ? request.Options.Select(d => (text: d.Text, number: d.Number, isRight: d.IsRight)).ToList()
+                            : null),
+                "QuestionWithTextualAnswer" => new EditQuestionWithTextualAnswerUseCaseRequest(testID, questionID, request.Score, request.Text, request.TextualAnswer),
+                "QuestionWithNumericAnswer" => new EditQuestionWithNumericAnswerUseCaseRequest(testID, questionID, request.Score, request.Text, request.NumericAnswer),
+                "QuestionWithDetailedAnswer" => new EditQuestionWithDetailedAnswerUseCaseRequest(testID, questionID, request.Score, request.Text),
+                _ => throw new ArgumentException("Не указан тип вопроса для редактирования.")
+            };
+            await _alphaTest.ExecuteUseCaseAsync(useCaseRequest);
             return Ok();
         }
 

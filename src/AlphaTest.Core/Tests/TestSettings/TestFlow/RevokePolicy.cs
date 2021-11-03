@@ -23,5 +23,10 @@ namespace AlphaTest.Core.Tests.TestSettings.TestFlow
             RetriesLimit = retriesLimit;
             InfiniteRetriesEnabled = infiniteRetriesEnabled;
         }
+
+        public RevokePolicy Replicate()
+        {
+            return (RevokePolicy)this.MemberwiseClone();
+        }
     }
 }

@@ -38,6 +38,7 @@ namespace AlphaTest.Core.Tests.Questions
                 newOptionsData
                     .Select(o => new QuestionOption(this.ID, o.text, o.number, o.isRight))
                         .ToList();
+            Options.Clear();
             Options = options;
         }
 
