@@ -19,6 +19,7 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
             builder.HasOne<AppUser>()
                 .WithMany()
                 .HasForeignKey(p => p.AssigneeID)
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
             builder.Property(p => p.SentAt).IsRequired();
             builder.Property(p => p.Status)

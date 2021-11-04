@@ -21,7 +21,7 @@ namespace AlphaTest.Core.UnitTests.Groups
             GroupTestData data = new() { GroupAlreadyExists = true };
 
             AssertBrokenRule<GroupMustBeUniqueRule>(() =>
-                new Group(data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists)
+                new Group(data.Name, data.BeginDate, data.EndDate, null, data.GroupAlreadyExists)
             );
         }
 
@@ -34,7 +34,7 @@ namespace AlphaTest.Core.UnitTests.Groups
                 EndDate = DateTime.Now.AddDays(50)
             };
             AssertBrokenRule<GroupCannotBeCreatedInThePastRule>(() =>
-                new Group(data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists)
+                new Group(data.Name, data.BeginDate, data.EndDate, null, data.GroupAlreadyExists)
             );
         }
 
@@ -47,7 +47,7 @@ namespace AlphaTest.Core.UnitTests.Groups
                 EndDate = DateTime.Now.AddDays(10)
             };
             AssertBrokenRule<GroupEndDateMustFollowBeginDateRule>(() =>
-                new Group(data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists)
+                new Group(data.Name, data.BeginDate, data.EndDate, null, data.GroupAlreadyExists)
             );
         }
 
@@ -62,7 +62,7 @@ namespace AlphaTest.Core.UnitTests.Groups
                 Name = groupName
             };
             AssertBrokenRule<GroupNameMustBeProvidedRule>(() =>
-                new Group(data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists)
+                new Group(data.Name, data.BeginDate, data.EndDate, null, data.GroupAlreadyExists)
             );
         }
 

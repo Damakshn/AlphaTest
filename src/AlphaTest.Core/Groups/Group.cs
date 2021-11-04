@@ -16,17 +16,21 @@ namespace AlphaTest.Core.Groups
         #region Конструкторы
         private Group() { }
 
-        public Group(string name, DateTime beginDate, DateTime endDate, bool groupAlreadyExists)
+        public Group(string name, DateTime beginDate, DateTime endDate, IAlphaTestUser curator, bool groupAlreadyExists)
         {
             CheckRule(new GroupMustBeUniqueRule(groupAlreadyExists));
             CheckCommonRulesForDates(beginDate, endDate);
             CheckRule(new GroupNameMustBeProvidedRule(name));
+            // ToDo unit test
+            if (curator is not null)
+                CheckRule(new OnlyTeacherCanBeAssignedAsCurator(curator));
             ID = Guid.NewGuid();
             Name = name;
             BeginDate = beginDate;
             EndDate = endDate;
             IsDisbanded = false;
             _members = new List<Membership>();
+            CuratorID = curator?.ID;
         }
         #endregion
 
@@ -42,6 +46,8 @@ namespace AlphaTest.Core.Groups
         public IReadOnlyCollection<Membership> Memberships => _members.AsReadOnly();
 
         public bool IsDisbanded { get; private set; }
+
+        public Guid? CuratorID { get; private set; }
 
         // MAYBE придумать другое название
         public bool IsGone => EndDate <= DateTime.Now;
@@ -99,6 +105,20 @@ namespace AlphaTest.Core.Groups
             CheckRule(new GroupMustBeUniqueRule(groupAlreadyExists));
             CheckRule(new GroupNameMustBeProvidedRule(newName));
             Name = newName;
+        }
+
+        public void AssignCurator(IAlphaTestUser curator)
+        {
+            // Todo unit test
+            CheckRule(new CuratorMustBeProvidedForAssignmentRule(curator));
+            CheckRule(new OnlyTeacherCanBeAssignedAsCurator(curator));
+            CuratorID = curator.ID;
+        }
+
+        public void UnsetCurator()
+        {
+            // Todo unit test
+            CuratorID = null;
         }
         #endregion
 

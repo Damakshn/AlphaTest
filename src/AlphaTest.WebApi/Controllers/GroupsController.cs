@@ -8,6 +8,8 @@ using AlphaTest.Application.UseCases.Groups.DisbandGroup;
 using AlphaTest.Application.UseCases.Groups.AddStudent;
 using AlphaTest.Application.UseCases.Groups.ExcluedStudent;
 using AlphaTest.Application.UseCases.Groups.EditGroupInfo;
+using AlphaTest.Application.UseCases.Groups.AssignCurator;
+using AlphaTest.Application.UseCases.Groups.UnsetCurator;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -22,14 +24,17 @@ namespace AlphaTest.WebApi.Controllers
             _alphaTest = alphaTest;
         }
 
+        #region Создание групп
         [HttpPost]
         public async Task<IActionResult> CreateNewGroup([FromBody] CreateGroupRequest request)
         {
-            Guid groupID = await _alphaTest.ExecuteUseCaseAsync(new CreateGroupUseCaseRequest(request.Name, request.BeginDate, request.EndDate));
+            Guid groupID = await _alphaTest.ExecuteUseCaseAsync(new CreateGroupUseCaseRequest(request.Name, request.BeginDate, request.EndDate, request.CuratorID));
             // ToDo return url
             return Ok(groupID);
         }
+        #endregion
 
+        #region Редактирование, расформирование
         [HttpPut("{groupID}/info")]
         public async Task<IActionResult> EditGroupInfo([FromRoute] Guid groupID, [FromBody] EditGroupRequest request)
         {
@@ -43,7 +48,9 @@ namespace AlphaTest.WebApi.Controllers
             await _alphaTest.ExecuteUseCaseAsync(new DisbandGroupUseCaseRequest(groupID));
             return Ok();
         }
+        #endregion
 
+        #region Добавить/убрать студентов
         [HttpPost("{groupID}/students")]
         public async Task<IActionResult> AddStudent([FromRoute] Guid GroupID, [FromBody] AddStudentRequest request)
         {
@@ -57,5 +64,22 @@ namespace AlphaTest.WebApi.Controllers
             await _alphaTest.ExecuteUseCaseAsync(new ExcludeStudentUseCaseRequest(groupID, studentID));
             return Ok();
         }
+        #endregion
+
+        #region Назначить/убрать куратора
+        [HttpPost("{groupID}/curator")]
+        public async Task<IActionResult> AssignCurator([FromRoute] Guid groupID, [FromBody] AssignCuratorRequest request)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new AssignCuratorUseCaseRequest(groupID, request.CuratorID));
+            return Ok();
+        }
+
+        [HttpDelete("{groupID}/curator")]
+        public async Task<IActionResult> UnsetCurator([FromRoute] Guid groupID)
+        {
+            await _alphaTest.ExecuteUseCaseAsync(new UnsetCuratorUseCaseRequest(groupID));
+            return Ok();
+        }
+        #endregion
     }
 }
