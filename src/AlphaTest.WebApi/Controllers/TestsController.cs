@@ -210,9 +210,9 @@ namespace AlphaTest.WebApi.Controllers
         [HttpPost("{testID}/proposeForPublishing")]
         public async Task<IActionResult> ProposeTestForPublishing([FromRoute] Guid testID)
         {
-            await _alphaTest.ExecuteUseCaseAsync(new SendPublishingProposalUseCaseRequest(testID));
+            Guid proposalID = await _alphaTest.ExecuteUseCaseAsync(new SendPublishingProposalUseCaseRequest(testID));
             // ToDo return url
-            return Ok();
+            return Ok(proposalID);
         }
         #endregion
 

@@ -16,6 +16,8 @@ namespace AlphaTest.Core.Tests.Publishing
 			SentAt = DateTime.Now;
 			Status = ProposalStatus.NEW;
 			ID = Guid.NewGuid();
+			AssignedAt = null;
+			FinishedAt = null;
 			// ToDo Domain event
 		}
 
@@ -23,21 +25,22 @@ namespace AlphaTest.Core.Tests.Publishing
 
         public Guid TestID { get; private set; }
 
-		public Guid AssigneeID { get; private set; }
+		public Guid? AssigneeID { get; private set; }
 
 		public ProposalStatus Status { get; private set; }
 
         public DateTime SentAt { get; private set; }
 
-		public DateTime AssignedAt { get; private set; }
+		public DateTime? AssignedAt { get; private set; }
 
-		public DateTime FinishedAt { get; private set; }
+		public DateTime? FinishedAt { get; private set; }
 
 		public string Remark { get; private set; }
 
 		public void AssignTo(IAlphaTestUser admin)
         {
 			CheckRule(new ProposalCanBeAssignedOnlyToAdminUsersRule(admin));
+			CheckRule(new OnlyNewProposalsCanBeAssignedToAdminRule(this));
 			AssignedAt = DateTime.Now;
 			AssigneeID = admin.ID;
 			Status = ProposalStatus.PENDING;
@@ -45,6 +48,8 @@ namespace AlphaTest.Core.Tests.Publishing
 
 		public void Approve()
         {
+			// todo unit test
+			CheckRule(new OnlyPendingProposalCanBeAprovedOrDeclinedRule(this));
 			FinishedAt = DateTime.Now;
 			Status = ProposalStatus.APPROVED;
 			// ToDo domain event
@@ -52,6 +57,8 @@ namespace AlphaTest.Core.Tests.Publishing
 
 		public void Decline(string remark)
         {
+			// todo unit test
+			CheckRule(new OnlyPendingProposalCanBeAprovedOrDeclinedRule(this));
 			CheckRule(new RemarkMustBeProvidedWhenProposalIsDeclinedRule(remark));
 			Status = ProposalStatus.DECLINED;
 			Remark = remark;
