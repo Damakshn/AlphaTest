@@ -8,7 +8,7 @@ namespace AlphaTest.Core.UnitTests.Common.Helpers
     {
         public static Group CreateGroup(GroupTestData data)
         {
-            return new Group(data.Name, data.BeginDate, data.EndDate, data.GroupAlreadyExists);
+            return new Group(data.Name, data.BeginDate, data.EndDate, null, data.GroupAlreadyExists);
         }
 
         public static void SetGroupDates(Group group, DateTime beginDate, DateTime endDate)

@@ -11,7 +11,7 @@ namespace AlphaTest.Core.UnitTests.Fixtures.Groups
         {
             fixture.Customize<Group>(
                 c => c.FromFactory(
-                    (string groupName) => new Group(groupName, DateTime.Now.AddDays(1), DateTime.Now.AddDays(100), false)
+                    (string groupName) => new Group(groupName, DateTime.Now.AddDays(1), DateTime.Now.AddDays(100), null, false)
                 )
             );
         }

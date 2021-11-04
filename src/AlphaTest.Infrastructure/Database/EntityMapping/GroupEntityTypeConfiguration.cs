@@ -15,6 +15,11 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
             builder.Property(g => g.BeginDate).IsRequired();
             builder.Property(g => g.EndDate).IsRequired();
             builder.Property(g => g.IsDisbanded).IsRequired();
+            builder
+                .HasOne<AppUser>()
+                .WithMany()
+                .HasForeignKey(g => g.CuratorID)
+                .IsRequired(false);
 
             // список членов группы входит в агрегат
             builder.OwnsMany<Membership>(

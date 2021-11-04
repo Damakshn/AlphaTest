@@ -32,11 +32,13 @@ namespace AlphaTest.Core.UnitTests.Examinations
                 "Первая группа",
                 DateTime.Now.AddDays(1),
                 DateTime.Now.AddDays(100),
+                null,
                 false);
             Group group2 = new(
                 "Вторая группа",
                 DateTime.Now.AddDays(1),
                 DateTime.Now.AddDays(100),
+                null,
                 false);
             Groups = new List<Group>() { group1, group2 };
         }

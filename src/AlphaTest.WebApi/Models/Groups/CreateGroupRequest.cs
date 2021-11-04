@@ -10,5 +10,7 @@ namespace AlphaTest.WebApi.Models.Groups
 
         public DateTime EndDate { get; set; }
 
+        public Guid? CuratorID { get; set; }
+
     }
 }
