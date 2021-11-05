@@ -7,7 +7,7 @@ using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 using MediatR;
 
-namespace AlphaTest.Application.UseCases.Examinations.Commands.ChangeExaminationTerms
+namespace AlphaTest.Application.UseCases.Schedule.Commands.ChangeExaminationTerms
 {
     public class ChangeExaminationTermsUseCaseHandler : UseCaseHandlerBase<ChangeExaminationTermsUseCaseRequest>
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using AlphaTest.Application.UseCases.Common;
 
-namespace AlphaTest.Application.UseCases.Examinations.Commands.CancelExamination
+namespace AlphaTest.Application.UseCases.Schedule.Commands.CancelExamination
 {
     public class CancelExaminationUseCaseRequest : IUseCaseRequest
     {

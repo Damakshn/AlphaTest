@@ -4,20 +4,20 @@ using Microsoft.AspNetCore.Mvc;
 using AlphaTest.WebApi.Models.Examinations;
 using AlphaTest.WebApi.Models.Admin.Examinations;
 using AlphaTest.Application;
-using AlphaTest.Application.UseCases.Examinations.Commands.CreateExamination;
-using AlphaTest.Application.UseCases.Examinations.Commands.ChangeExaminationTerms;
-using AlphaTest.Application.UseCases.Examinations.Commands.CancelExamination;
+using AlphaTest.Application.UseCases.Schedule.Commands.CreateExamination;
+using AlphaTest.Application.UseCases.Schedule.Commands.ChangeExaminationTerms;
+using AlphaTest.Application.UseCases.Schedule.Commands.CancelExamination;
 using AlphaTest.Application.UseCases.Admin.Commands.Examinations.SwitchExaminer;
 
 namespace AlphaTest.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/examinations")]
     [ApiController]
-    public class ExaminationsController : ControllerBase
+    public class ScheduleController : ControllerBase
     {
         private ISystemGateway _alphaTest;
 
-        public ExaminationsController(ISystemGateway alphaTest)
+        public ScheduleController(ISystemGateway alphaTest)
         {
             _alphaTest = alphaTest;
         }
