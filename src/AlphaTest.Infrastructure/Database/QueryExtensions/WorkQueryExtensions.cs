@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using AlphaTest.Core.Attempts;
+using AlphaTest.Core.Works;
 
 namespace AlphaTest.Infrastructure.Database.QueryExtensions
 {
-    public static class AttemptQueryExtensions
+    public static class WorkQueryExtensions
     {
-        public static IQueryable<Attempt> Aggregates(this DbSet<Attempt> query)
+        public static IQueryable<Work> Aggregates(this DbSet<Work> query)
         {
             return query;
         }

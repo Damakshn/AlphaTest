@@ -1,4 +1,4 @@
-﻿using AlphaTest.Core.Attempts;
+﻿using AlphaTest.Core.Works;
 using AlphaTest.Core.Tests.Questions;
 
 namespace AlphaTest.Core.Answers
@@ -7,8 +7,8 @@ namespace AlphaTest.Core.Answers
     {
         private ExactNumericAnswer() :base() { }
 
-        public ExactNumericAnswer(QuestionWithNumericAnswer question, Attempt attempt, decimal value)
-            :base(attempt, question)
+        public ExactNumericAnswer(QuestionWithNumericAnswer question, Work work, decimal value)
+            :base(work, question)
         {
             Value = value;
         }

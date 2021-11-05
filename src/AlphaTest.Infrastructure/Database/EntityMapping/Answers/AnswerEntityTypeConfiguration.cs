@@ -1,5 +1,5 @@
 ﻿using AlphaTest.Core.Answers;
-using AlphaTest.Core.Attempts;
+using AlphaTest.Core.Works;
 using AlphaTest.Core.Tests.Questions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -18,9 +18,9 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping.Answers
                 .WithMany()
                 .HasForeignKey(a => a.QuestionID);
             builder
-                .HasOne<Attempt>()
+                .HasOne<Work>()
                 .WithMany()
-                .HasForeignKey(a => a.AttemptID);
+                .HasForeignKey(a => a.WorkID);
             builder.Property(a => a.SentAt).IsRequired();
             builder.Property(a => a.IsRevoked).IsRequired();
         }

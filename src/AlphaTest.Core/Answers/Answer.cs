@@ -1,6 +1,6 @@
 ﻿using System;
 using AlphaTest.Core.Answers.Rules;
-using AlphaTest.Core.Attempts;
+using AlphaTest.Core.Works;
 using AlphaTest.Core.Common.Abstractions;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
@@ -12,12 +12,12 @@ namespace AlphaTest.Core.Answers
         #region Конструкторы
         protected Answer() { }
 
-        protected Answer(Attempt attempt, Question question)
+        protected Answer(Work work, Question question)
         {
-            CheckRule(new AnswerCannotBeRegisteredIfAttemptIsFinishedRule(attempt));
+            CheckRule(new AnswerCannotBeRegisteredIfWorkIsFinishedRule(work));
             ID = Guid.NewGuid();
             QuestionID = question.ID;
-            AttemptID = attempt.ID;
+            WorkID = work.ID;
             IsRevoked = false;
             RevokedAt = null;
         }
@@ -28,7 +28,7 @@ namespace AlphaTest.Core.Answers
 
         public Guid QuestionID { get; private set; }
 
-        public Guid AttemptID { get; private set; }
+        public Guid WorkID { get; private set; }
 
         public DateTime SentAt { get; private set; }
 
@@ -38,12 +38,12 @@ namespace AlphaTest.Core.Answers
         #endregion
 
         #region Методы
-        public void Revoke(Test test, Attempt attempt, uint retriesUsed)
+        public void Revoke(Test test, Work work, uint retriesUsed)
         {
             CheckRule(new AnswerCannotBeRevokedIfRevokeIsNotAllowedRule(test));
             CheckRule(new AnswerCannotBeRevokedIfNumberOfRetriesIsExhaustedRule(test, retriesUsed));
             // ToDo добавить в документацию
-            CheckRule(new AnswerCannotBeRevokedIfAttemptIsFinishedRule(attempt));
+            CheckRule(new AnswerCannotBeRevokedIfWorkIsFinishedRule(work));
             IsRevoked = true;
             RevokedAt = DateTime.Now;
         }

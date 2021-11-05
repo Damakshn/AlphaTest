@@ -1,13 +1,13 @@
 ﻿using AlphaTest.Core.Common;
 using AlphaTest.Core.Examinations;
 
-namespace AlphaTest.Core.Attempts.Rules
+namespace AlphaTest.Core.Works.Rules
 {
-    public class NewAttemptCannotBeStartedIfExamIsClosedRule : IBusinessRule
+    public class NewWorkCannotBeStartedIfExamIsClosedRule : IBusinessRule
     {
         private readonly Examination _examination;
 
-        public NewAttemptCannotBeStartedIfExamIsClosedRule(Examination examination)
+        public NewWorkCannotBeStartedIfExamIsClosedRule(Examination examination)
         {
             _examination = examination;
         }

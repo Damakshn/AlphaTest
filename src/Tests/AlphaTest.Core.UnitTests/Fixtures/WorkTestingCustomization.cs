@@ -5,7 +5,7 @@ using AutoFixture;
 
 namespace AlphaTest.Core.UnitTests.Fixtures
 {
-    internal class AttemptTestingCustomization : ICustomization
+    internal class WorkTestingCustomization : ICustomization
     {
         public void Customize(IFixture fixture)
         {

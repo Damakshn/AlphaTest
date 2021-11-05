@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using AlphaTest.Core.Tests.Questions;
-using AlphaTest.Core.Attempts;
+using AlphaTest.Core.Works;
 using AlphaTest.Core.Answers.Rules;
 using System;
 using System.Linq;
@@ -13,8 +13,8 @@ namespace AlphaTest.Core.Answers
 
         private MultiChoiceAnswer(): base() {}
 
-        public MultiChoiceAnswer(MultiChoiceQuestion question, Attempt attempt, List<Guid> rightOptions)
-            :base(attempt, question)
+        public MultiChoiceAnswer(MultiChoiceQuestion question, Work work, List<Guid> rightOptions)
+            :base(work, question)
         {
             CheckRule(new MultiChoiceAnswerValueMustBeValidSetOfOptionIDsRule(question, rightOptions));
             _chosenOptions = rightOptions.Select(o => new ChosenOption(this.ID, o)).ToList();

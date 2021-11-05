@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using AlphaTest.Infrastructure.Auth;
 using AlphaTest.Core.Answers;
-using AlphaTest.Core.Attempts;
+using AlphaTest.Core.Works;
 using AlphaTest.Core.Checking;
 using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Tests.Questions;
@@ -30,7 +30,7 @@ namespace AlphaTest.Infrastructure.Database
 
         public DbSet<Examination> Examinations { get; set; }
 
-        public DbSet<Attempt> Attempts { get; set; }
+        public DbSet<Work> Works { get; set; }
 
         public DbSet<Answer> Answers { get; set; }
 

@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using AlphaTest.Core.Attempts;
+using AlphaTest.Core.Works;
 using AlphaTest.Core.Examinations;
 using AlphaTest.Infrastructure.Auth;
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping
 {
-    internal class AttemptEntityTypeConfiguration : IEntityTypeConfiguration<Attempt>
+    internal class WorkEntityTypeConfiguration : IEntityTypeConfiguration<Work>
     {
-        public void Configure(EntityTypeBuilder<Attempt> builder)
+        public void Configure(EntityTypeBuilder<Work> builder)
         {
-            builder.ToTable("Attempts");
+            builder.ToTable("Works");
             builder.HasKey(a => a.ID);
             builder
                 .HasOne<Examination>()

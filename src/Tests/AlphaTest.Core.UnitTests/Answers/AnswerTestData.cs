@@ -1,4 +1,4 @@
-﻿using AlphaTest.Core.Attempts;
+﻿using AlphaTest.Core.Works;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace AlphaTest.Core.UnitTests.Answers
 
         public Test Test { get; set; }
 
-        public Attempt Attempt { get; set; }
+        public Work Work { get; set; }
 
         public Question Question { get; set; }
 
