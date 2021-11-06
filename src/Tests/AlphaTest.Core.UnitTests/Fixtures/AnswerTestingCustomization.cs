@@ -20,6 +20,7 @@ namespace AlphaTest.Core.UnitTests.Fixtures
             fixture.Customize(new DefaultExaminationCustomization());
             fixture.Customize(new DefaultMultiChoiceAnswerCustomization());
             fixture.Customize(new DefaultSingleChoiceAnswerCustomization());
+            fixture.Customizations.Add(new AttemptsSpentSpecimenBuilder());
         }
     }
 }

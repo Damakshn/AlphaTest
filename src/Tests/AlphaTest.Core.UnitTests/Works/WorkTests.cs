@@ -20,7 +20,7 @@ namespace AlphaTest.Core.UnitTests.Works
             examination.Cancel();
 
             AssertBrokenRule<NewWorkCannotBeStartedIfExamIsClosedRule>(() => 
-                new Work(test, examination, Guid.NewGuid()));
+                new Work(test, examination, Guid.NewGuid(), 0));
         }
 
         [Theory, WorkTestsData]
@@ -29,13 +29,21 @@ namespace AlphaTest.Core.UnitTests.Works
             HelpersForExaminations.SetExaminationDates(examination, DateTime.Now.AddDays(-25), DateTime.Now.AddDays(-10));
 
             AssertBrokenRule<NewWorkCannotBeStartedIfExaminationIsAreadyEndedRule>(() =>
-                new Work(test, examination, Guid.NewGuid()));
+                new Work(test, examination, Guid.NewGuid(), 0));
+        }
+
+        [Theory, WorkTestsData]
+        public void New_work_cannot_be_started_if_limit_of_attempts_is_already_exhausted(Test test, Examination examination)
+        {
+            uint attemptsSpent = (uint)test.AttemptsLimit;
+            AssertBrokenRule<NewWorkCannotBeStartedIfAttemptsLimitForTestIsExhaustedRule>(() =>
+                new Work(test, examination, Guid.NewGuid(), attemptsSpent));
         }
 
         [Theory, WorkTestsData]
         public void New_work_can_be_started(Test test, Examination examination)
         {
-            Work work = new(test, examination, Guid.NewGuid());
+            Work work = new(test, examination, Guid.NewGuid(), 0);
 
             Assert.Equal(examination.ID, work.ExaminationID);
             Assert.Equal(DateTime.Now, work.StartedAt, TimeSpan.FromSeconds(1));
@@ -60,7 +68,7 @@ namespace AlphaTest.Core.UnitTests.Works
                 DateTime.Now + examTimeRemained
             );
 
-            Work work = new(test, examination, Guid.NewGuid());
+            Work work = new(test, examination, Guid.NewGuid(), 0);
 
             Assert.Equal(DateTime.Now + expected, work.ForceEndAt, TimeSpan.FromSeconds(10));
         }

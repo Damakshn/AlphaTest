@@ -11,10 +11,11 @@ namespace AlphaTest.Core.Works
         #region Конструкторы
         private Work(){ }
 
-        public Work(Test test, Examination examination, Guid studentID)
+        public Work(Test test, Examination examination, Guid studentID, uint attemptsSpent)
         {
             CheckRule(new NewWorkCannotBeStartedIfExamIsClosedRule(examination));
             CheckRule(new NewWorkCannotBeStartedIfExaminationIsAreadyEndedRule(examination));
+            CheckRule(new NewWorkCannotBeStartedIfAttemptsLimitForTestIsExhaustedRule(test, attemptsSpent));
             ID = Guid.NewGuid();
             ExaminationID = examination.ID;
             StartedAt = DateTime.Now;
