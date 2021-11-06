@@ -16,11 +16,11 @@ namespace AlphaTest.Infrastructure.Database
             modelBuilder.ApplyConfiguration(new AppRoleEntityTypeConfiguration());
             #endregion
 
-            #region Тесты, группы, экзамены, попытки
+            #region Тесты, группы, экзамены, работы
             modelBuilder.ApplyConfiguration(new TestEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GroupEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ExaminationEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new AttemptEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new WorkEntityTypeConfiguration());
             #endregion
 
             #region Заявки

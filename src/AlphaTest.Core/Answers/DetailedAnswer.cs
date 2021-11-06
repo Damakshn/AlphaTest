@@ -1,4 +1,4 @@
-﻿using AlphaTest.Core.Attempts;
+﻿using AlphaTest.Core.Works;
 using AlphaTest.Core.Tests.Questions;
 
 namespace AlphaTest.Core.Answers
@@ -7,8 +7,8 @@ namespace AlphaTest.Core.Answers
     {
         private DetailedAnswer() : base() { }
 
-        public DetailedAnswer(QuestionWithDetailedAnswer question, Attempt attempt, string value)
-            : base(attempt, question)
+        public DetailedAnswer(QuestionWithDetailedAnswer question, Work work, string value)
+            : base(work, question)
         {
             Value = value;
         }

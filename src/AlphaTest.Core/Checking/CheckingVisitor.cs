@@ -8,16 +8,16 @@ namespace AlphaTest.Core.Checking
 {
     public class CheckingVisitor
     {
-        private readonly IEnumerable<Answer> _activeAnswersFromAttempt;
+        private readonly IEnumerable<Answer> _activeAnswersFromWork;
         
-        internal CheckingVisitor(IEnumerable<Answer> activeAnswersFromAttempt)
+        internal CheckingVisitor(IEnumerable<Answer> activeAnswersFromWork)
         {
-            _activeAnswersFromAttempt = activeAnswersFromAttempt;
+            _activeAnswersFromWork = activeAnswersFromWork;
         }
 
         internal PreliminaryResult CheckSingleChoiceQuestion(SingleChoiceQuestion question)
         {
-            var answer = _activeAnswersFromAttempt.Where(a => a.QuestionID == question.ID).FirstOrDefault();
+            var answer = _activeAnswersFromWork.Where(a => a.QuestionID == question.ID).FirstOrDefault();
             if (answer is null)
                 return null;
             if (answer is not SingleChoiceAnswer convertedAnswer)
@@ -33,7 +33,7 @@ namespace AlphaTest.Core.Checking
 
         internal PreliminaryResult CheckMultiChoiceQuestion(MultiChoiceQuestion question)
         {
-            var answer = _activeAnswersFromAttempt.Where(a => a.QuestionID == question.ID).FirstOrDefault();
+            var answer = _activeAnswersFromWork.Where(a => a.QuestionID == question.ID).FirstOrDefault();
             if (answer is null)
                 return null;
             if (answer is not MultiChoiceAnswer convertedAnswer)
@@ -68,7 +68,7 @@ namespace AlphaTest.Core.Checking
 
         internal PreliminaryResult CheckQuestionWithTextualAnswer(QuestionWithTextualAnswer question)
         {
-            var answer = _activeAnswersFromAttempt.Where(a => a.QuestionID == question.ID).FirstOrDefault();
+            var answer = _activeAnswersFromWork.Where(a => a.QuestionID == question.ID).FirstOrDefault();
             if (answer is null)
                 return null;
             if (answer is not ExactTextualAnswer convertedAnswer)
@@ -82,7 +82,7 @@ namespace AlphaTest.Core.Checking
 
         internal PreliminaryResult CheckQuestionWithNumericAnswer(QuestionWithNumericAnswer question)
         {
-            var answer = _activeAnswersFromAttempt.Where(a => a.QuestionID == question.ID).FirstOrDefault();
+            var answer = _activeAnswersFromWork.Where(a => a.QuestionID == question.ID).FirstOrDefault();
             if (answer is null)
                 return null;
             if (answer is not ExactNumericAnswer convertedAnswer)

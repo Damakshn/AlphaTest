@@ -11,7 +11,7 @@ using AlphaTest.Infrastructure.Auth;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 
-namespace AlphaTest.Application.UseCases.Examinations.Commands.CreateExamination
+namespace AlphaTest.Application.UseCases.Schedule.Commands.CreateExamination
 {
     public class CreateExaminationUseCaseHandler : UseCaseHandlerBase<CreateExaminationUseCaseRequest, Guid>
     {

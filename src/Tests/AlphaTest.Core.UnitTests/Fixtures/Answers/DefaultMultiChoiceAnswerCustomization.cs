@@ -1,5 +1,5 @@
 ﻿using AlphaTest.Core.Answers;
-using AlphaTest.Core.Attempts;
+using AlphaTest.Core.Works;
 using AlphaTest.Core.Tests.Questions;
 using AutoFixture;
 using System;
@@ -12,8 +12,8 @@ namespace AlphaTest.Core.UnitTests.Fixtures.Answers
         public void Customize(IFixture fixture)
         {
             fixture.Customize<MultiChoiceAnswer>(c =>
-                c.FromFactory((MultiChoiceQuestion question, Attempt attempt) => 
-                    new MultiChoiceAnswer(question, attempt, new List<Guid>() { question.Options[0].ID})
+                c.FromFactory((MultiChoiceQuestion question, Work work) => 
+                    new MultiChoiceAnswer(question, work, new List<Guid>() { question.Options[0].ID})
                 )
             );
         }

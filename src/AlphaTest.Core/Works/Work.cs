@@ -1,20 +1,21 @@
 ﻿using System;
 using AlphaTest.Core.Common.Abstractions;
 using AlphaTest.Core.Tests;
-using AlphaTest.Core.Attempts.Rules;
+using AlphaTest.Core.Works.Rules;
 using AlphaTest.Core.Examinations;
 
-namespace AlphaTest.Core.Attempts
+namespace AlphaTest.Core.Works
 {
-    public class Attempt: Entity
+    public class Work: Entity
     {
         #region Конструкторы
-        private Attempt(){ }
+        private Work(){ }
 
-        public Attempt(Test test, Examination examination, Guid studentID)
+        public Work(Test test, Examination examination, Guid studentID, uint attemptsSpent)
         {
-            CheckRule(new NewAttemptCannotBeStartedIfExamIsClosedRule(examination));
-            CheckRule(new NewAttemptCannotBeStartedIfExaminationIsAreadyEndedRule(examination));
+            CheckRule(new NewWorkCannotBeStartedIfExamIsClosedRule(examination));
+            CheckRule(new NewWorkCannotBeStartedIfExaminationIsAreadyEndedRule(examination));
+            CheckRule(new NewWorkCannotBeStartedIfAttemptsLimitForTestIsExhaustedRule(test, attemptsSpent));
             ID = Guid.NewGuid();
             ExaminationID = examination.ID;
             StartedAt = DateTime.Now;
@@ -55,7 +56,7 @@ namespace AlphaTest.Core.Attempts
         #region Методы
         public void Finish()
         {
-            CheckRule(new FinishedAttemptCannotBeModifiedRule(this));
+            CheckRule(new FinishedWorkCannotBeModifiedRule(this));
             FinishedAt = DateTime.Now;
         }
 

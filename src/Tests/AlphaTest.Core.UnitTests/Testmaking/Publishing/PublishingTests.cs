@@ -73,6 +73,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Publishing
             SingleChoiceQuestion question = QuestionTestSamples.CreateSingleChoiceQuestion(data) as SingleChoiceQuestion;
             test.ChangePassingScore(10);
             PublishingProposal proposal = test.ProposeForPublishing(new List<Question>() { question });
+            HelpersForProposals.SetProposalStatus(proposal, ProposalStatus.PENDING);
 
             AssertBrokenRule<RemarkMustBeProvidedWhenProposalIsDeclinedRule>(() =>
                 proposal.Decline("    ")
@@ -87,7 +88,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Publishing
             SingleChoiceQuestion question = QuestionTestSamples.CreateSingleChoiceQuestion(data) as SingleChoiceQuestion;
             test.ChangePassingScore(10);
             PublishingProposal proposal = test.ProposeForPublishing(new List<Question>() { question });
-
+            HelpersForProposals.SetProposalStatus(proposal, ProposalStatus.PENDING);
             proposal.Decline("Текст замечания");
 
             Assert.Equal(ProposalStatus.DECLINED, proposal.Status);

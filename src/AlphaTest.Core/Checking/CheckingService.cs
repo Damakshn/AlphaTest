@@ -9,10 +9,10 @@ namespace AlphaTest.Core.Checking
 {
     public class CheckingService
     {
-        public List<CheckResult> CalculateCheckResults(Test test, List<Question> questionsInTest, List<Answer> activeAnswersInAttempt)
+        public List<CheckResult> CalculateCheckResults(Test test, List<Question> questionsInTest, List<Answer> activeAnswersInWork)
         {
             List<CheckResult> results = new();
-            CheckingVisitor checkingVisitor = new(activeAnswersInAttempt);
+            CheckingVisitor checkingVisitor = new(activeAnswersInWork);
 
             foreach(var question in questionsInTest.Where(q => q is IAutoCheckQuestion))
             {   

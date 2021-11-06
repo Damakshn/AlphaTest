@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using AlphaTest.Application.UseCases.Common;
 
-namespace AlphaTest.Application.UseCases.Examinations.Commands.CreateExamination
+namespace AlphaTest.Application.UseCases.Schedule.Commands.CreateExamination
 {
     public class CreateExaminationUseCaseRequest : IUseCaseRequest<Guid>
     {

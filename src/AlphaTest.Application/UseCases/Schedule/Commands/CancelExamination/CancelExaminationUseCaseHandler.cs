@@ -6,7 +6,7 @@ using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 using MediatR;
 
-namespace AlphaTest.Application.UseCases.Examinations.Commands.CancelExamination
+namespace AlphaTest.Application.UseCases.Schedule.Commands.CancelExamination
 {
     public class CancelExaminationUseCaseHandler : UseCaseHandlerBase<CancelExaminationUseCaseRequest>
     {
