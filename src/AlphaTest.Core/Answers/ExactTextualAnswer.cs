@@ -1,5 +1,6 @@
 ﻿using AlphaTest.Core.Works;
 using AlphaTest.Core.Tests.Questions;
+using AlphaTest.Core.Tests;
 
 namespace AlphaTest.Core.Answers
 {
@@ -7,8 +8,8 @@ namespace AlphaTest.Core.Answers
     {
         private ExactTextualAnswer() : base() { }
 
-        public ExactTextualAnswer(QuestionWithTextualAnswer question, Work work, string value)
-            : base(work, question)
+        public ExactTextualAnswer(QuestionWithTextualAnswer question, Work work, Test test, uint answersAccepted, string value)
+            : base(work, question, test, answersAccepted)
         {
             Value = value;
         }

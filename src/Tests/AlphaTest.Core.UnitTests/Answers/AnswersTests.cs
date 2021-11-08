@@ -17,7 +17,7 @@ namespace AlphaTest.Core.UnitTests.Answers
     public class AnswersTests: UnitTestBase
     {
         [Theory, AnswerTestData]
-        public void Single_choice_answer_cannot_be_registered_if_option_ID_is_invalid(Work work, SingleChoiceQuestion question)
+        public void Single_choice_answer_cannot_be_registered_if_option_ID_is_invalid(Work work, SingleChoiceQuestion question, Test test)
         {
 
             var optionsData = new List<(string text, uint number, bool isRight)>
@@ -29,14 +29,14 @@ namespace AlphaTest.Core.UnitTests.Answers
             question.ChangeOptions(optionsData);
 
             AssertBrokenRule<SingleChoiceAnswerValueMustBeValidOptionIDRule>(() =>
-                new SingleChoiceAnswer(question, work, Guid.NewGuid())
+                new SingleChoiceAnswer(question, work, test, 0, Guid.NewGuid())
             );
         }
 
         [Theory, AnswerTestData]
-        public void Single_choice_answer_can_be_registered(Work work, SingleChoiceQuestion question)
+        public void Single_choice_answer_can_be_registered(Work work, SingleChoiceQuestion question, Test test)
         {
-            var answer = new SingleChoiceAnswer(question, work, question.Options[0].ID);
+            var answer = new SingleChoiceAnswer(question, work, test, 0, question.Options[0].ID);
 
             Assert.Equal(question.ID, answer.QuestionID);
             Assert.Equal(work.ID, answer.WorkID);
@@ -44,7 +44,7 @@ namespace AlphaTest.Core.UnitTests.Answers
         }
 
         [Theory, AnswerTestData]
-        public void Multi_choice_answer_cannot_be_registered_if_any_option_ID_is_invalid(Work work, MultiChoiceQuestion question)
+        public void Multi_choice_answer_cannot_be_registered_if_any_option_ID_is_invalid(Work work, MultiChoiceQuestion question, Test test)
         {
             question.ChangeOptions(new List<(string text, uint number, bool isRight)>
             {
@@ -54,14 +54,14 @@ namespace AlphaTest.Core.UnitTests.Answers
             });
 
             AssertBrokenRule<MultiChoiceAnswerValueMustBeValidSetOfOptionIDsRule>(() =>
-                new MultiChoiceAnswer(question, work, new List<Guid> { Guid.NewGuid(), Guid.NewGuid() })
+                new MultiChoiceAnswer(question, work, test, 0, new List<Guid> { Guid.NewGuid(), Guid.NewGuid() })
             );
         }
 
         [Theory, AnswerTestData]
-        public void Multi_choice_answer_can_be_registered(Work work, MultiChoiceQuestion question)
+        public void Multi_choice_answer_can_be_registered(Work work, MultiChoiceQuestion question, Test test)
         {
-            MultiChoiceAnswer answer = new MultiChoiceAnswer(question, work, new List<Guid> { question.Options[0].ID });
+            MultiChoiceAnswer answer = new MultiChoiceAnswer(question, work, test, 0, new List<Guid> { question.Options[0].ID });
 
             Assert.Equal(question.ID, answer.QuestionID);
             Assert.Equal(work.ID, answer.WorkID);
@@ -69,9 +69,9 @@ namespace AlphaTest.Core.UnitTests.Answers
         }
 
         [Theory, AnswerTestData]
-        public void Exact_numeric_answer_can_be_registered(Work work, QuestionWithNumericAnswer question)
+        public void Exact_numeric_answer_can_be_registered(Work work, QuestionWithNumericAnswer question, Test test)
         {
-            ExactNumericAnswer answer = new(question, work, 50);
+            ExactNumericAnswer answer = new(question, work, test, 0, 50);
 
             Assert.Equal(question.ID, answer.QuestionID);
             Assert.Equal(work.ID, answer.WorkID);
@@ -79,9 +79,9 @@ namespace AlphaTest.Core.UnitTests.Answers
         }
 
         [Theory, AnswerTestData]
-        public void Exact_textual_answer_can_be_registered(Work work, QuestionWithTextualAnswer question)
+        public void Exact_textual_answer_can_be_registered(Work work, QuestionWithTextualAnswer question, Test test)
         {
-            ExactTextualAnswer answer = new(question, work, "Правильно!");
+            ExactTextualAnswer answer = new(question, work, test, 0, "Правильно!");
 
             Assert.Equal(question.ID, answer.QuestionID);
             Assert.Equal(work.ID, answer.WorkID);
@@ -89,9 +89,9 @@ namespace AlphaTest.Core.UnitTests.Answers
         }
 
         [Theory, AnswerTestData]
-        public void Detailed_answer_can_be_registered(Work work, QuestionWithDetailedAnswer question)
+        public void Detailed_answer_can_be_registered(Work work, QuestionWithDetailedAnswer question, Test test)
         {
-            DetailedAnswer answer = new(question, work, "Развёрнутый ответ");
+            DetailedAnswer answer = new(question, work, test, 0, "Развёрнутый ответ");
 
             Assert.Equal(question.ID, answer.QuestionID);
             Assert.Equal(work.ID, answer.WorkID);
@@ -100,6 +100,7 @@ namespace AlphaTest.Core.UnitTests.Answers
         [Theory, AnswerTestData]
         public void None_answer_can_be_registered_for_finished_work(
             Work work,
+            Test test,
             SingleChoiceQuestion singleChoiceQuestion,
             MultiChoiceQuestion multiChoiceQuestion,
             QuestionWithNumericAnswer questionWithNumericAnswer,
@@ -111,15 +112,66 @@ namespace AlphaTest.Core.UnitTests.Answers
 
             // проверяем, что одно и то же правило нарушается для всех ответов
             AssertBrokenRule<AnswerCannotBeRegisteredIfWorkIsFinishedRule>(() => 
-                new SingleChoiceAnswer(singleChoiceQuestion, work, singleChoiceQuestion.Options[0].ID));
+                new SingleChoiceAnswer(singleChoiceQuestion, work, test, 0, singleChoiceQuestion.Options[0].ID));
             AssertBrokenRule<AnswerCannotBeRegisteredIfWorkIsFinishedRule>(() =>
-                new MultiChoiceAnswer(multiChoiceQuestion, work, new List<Guid> { singleChoiceQuestion.Options[0].ID }));
+                new MultiChoiceAnswer(multiChoiceQuestion, work, test, 0, new List<Guid> { singleChoiceQuestion.Options[0].ID }));
             AssertBrokenRule<AnswerCannotBeRegisteredIfWorkIsFinishedRule>(() =>
-                new ExactNumericAnswer(questionWithNumericAnswer, work, 50));
+                new ExactNumericAnswer(questionWithNumericAnswer, work, test, 0, 50));
             AssertBrokenRule<AnswerCannotBeRegisteredIfWorkIsFinishedRule>(() =>
-                new ExactTextualAnswer(questionWithTextualAnswer, work, "ПравильныйОтвет"));
+                new ExactTextualAnswer(questionWithTextualAnswer, work, test, 0, "ПравильныйОтвет"));
             AssertBrokenRule<AnswerCannotBeRegisteredIfWorkIsFinishedRule>(() =>
-                new DetailedAnswer(questionWithDetailedAnswer, work, "Развернутый ответ"));
+                new DetailedAnswer(questionWithDetailedAnswer, work, test, 0, "Развернутый ответ"));
+        }
+
+        [Theory, AnswerTestData]
+        public void None_answer_can_be_registered_if_retries_limit_is_exhausted(
+            Work work,
+            Test test,
+            SingleChoiceQuestion singleChoiceQuestion,
+            MultiChoiceQuestion multiChoiceQuestion,
+            QuestionWithNumericAnswer questionWithNumericAnswer,
+            QuestionWithTextualAnswer questionWithTextualAnswer,
+            QuestionWithDetailedAnswer questionWithDetailedAnswer)
+        {
+            uint answersAccepted = test.RevokePolicy.RetriesLimit + 1;
+            // проверяем, что одно и то же правило нарушается для всех ответов
+            AssertBrokenRule<AnswerCannotBeRegisteredIfNumberOfRetriesIsExhaustedRule>(() =>
+                new SingleChoiceAnswer(singleChoiceQuestion, work, test, answersAccepted, singleChoiceQuestion.Options[0].ID));
+            AssertBrokenRule<AnswerCannotBeRegisteredIfNumberOfRetriesIsExhaustedRule>(() =>
+                new MultiChoiceAnswer(multiChoiceQuestion, work, test, answersAccepted, new List<Guid> { singleChoiceQuestion.Options[0].ID }));
+            AssertBrokenRule<AnswerCannotBeRegisteredIfNumberOfRetriesIsExhaustedRule>(() =>
+                new ExactNumericAnswer(questionWithNumericAnswer, work, test, answersAccepted, 50));
+            AssertBrokenRule<AnswerCannotBeRegisteredIfNumberOfRetriesIsExhaustedRule>(() =>
+                new ExactTextualAnswer(questionWithTextualAnswer, work, test, answersAccepted, "ПравильныйОтвет"));
+            AssertBrokenRule<AnswerCannotBeRegisteredIfNumberOfRetriesIsExhaustedRule>(() =>
+                new DetailedAnswer(questionWithDetailedAnswer, work, test, answersAccepted, "Развернутый ответ"));
+        }
+
+        [Theory, AnswerTestData]
+        public void Any_number_of_answers_can_be_accepted_if_test_has_no_retries_limit(
+            Work work,
+            Test test,
+            SingleChoiceQuestion singleChoiceQuestion,
+            MultiChoiceQuestion multiChoiceQuestion,
+            QuestionWithNumericAnswer questionWithNumericAnswer,
+            QuestionWithTextualAnswer questionWithTextualAnswer,
+            QuestionWithDetailedAnswer questionWithDetailedAnswer)
+        {
+            uint answersAccepted = 1000;
+            RevokePolicy revokePolicy = new(true, infiniteRetriesEnabled: true);
+            test.ChangeRevokePolicy(revokePolicy);
+
+            SingleChoiceAnswer singlieChoiceAnswer = new(singleChoiceQuestion, work, test, answersAccepted, singleChoiceQuestion.Options[0].ID);
+            MultiChoiceAnswer multiChoiceAnswer = new(multiChoiceQuestion, work, test, answersAccepted, new List<Guid> { multiChoiceQuestion.Options[0].ID });
+            ExactNumericAnswer exactNumericAnswer =  new(questionWithNumericAnswer, work, test, answersAccepted, 50);
+            ExactTextualAnswer exactTextualAnswer = new(questionWithTextualAnswer, work, test, answersAccepted, "ПравильныйОтвет");
+            DetailedAnswer detailedAnswer = new(questionWithDetailedAnswer, work, test, answersAccepted, "Развернутый ответ");
+
+            List<Answer> answers = new(){ singlieChoiceAnswer, multiChoiceAnswer, exactNumericAnswer, exactTextualAnswer, detailedAnswer };
+            foreach (var answer in answers)
+            {
+                Assert.Equal(work.ID, answer.WorkID);
+            }
         }
 
         [Theory, AnswerTestData]
@@ -136,7 +188,7 @@ namespace AlphaTest.Core.UnitTests.Answers
 
             foreach (Answer answer in answers)
             {
-                AssertBrokenRule<AnswerCannotBeRevokedIfRevokeIsNotAllowedRule>(() => answer.Revoke(test, work, 0));
+                AssertBrokenRule<AnswerCannotBeRevokedIfRevokeIsNotAllowedRule>(() => answer.Revoke(test, work));
             }
         }
 
@@ -156,26 +208,7 @@ namespace AlphaTest.Core.UnitTests.Answers
 
             foreach (Answer answer in answers)
             {
-                AssertBrokenRule<AnswerCannotBeRevokedIfWorkIsFinishedRule>(() => answer.Revoke(test, work, 0));
-            }
-        }
-
-        [Theory, AnswerTestData]
-        public void None_answer_can_be_revoked_if_limit_of_retries_is_exhausted(Work work,
-            Test test,
-            SingleChoiceAnswer singleChoiceAnswer,
-            MultiChoiceAnswer multiChoiceAnswer,
-            ExactNumericAnswer exactNumericAnswer,
-            ExactTextualAnswer exactTextualAnswer,
-            DetailedAnswer detailedAnswer)
-        {
-            List<Answer> answers = new() { singleChoiceAnswer, multiChoiceAnswer, exactNumericAnswer, exactTextualAnswer, detailedAnswer };
-            uint maxRetries = 2;
-            test.ChangeRevokePolicy(new RevokePolicy(true, maxRetries));
-
-            foreach (Answer answer in answers)
-            {
-                AssertBrokenRule<AnswerCannotBeRevokedIfNumberOfRetriesIsExhaustedRule>(() => answer.Revoke(test, work, maxRetries));
+                AssertBrokenRule<AnswerCannotBeRevokedIfWorkIsFinishedRule>(() => answer.Revoke(test, work));
             }
         }
 
@@ -194,7 +227,7 @@ namespace AlphaTest.Core.UnitTests.Answers
 
             foreach (Answer answer in answers)
             {
-                answer.Revoke(test, work, 0);
+                answer.Revoke(test, work);
             }
 
             Assert.All(answers, answer => Assert.True(answer.IsRevoked));

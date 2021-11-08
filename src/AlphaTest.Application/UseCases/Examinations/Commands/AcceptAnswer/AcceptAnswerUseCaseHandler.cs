@@ -60,9 +60,8 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
 
             Answer lastAnswer = await _db.Answers.Aggregates().GetLastActiveAnswerForQuestion(activeWork.ID, request.QuestionID);
             if (lastAnswer is not null)
-            {
-                // ToDo перенести проверку на кол-во попыток в конструктор ответа
-                lastAnswer.Revoke(test, activeWork, retriesUsed);
+            {   
+                lastAnswer.Revoke(test, activeWork);
             }
 
 
@@ -77,12 +76,10 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
             return Unit.Value;
         }
 
-        /* ToDo изменить логику регистрации ответов в ядре:
-         * Ответ можно отзывать сколько угодно раз;
-         * Прислать новый ответ нельзя, если количество попыток исчерпано (сейчас наоборот)
-         * ToDo занести в документацию: при наличии принятого ответа на вопрос можно отправить новый ответ, и, если кол-во попыток
-         * не исчерпано, то старый ответ будет автоматически отозван а новый принят как активный.
-        */
+        /* ToDo занести в документацию: при наличии принятого ответа на вопрос 
+         * можно отправить новый ответ, и, если кол-во попыток не исчерпано, 
+         * то старый ответ будет автоматически отозван а новый принят как активный.
+         */
         protected abstract TAnswer MakeAnswer(TAcceptAnswerUseCaseRequest request, Work work, Test test, TQuestion question);
     }
 }
