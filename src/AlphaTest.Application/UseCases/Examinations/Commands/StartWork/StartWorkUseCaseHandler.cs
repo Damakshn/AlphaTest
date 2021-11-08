@@ -23,8 +23,8 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.StartWork
             Examination examination = await _db.Examinations.Aggregates().FindByID(request.ExaminationID);
             Test test = await _db.Tests.Aggregates().FindByID(examination.TestID);
             uint attemptsSpent = (uint)await _db.Works.CountAsync(w => w.ExaminationID == examination.ID && w.StudentID == request.StudentID);
-
-            #region Закостылено, ToDo аутентификация
+            // ToDo аутентификация
+            #region Закостылено
             AppUser dummyStudent = await _db.Users.Aggregates().FindByUsername("dummystudent@mail.ru");
             Work work = new(test, examination, /*request.StudentID*/dummyStudent.Id, attemptsSpent);
             #endregion
