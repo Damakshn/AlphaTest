@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AlphaTest.Application.Exceptions;
@@ -15,7 +12,6 @@ using AlphaTest.Infrastructure.Auth;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
 {
@@ -31,7 +27,8 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
 
         public override async Task<Unit> Handle(TAcceptAnswerUseCaseRequest request, CancellationToken cancellationToken)
         {
-            Examination examination = await _db.Examinations.Aggregates().FindByID(request.ExaminationID);
+            
+            Examination currentExamination = await _db.Examinations.Aggregates().FindByID(request.ExaminationID);
 
             // ToDo auth
             #region костыль
@@ -48,30 +45,37 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
                 * вариант с несуществующим пользователем не рассматриваем, потому что ID пользователя приходит через механизм аутентификации;
                 * Если экзамен не существует, в самом начале вылетет исключение
             */
-            Work activeWork = await _db.Works.Aggregates().GetActiveWork(request.ExaminationID, studentID);
-            if (activeWork is null)
+            Work currentWorkOfTheStudent = await _db.Works.Aggregates().GetActiveWork(request.ExaminationID, studentID);
+            if (currentWorkOfTheStudent is null)
             {
                 throw new AlphaTestApplicationException($"Работа учащегося с ID={studentID} для экзамена ID={request.ExaminationID} не найдена.");
             }
 
-            Test test = await _db.Tests.Aggregates().FindByID(examination.TestID);
+            Test test = await _db.Tests.Aggregates().FindByID(currentExamination.TestID);
+            Question questionBeingAnswered = await _db.Questions.Aggregates().FindByID(request.QuestionID);
 
-            uint retriesUsed = await _db.Answers.GetNumberOfRetriesUsed(activeWork.ID, request.QuestionID);
-
-            Answer lastAnswer = await _db.Answers.Aggregates().GetLastActiveAnswerForQuestion(activeWork.ID, request.QuestionID);
-            if (lastAnswer is not null)
+            // отзываем предыдущий ответ на этот вопрос, если он есть
+            Answer latestAnswer = await _db.Answers.Aggregates().GetLastActiveAnswerForQuestion(currentWorkOfTheStudent.ID, request.QuestionID);
+            if (latestAnswer is not null)
             {   
-                lastAnswer.Revoke(test, activeWork);
+                latestAnswer.Revoke(test, currentWorkOfTheStudent);
             }
 
-
-            Question question = await _db.Questions.Aggregates().FindByID(request.QuestionID);
-            if (question is not TQuestion)
+            // проверяем вопрос на соответствие типу
+            if (questionBeingAnswered is not TQuestion)
             {
                 throw new AlphaTestApplicationException("Тип вопроса не соответствует форме ответа.");
             }
 
-            _db.Answers.Add(MakeAnswer(request, activeWork, test, question as TQuestion));
+            uint numberOfAnswersAlreadyAccepted = await _db.Answers.GetNumberOfAcceptedAnswers(currentWorkOfTheStudent.ID, request.QuestionID);
+            TAnswer registeredAnswer = MakeAnswer(
+                request,
+                currentWorkOfTheStudent,
+                test,
+                questionBeingAnswered as TQuestion,
+                numberOfAnswersAlreadyAccepted);
+
+            _db.Answers.Add(registeredAnswer);
             _db.SaveChanges();
             return Unit.Value;
         }
@@ -80,6 +84,6 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
          * можно отправить новый ответ, и, если кол-во попыток не исчерпано, 
          * то старый ответ будет автоматически отозван а новый принят как активный.
          */
-        protected abstract TAnswer MakeAnswer(TAcceptAnswerUseCaseRequest request, Work work, Test test, TQuestion question);
+        protected abstract TAnswer MakeAnswer(TAcceptAnswerUseCaseRequest request, Work work, Test test, TQuestion question, uint answersAccepted);
     }
 }

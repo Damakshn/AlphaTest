@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AlphaTest.WebApi.Models.Examinations
+namespace AlphaTest.WebApi.Models.Schedule
 {
     public class CreateExaminationRequest
     {

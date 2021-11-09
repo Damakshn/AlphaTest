@@ -24,7 +24,7 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
                 .SingleOrDefaultAsync();
         }
 
-        public static async Task<uint> GetNumberOfRetriesUsed(this IQueryable<Answer> query, Guid workID, Guid questionID)
+        public static async Task<uint> GetNumberOfAcceptedAnswers(this IQueryable<Answer> query, Guid workID, Guid questionID)
         {
             return (uint)await query
                 .Where(a =>

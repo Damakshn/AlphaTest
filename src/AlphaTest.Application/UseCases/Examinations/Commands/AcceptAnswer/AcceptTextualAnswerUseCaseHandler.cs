@@ -3,11 +3,7 @@ using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Works;
 using AlphaTest.Infrastructure.Database;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
 {
@@ -17,9 +13,14 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
         {
         }
 
-        protected override ExactTextualAnswer MakeAnswer(AcceptTextualAnswerUseCaseRequest request, Work work, Test test, QuestionWithTextualAnswer question)
+        protected override ExactTextualAnswer MakeAnswer(
+            AcceptTextualAnswerUseCaseRequest request,
+            Work work,
+            Test test,
+            QuestionWithTextualAnswer question,
+            uint answersAccepted)
         {
-            throw new NotImplementedException();
+            return new ExactTextualAnswer(question, work, test, answersAccepted, request.TextualAnswer);
         }
     }
 }

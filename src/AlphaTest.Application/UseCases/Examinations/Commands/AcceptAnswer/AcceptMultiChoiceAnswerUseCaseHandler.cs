@@ -3,11 +3,6 @@ using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Works;
 using AlphaTest.Infrastructure.Database;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
 {
@@ -17,9 +12,14 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
         {
         }
 
-        protected override MultiChoiceAnswer MakeAnswer(AcceptMultiChoiceAnswerUseCaseRequest request, Work work, Test test, MultiChoiceQuestion question)
+        protected override MultiChoiceAnswer MakeAnswer(
+            AcceptMultiChoiceAnswerUseCaseRequest request,
+            Work work,
+            Test test,
+            MultiChoiceQuestion question,
+            uint answersAccepted)
         {
-            throw new NotImplementedException();
+            return new MultiChoiceAnswer(question, work, test, answersAccepted, request.RightOptions);
         }
     }
 }

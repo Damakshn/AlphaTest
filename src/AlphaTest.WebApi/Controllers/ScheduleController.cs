@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using AlphaTest.WebApi.Models.Examinations;
 using AlphaTest.WebApi.Models.Admin.Examinations;
 using AlphaTest.Application;
 using AlphaTest.Application.UseCases.Schedule.Commands.CreateExamination;
 using AlphaTest.Application.UseCases.Schedule.Commands.ChangeExaminationTerms;
 using AlphaTest.Application.UseCases.Schedule.Commands.CancelExamination;
 using AlphaTest.Application.UseCases.Admin.Commands.Examinations.SwitchExaminer;
+using AlphaTest.WebApi.Models.Schedule;
 
 namespace AlphaTest.WebApi.Controllers
 {
