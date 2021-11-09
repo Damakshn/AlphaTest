@@ -1,5 +1,6 @@
 ﻿using AlphaTest.Core.Works;
 using AlphaTest.Core.Tests.Questions;
+using AlphaTest.Core.Tests;
 
 namespace AlphaTest.Core.Answers
 {
@@ -7,8 +8,8 @@ namespace AlphaTest.Core.Answers
     {
         private ExactNumericAnswer() :base() { }
 
-        public ExactNumericAnswer(QuestionWithNumericAnswer question, Work work, decimal value)
-            :base(work, question)
+        public ExactNumericAnswer(QuestionWithNumericAnswer question, Work work, Test test, uint answersAccepted, decimal value)
+            :base(work, question, test, answersAccepted)
         {
             Value = value;
         }

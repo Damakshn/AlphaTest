@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AlphaTest.WebApi.Models.Examinations
+namespace AlphaTest.WebApi.Models.Schedule
 {
     public class ChangeExaminationTermsRequest
     {

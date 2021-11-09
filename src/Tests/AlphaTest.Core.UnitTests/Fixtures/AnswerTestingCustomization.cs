@@ -21,6 +21,7 @@ namespace AlphaTest.Core.UnitTests.Fixtures
             fixture.Customize(new DefaultMultiChoiceAnswerCustomization());
             fixture.Customize(new DefaultSingleChoiceAnswerCustomization());
             fixture.Customizations.Add(new AttemptsSpentSpecimenBuilder());
+            fixture.Customizations.Add(new AnswersAcceptedSpecimenBuilder());
         }
     }
 }

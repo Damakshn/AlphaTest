@@ -1,5 +1,6 @@
 ﻿using AlphaTest.Application;
 using AlphaTest.Application.UseCases.Examinations.Commands.StartWork;
+using AlphaTest.WebApi.Models.Examination;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,6 +28,12 @@ namespace AlphaTest.WebApi.Controllers
             Guid dummyUserID = Guid.NewGuid();
             await _alphaTest.ExecuteUseCaseAsync(new StartWorkUseCaseRequest(dummyUserID, examinationID));
             return Ok();
+        }
+
+        [HttpPost("{examinationID}/questions/{questionID}/answer")]
+        public IActionResult AcceptAnswer([FromRoute] Guid examinationID, [FromRoute] Guid questionID, [FromBody] AcceptAnswerRequest request)
+        {
+            throw new NotImplementedException();
         }
     }
 }

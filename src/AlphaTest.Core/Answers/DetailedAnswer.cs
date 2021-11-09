@@ -1,5 +1,6 @@
 ﻿using AlphaTest.Core.Works;
 using AlphaTest.Core.Tests.Questions;
+using AlphaTest.Core.Tests;
 
 namespace AlphaTest.Core.Answers
 {
@@ -7,8 +8,8 @@ namespace AlphaTest.Core.Answers
     {
         private DetailedAnswer() : base() { }
 
-        public DetailedAnswer(QuestionWithDetailedAnswer question, Work work, string value)
-            : base(work, question)
+        public DetailedAnswer(QuestionWithDetailedAnswer question, Work work, Test test, uint answersAccepted, string value)
+            : base(work, question, test, answersAccepted)
         {
             Value = value;
         }

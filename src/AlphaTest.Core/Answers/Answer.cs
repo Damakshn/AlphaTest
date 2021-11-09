@@ -12,9 +12,10 @@ namespace AlphaTest.Core.Answers
         #region Конструкторы
         protected Answer() { }
 
-        protected Answer(Work work, Question question)
+        protected Answer(Work work, Question question, Test test, uint answersAccepted)
         {
             CheckRule(new AnswerCannotBeRegisteredIfWorkIsFinishedRule(work));
+            CheckRule(new AnswerCannotBeRegisteredIfNumberOfRetriesIsExhaustedRule(test, answersAccepted));
             ID = Guid.NewGuid();
             QuestionID = question.ID;
             WorkID = work.ID;
@@ -38,10 +39,9 @@ namespace AlphaTest.Core.Answers
         #endregion
 
         #region Методы
-        public void Revoke(Test test, Work work, uint retriesUsed)
+        public void Revoke(Test test, Work work)
         {
             CheckRule(new AnswerCannotBeRevokedIfRevokeIsNotAllowedRule(test));
-            CheckRule(new AnswerCannotBeRevokedIfNumberOfRetriesIsExhaustedRule(test, retriesUsed));
             // ToDo добавить в документацию
             CheckRule(new AnswerCannotBeRevokedIfWorkIsFinishedRule(work));
             IsRevoked = true;
