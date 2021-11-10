@@ -5,6 +5,7 @@ using AlphaTest.WebApi.Models.Examination;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using AlphaTest.Application.UseCases.Examinations.Commands.RevokeAnswer;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -67,6 +68,15 @@ namespace AlphaTest.WebApi.Controllers
                 _ => throw new InvalidOperationException("Некорректное содержание ответа.")
             };
             await _alphaTest.ExecuteUseCaseAsync(useCaseRequest);
+            return Ok();
+        }
+
+        [HttpDelete("{examinationID}/questions/{questionID}/answer")]
+        public async Task<IActionResult> RevokeAnswer([FromRoute] Guid examinationID, [FromRoute] Guid questionID)
+        {
+            // ToDo auth
+            Guid studentID = Guid.NewGuid();
+            await _alphaTest.ExecuteUseCaseAsync(new RevokeAnswerUseCaseRequest(examinationID, questionID, studentID));
             return Ok();
         }
     }
