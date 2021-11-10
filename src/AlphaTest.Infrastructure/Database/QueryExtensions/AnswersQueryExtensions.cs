@@ -13,7 +13,7 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
             return query;
         }
 
-        public static async Task<Answer> GetLastActiveAnswerForQuestion(this IQueryable<Answer> query, Guid workID, Guid questionID)
+        public static async Task<Answer> GetLatestActiveAnswerForQuestion(this IQueryable<Answer> query, Guid workID, Guid questionID)
         {
             return await query
                 .Where(a =>
@@ -22,6 +22,17 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
                     a.IsRevoked == false
                 )
                 .SingleOrDefaultAsync();
+        }
+
+        public static async Task<Answer> GetLatestAnswerForQuestion(this IQueryable<Answer> query, Guid workID, Guid questionID)
+        {
+            return await query
+                .Where(a =>
+                    a.WorkID == workID &&
+                    a.QuestionID == questionID
+                )
+                .OrderByDescending(a => a.SentAt)
+                .FirstOrDefaultAsync();
         }
 
         public static async Task<uint> GetNumberOfAcceptedAnswers(this IQueryable<Answer> query, Guid workID, Guid questionID)

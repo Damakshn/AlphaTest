@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AlphaTest.WebApi.Utils.Converters;
+using System.Text.Json.Serialization;
 
 namespace AlphaTest.WebApi.Models.Examination
 {
-    public class AcceptAnswerRequest
+    [JsonConverter(typeof(AcceptAnswerJsonConverter))]
+    public abstract class AcceptAnswerRequest
     {   
     }
 }

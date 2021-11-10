@@ -55,7 +55,7 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
             Question questionBeingAnswered = await _db.Questions.Aggregates().FindByID(request.QuestionID);
 
             // отзываем предыдущий ответ на этот вопрос, если он есть
-            Answer latestAnswer = await _db.Answers.Aggregates().GetLastActiveAnswerForQuestion(currentWorkOfTheStudent.ID, request.QuestionID);
+            Answer latestAnswer = await _db.Answers.Aggregates().GetLatestActiveAnswerForQuestion(currentWorkOfTheStudent.ID, request.QuestionID);
             if (latestAnswer is not null)
             {   
                 latestAnswer.Revoke(test, currentWorkOfTheStudent);
