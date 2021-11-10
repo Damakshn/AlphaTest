@@ -19,6 +19,7 @@ namespace AlphaTest.Core.Answers
             ID = Guid.NewGuid();
             QuestionID = question.ID;
             WorkID = work.ID;
+            SentAt = DateTime.Now;
             IsRevoked = false;
             RevokedAt = null;
         }

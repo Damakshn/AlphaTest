@@ -1,11 +1,9 @@
 ﻿using AlphaTest.Application;
 using AlphaTest.Application.UseCases.Examinations.Commands.StartWork;
+using AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer;
 using AlphaTest.WebApi.Models.Examination;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AlphaTest.WebApi.Controllers
@@ -31,9 +29,45 @@ namespace AlphaTest.WebApi.Controllers
         }
 
         [HttpPost("{examinationID}/questions/{questionID}/answer")]
-        public IActionResult AcceptAnswer([FromRoute] Guid examinationID, [FromRoute] Guid questionID, [FromBody] AcceptAnswerRequest request)
+        public async Task<IActionResult> AcceptAnswer([FromRoute] Guid examinationID, [FromRoute] Guid questionID, [FromBody] AcceptAnswerRequest request)
         {
-            throw new NotImplementedException();
+            Guid studentID = Guid.NewGuid();
+            AcceptAnswerUseCaseRequest useCaseRequest = request switch
+            {
+                AcceptSingleChoiceAnswerRequest acceptSingleChoiceAnswerRequest =>
+                    new AcceptSingleChoiceAnswerUseCaseRequest(
+                        examinationID,
+                        studentID,
+                        questionID,
+                        acceptSingleChoiceAnswerRequest.RightOptionID),
+                AcceptMultiChoiceAnswerRequest acceptMultiChoiceAnswerRequest =>
+                    new AcceptMultiChoiceAnswerUseCaseRequest(
+                            examinationID,
+                            studentID,
+                            questionID,
+                            acceptMultiChoiceAnswerRequest.RightOptions),
+                AcceptNumericAnswerRequest acceptNumericAnswerRequest =>
+                    new AcceptNumericAnswerUseCaseRequest(
+                        examinationID, 
+                        studentID, 
+                        questionID, 
+                        acceptNumericAnswerRequest.NumericAnswer),
+                AcceptTextualAnswerRequest acceptTextualAnswerRequest =>
+                    new AcceptTextualAnswerUseCaseRequest(
+                        examinationID, 
+                        studentID, 
+                        questionID, 
+                        acceptTextualAnswerRequest.TextualAnswer),
+                AcceptDetailedAnswerRequest acceptDetailedAnswerRequest =>
+                    new AcceptDetailedAnswerUseCaseRequest(
+                        examinationID, 
+                        studentID, 
+                        questionID, 
+                        acceptDetailedAnswerRequest.DetailedAnswer),
+                _ => throw new InvalidOperationException("Некорректное содержание ответа.")
+            };
+            await _alphaTest.ExecuteUseCaseAsync(useCaseRequest);
+            return Ok();
         }
     }
 }
