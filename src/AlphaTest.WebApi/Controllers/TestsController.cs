@@ -25,6 +25,7 @@ using AlphaTest.Application.UseCases.Tests.Commands.RemoveContributor;
 using AlphaTest.Application.UseCases.Tests.Commands.SwitchAuthor;
 using AlphaTest.Application.UseCases.Tests.Commands.EditQuestion;
 using AlphaTest.Application.UseCases.Tests.Commands.NewEdition;
+using AlphaTest.WebApi.Models.Tests.AddQuestion;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -139,23 +140,50 @@ namespace AlphaTest.WebApi.Controllers
         #region Вопросы
         [HttpPost("{testID}/questions")]
         public async Task<IActionResult> AddQuestion([FromRoute] Guid testID, [FromBody] AddQuestionRequest request)
-        {   
+        {
             // ToDo валидация
             //  для вопросов с точным ответом должен быть указан верный ответ, если он не пришёл, то это должно считаться ошибкой
             // ToDo может ещё как-то улучшить
-            // ToDo кортеж почему-то не десериализуется из json, временно закостылено
-            AddQuestionUseCaseRequest useCaseRequest = request.QuestionType switch
+            // ToDo кортеж не десериализуется из json, временно закостылено
+            AddQuestionUseCaseRequest useCaseRequest = request switch
             {
-                "SingleChoiceQuestion" => new AddSingleChoiceQuestionUseCaseRequest(testID, request.Text, request.Score, request.Options.Select(d => (text: d.Text, number: d.Number, isRight: d.IsRight)).ToList()),
-                "MultiChoiceQuestion" => new AddMultichoiceQuestionUseCaseRequest(testID, request.Text, request.Score, request.Options.Select(d => (text: d.Text, number: d.Number, isRight: d.IsRight)).ToList()),
-                "QuestionWithTextualAnswer" => new AddQuestionWithTextualAnswerUseCaseRequest(testID, request.Text, request.Score, request.TextualAnswer),
-                "QuestionWithNumericAnswer" => new AddQuestionWithNumericAnswerUseCaseRequest(testID, request.Text, request.Score, request.NumericAnswer),
-                "QuestionWithDetailedAnswer" => new AddQuestionWithDetailedAnswerUseCaseRequest(testID, request.Text, request.Score),
-                _ => throw new ArgumentException("Не указан тип вопроса для добавления.")
+                AddSingleChoiceQuestionRequest addSingleChoiceQuestionRequest =>
+                    new AddSingleChoiceQuestionUseCaseRequest(
+                        testID,
+                        request.Text,
+                        request.Score,
+                        addSingleChoiceQuestionRequest.Options.Select(d => (text: d.Text, number: d.Number, isRight: d.IsRight)).ToList()),
+                AddMultiChoiceQuestionRequest addMultiChoiceQuestionRequest =>
+                    new AddMultichoiceQuestionUseCaseRequest(
+                        testID,
+                        request.Text,
+                        request.Score,
+                        addMultiChoiceQuestionRequest.Options.Select(d => (text: d.Text, number: d.Number, isRight: d.IsRight)).ToList()),
+                AddQuestionWithTextualAnswerRequest addQuestionWithTextualAnswerRequest =>
+                    new AddQuestionWithTextualAnswerUseCaseRequest(
+                        testID,
+                        request.Text,
+                        request.Score,
+                        addQuestionWithTextualAnswerRequest.RightAnswer),
+                AddQuestionWithNumericAnswerRequest addQuestionWithNumericAnswerRequest =>
+                    new AddQuestionWithNumericAnswerUseCaseRequest(
+                        testID,
+                        request.Text,
+                        request.Score,
+                        addQuestionWithNumericAnswerRequest.RightAnswer),
+                AddQuestionWithDetailedAnswerRequest addQuestionWithDetailedAnswerRequest =>
+                    new AddQuestionWithDetailedAnswerUseCaseRequest(
+                        testID, 
+                        request.Text, 
+                        request.Score),
+                _ => null
             };
+            if (useCaseRequest is null)
+                return BadRequest();
             Guid questionID = await _alphaTest.ExecuteUseCaseAsync(useCaseRequest);
             // ToDo вернуть url
-            return Content(questionID.ToString());
+            return Ok(questionID);
+
         }
 
         [HttpDelete("{testID}/questions/{questionID}")]
