@@ -24,6 +24,13 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
             builder.Property(a => a.StartedAt).IsRequired();
             builder.Property(a => a.FinishedAt);
             builder.Property(a => a.ForceEndAt).IsRequired();
+            builder
+                .Property(w => w.FinishReason)
+                .HasConversion(
+                    finishReason => finishReason.ID,
+                    id => WorkFinishReason.ParseFromID(id)
+                )
+                .IsRequired(false);
         }
     }
 }

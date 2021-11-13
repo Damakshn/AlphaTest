@@ -46,6 +46,7 @@ namespace AlphaTest.Core.Common.Abstractions
         #region Обычный парсинг
         public static TEnum ParseFromID(int id)
         {
+            if (id == 0) return null;
             TEnum match = All.FirstOrDefault(e => e.ID == id);
             if (match is null)
                 throw new ArgumentException($"{id} is not valid ID for {typeof(TEnum).Name}", nameof(id));
@@ -64,6 +65,11 @@ namespace AlphaTest.Core.Common.Abstractions
         #region Парсинг через Try-паттерн
         public static bool TryParseFromID(int id, out TEnum match)
         {
+            if (id == 0)
+            {
+                match = null;
+                return true;
+            }
             match = All.FirstOrDefault(e => e.ID == id);
             if (match is null)
             {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using AlphaTest.Application.UseCases.Examinations.Commands.RevokeAnswer;
+using AlphaTest.Application.UseCases.Examinations.Commands.FinishWork;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -26,6 +27,14 @@ namespace AlphaTest.WebApi.Controllers
             // ToDo auth
             Guid dummyUserID = Guid.NewGuid();
             await _alphaTest.ExecuteUseCaseAsync(new StartWorkUseCaseRequest(dummyUserID, examinationID));
+            return Ok();
+        }
+
+        [HttpPost("{examinationID}/finish")]
+        public async Task<IActionResult> FinishTesting([FromRoute] Guid examinationID)
+        {
+            // ToDo auth
+            await _alphaTest.ExecuteUseCaseAsync(new FinishCurrentWorkUseCaseRequest(examinationID, Guid.NewGuid()));
             return Ok();
         }
 
