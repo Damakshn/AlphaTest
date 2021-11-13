@@ -32,6 +32,7 @@ namespace AlphaTest.Core.Works
             #endregion
             StudentID = studentID;
             FinishedAt = null;
+            FinishReason = null;
         }
         #endregion
 
@@ -50,20 +51,37 @@ namespace AlphaTest.Core.Works
 
         public DateTime ForceEndAt { get; private set; }
 
+        public WorkFinishReason FinishReason { get; private set; }
+
         public bool IsFinished => FinishedAt is not null;
         #endregion
 
         #region Методы
-        public void Finish()
+        public void ForcedFinish(WorkFinishReason reason)
         {
-            CheckRule(new FinishedWorkCannotBeModifiedRule(this));
-            FinishedAt = DateTime.Now;
+            CheckRule(new ForcedFinishRequiresSpecificFinishReasonsRule(reason));
+            CheckRule(new ForcedFinishMustBeAppliedAtRightTimeRule(this));
+            Finish(reason);
         }
 
-        public void ForceEnd()
+        // ToDo add to usecase
+        public void AutoFinish(Test test, bool allQuestionsAnswered)
         {   
-            CheckRule(new ForcedEndMustBeAppliedAtRightTimeRule(this));
-            Finish();
+            CheckRule(new AutoFinishIsEnabledOnlyIfAllQuestionAreAnsweredRule(allQuestionsAnswered));
+            CheckRule(new AutoFinishIsEnabledOnlyIfRetriesAreDisabledInTestSettingsRule(test));
+            Finish(WorkFinishReason.AutoFinish);
+        }
+
+        public void ManualFinish()
+        {
+            Finish(WorkFinishReason.ManualFinish);
+        }
+        private void Finish(WorkFinishReason reason)
+        {
+            CheckRule(new FinishedWorkCannotBeModifiedRule(this));
+            CheckRule(new FinishReasonMustBeSpecifiedIfWorkIsFinishedRule(reason));
+            FinishedAt = DateTime.Now;
+            FinishReason = reason;
         }
         #endregion
     }

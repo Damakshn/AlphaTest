@@ -108,7 +108,7 @@ namespace AlphaTest.Core.UnitTests.Answers
             QuestionWithDetailedAnswer questionWithDetailedAnswer)
         {
             HelpersForWorks.SetWorkForcedEndDate(work, DateTime.Now);
-            work.ForceEnd();
+            work.ForcedFinish(WorkFinishReason.TestTimeLimitExpired);
 
             // проверяем, что одно и то же правило нарушается для всех ответов
             AssertBrokenRule<AnswerCannotBeRegisteredIfWorkIsFinishedRule>(() => 
@@ -204,7 +204,7 @@ namespace AlphaTest.Core.UnitTests.Answers
             List<Answer> answers = new() { singleChoiceAnswer, multiChoiceAnswer, exactNumericAnswer, exactTextualAnswer, detailedAnswer };
             test.ChangeRevokePolicy(new RevokePolicy(true, 2));
             HelpersForWorks.SetWorkForcedEndDate(work, DateTime.Now);
-            work.ForceEnd();
+            work.ForcedFinish(WorkFinishReason.TestTimeLimitExpired);
 
             foreach (Answer answer in answers)
             {

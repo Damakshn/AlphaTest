@@ -1,20 +1,20 @@
-﻿using AlphaTest.Core.Common;
-using System;
+﻿using System;
+using AlphaTest.Core.Common;
 
 
 namespace AlphaTest.Core.Works.Rules
 {
-    public class ForcedEndMustBeAppliedAtRightTimeRule : IBusinessRule
+    public class ForcedFinishMustBeAppliedAtRightTimeRule : IBusinessRule
     {
         private readonly Work _work;
 
-        public ForcedEndMustBeAppliedAtRightTimeRule(Work work)
+        public ForcedFinishMustBeAppliedAtRightTimeRule(Work work)
         {
             _work = work;
         }
 
         public string Message => $"Принудительное завершение тестирования невозможно до {_work.ForceEndAt}";
 
-        public bool IsBroken => _work.ForceEndAt > DateTime.Now;
+        public bool IsBroken =>_work.ForceEndAt > DateTime.Now;
     }
 }
