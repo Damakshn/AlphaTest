@@ -9,6 +9,7 @@ using AlphaTest.Core.Examinations;
 using AlphaTest.Core.UnitTests.Common;
 using AlphaTest.Core.UnitTests.Fixtures;
 using AlphaTest.Core.UnitTests.Common.Helpers;
+using AlphaTest.Core.Tests.TestSettings.TestFlow;
 
 namespace AlphaTest.Core.UnitTests.Works
 {
@@ -75,9 +76,9 @@ namespace AlphaTest.Core.UnitTests.Works
 
 
         [Theory, WorkTestsData]
-        public void Work_can_be_finished(Work work)
+        public void Work_can_be_finished_manually(Work work)
         {
-            work.Finish();
+            work.ManualFinish();
 
             Assert.True(work.IsFinished);
             Assert.Equal(DateTime.Now, (DateTime)work.FinishedAt, TimeSpan.FromSeconds(1));
@@ -86,24 +87,63 @@ namespace AlphaTest.Core.UnitTests.Works
         [Theory, WorkTestsData]
         public void Work_can_be_finished_only_once(Work work)
         {
-            work.Finish();
-            AssertBrokenRule<FinishedWorkCannotBeModifiedRule>(() => work.Finish());
+            work.ManualFinish();
+            Assert.True(work.IsFinished);
+            AssertBrokenRule<FinishedWorkCannotBeModifiedRule>(() => work.ManualFinish());
         }
 
         [Theory, WorkTestsData]
-        public void Work_can_be_finished_by_force(Work work)
+        public void Work_can_be_finished_by_force_when_time_limit_has_expired(Work work)
         {
             HelpersForWorks.SetWorkForcedEndDate(work, DateTime.Now);
 
-            work.ForceEnd();
+            work.ForcedFinish(WorkFinishReason.TestTimeLimitExpired);
 
             Assert.True(work.IsFinished);
         }
 
         [Theory, WorkTestsData]
+        public void Work_can_be_finished_by_force_when_examination_is_over(Work work)
+        {
+            HelpersForWorks.SetWorkForcedEndDate(work, DateTime.Now);
+
+            work.ForcedFinish(WorkFinishReason.ExaminationTimeLimitExpired);
+
+            Assert.True(work.IsFinished);
+        }
+
+        [Theory, WorkTestsData]
+        public void Work_cannot_be_finished_by_force_with_inappropriate_reason(Work work)
+        {
+            HelpersForWorks.SetWorkForcedEndDate(work, DateTime.Now);
+
+            AssertBrokenRule<ForcedFinishRequiresSpecificFinishReasonsRule>(() => work.ForcedFinish(WorkFinishReason.ManualFinish));
+        }
+
+        [Theory, WorkTestsData]
         public void Work_cannot_be_finished_by_force_if_time_limit_is_not_expired(Work work)
         {
-            AssertBrokenRule<ForcedEndMustBeAppliedAtRightTimeRule>(() => work.ForceEnd());
+            AssertBrokenRule<ForcedFinishMustBeAppliedAtRightTimeRule>(() => work.ForcedFinish(WorkFinishReason.TestTimeLimitExpired));
+        }
+
+        [Theory, WorkTestsData]
+        public void Work_can_be_finished_automatically_when_all_questions_are_answered_and_revoking_is_not_allowed(Work work, Test test)
+        {
+            work.AutoFinish(test, true);
+            Assert.True(work.IsFinished);
+        }
+
+        [Theory, WorkTestsData]
+        public void Work_cannot_be_finished_automatically_if_revoke_is_allowed(Work work, Test test)
+        {
+            test.ChangeRevokePolicy(new RevokePolicy(true, 1));
+            AssertBrokenRule<AutoFinishIsEnabledOnlyIfRetriesAreDisabledInTestSettingsRule>(() => work.AutoFinish(test, true));
+        }
+
+        [Theory, WorkTestsData]
+        public void Work_cannot_be_finished_automatically_if_not_all_questions_are_answered(Work work, Test test)
+        {
+            AssertBrokenRule<AutoFinishIsEnabledOnlyIfAllQuestionAreAnsweredRule>(() => work.AutoFinish(test, false));
         }
 
         [Theory, WorkTestsData]
@@ -111,9 +151,9 @@ namespace AlphaTest.Core.UnitTests.Works
         {
             HelpersForWorks.SetWorkForcedEndDate(work, DateTime.Now);
 
-            work.Finish();
+            work.ManualFinish();
 
-            AssertBrokenRule<FinishedWorkCannotBeModifiedRule>(() => work.ForceEnd());
+            AssertBrokenRule<FinishedWorkCannotBeModifiedRule>(() => work.ForcedFinish(WorkFinishReason.TestTimeLimitExpired));
         }
 
         public static IEnumerable<object[]> TimeLimits =>
