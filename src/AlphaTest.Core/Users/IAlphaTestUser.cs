@@ -46,6 +46,8 @@ namespace AlphaTest.Core.Users
         public void Unlock();
 
         public void ResetTemporaryPassword(string newPassword);
+
+        public void ChangePassword(string oldPassword, string newPassword, string newPasswordRepeat);
         #endregion
     }
 }
