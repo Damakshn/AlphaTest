@@ -7,6 +7,7 @@ using AlphaTest.Core.Users;
 using AlphaTest.Core.Users.Rules;
 using AlphaTest.Core.Common;
 using AlphaTest.Core.Common.Exceptions;
+using AlphaTest.Core.Users.Rules;
 
 namespace AlphaTest.Infrastructure.Auth
 {
@@ -92,8 +93,17 @@ namespace AlphaTest.Infrastructure.Auth
         public void ResetTemporaryPassword(string newPassword)
         {
             _temporaryPassword = newPassword;
-            new PasswordHasher<AppUser>().HashPassword(this, newPassword);
+            PasswordHash = new PasswordHasher<AppUser>().HashPassword(this, newPassword);
             _temporaryPasswordExpirationDate = CalculateTemporaryPasswordExpirationDate();
+        }
+
+        public void ChangePassword(string oldPassword, string newPassword, string newPasswordRepeat)
+        {
+            var hasher = new PasswordHasher<AppUser>();
+            CheckRule(new NewPermanentPasswordMustBeRepeatedCorrectlyRule(newPassword, newPasswordRepeat));
+            // ToDo check system password options
+            PasswordHash = hasher.HashPassword(this, newPassword);
+            _isPasswordChanged = true;
         }
 
         public void Suspend()
