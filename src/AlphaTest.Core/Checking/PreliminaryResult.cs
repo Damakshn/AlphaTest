@@ -12,7 +12,10 @@ namespace AlphaTest.Core.Checking
 
         public PreliminaryResult(Question question, Answer answer, decimal score, CheckResultType checkResultType)
         {
+            // ToDo unit test this
             CheckRule(new RevokedAnswersCannotBeCheckedRule(answer));
+            CheckRule(new PartiallyCreditedResultCannotHaveZeroOrMaximumScoreRule(question, score, checkResultType));
+            CheckRule(new CheckResultTypeMustBeProvidedForPreliminaryResultRule(checkResultType));
             Score = score;
             CheckResultType = checkResultType;
             Question = question;

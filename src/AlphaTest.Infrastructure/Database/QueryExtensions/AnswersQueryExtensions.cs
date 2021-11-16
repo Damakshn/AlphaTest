@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using AlphaTest.Core.Answers;
 using System.Threading.Tasks;
 using System;
+using AlphaTest.Infrastructure.Database.Exceptions;
 
 namespace AlphaTest.Infrastructure.Database.QueryExtensions
 {
@@ -11,6 +12,14 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
         public static IQueryable<Answer> Aggregates(this DbSet<Answer> query)
         {
             return query;
+        }
+
+        public static async Task<Answer> FindByID(this IQueryable<Answer> query, Guid id)
+        {
+            Answer answer = await query.FirstOrDefaultAsync(a => a.ID == id);
+            if (answer is null)
+                throw new EntityNotFoundException($"Ответ с ID={id} не найден.");
+            return answer;
         }
 
         public static async Task<Answer> GetLatestActiveAnswerForQuestion(this IQueryable<Answer> query, Guid workID, Guid questionID)
