@@ -49,6 +49,11 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
             return result;
         }
 
+        public static IQueryable<Group> FilterByIdsList(this IQueryable<Group> query, List<Guid> ids)
+        {
+            return query.Where(g => ids.Contains(g.ID));
+        }
+
         public static async Task<Group> FindByID(this IQueryable<Group> query, Guid id)
         {
             Group group = await query.FirstOrDefaultAsync(g => g.ID == id);

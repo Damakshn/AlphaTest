@@ -122,6 +122,17 @@ namespace AlphaTest.Core.UnitTests.Groups
         }
 
         [Theory, GroupTestsData]
+        public void Student_can_be_added_to_group_only_once(Group group, IFixture fixture)
+        {
+            var student = fixture.CreateStudent();
+            group.AddStudent(student);
+
+            Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.ID));
+            AssertBrokenRule<StudentCanBeAddedToGroupOnlyOnceRule>(() => group.AddStudent(student));
+            
+        }
+
+        [Theory, GroupTestsData]
         public void Group_can_be_disbanded(Group group)
         {
             group.Disband();
