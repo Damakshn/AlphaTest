@@ -7,6 +7,10 @@ using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.CreateUser;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SetRoles;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SuspendUser;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.GenerateTemporaryPassword;
+using System.Collections.Generic;
+using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBulkImport;
+using AlphaTest.Core.Users.BulkImportReport;
+using System.Text.Json;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -58,6 +62,13 @@ namespace AlphaTest.WebApi.Controllers
         {
             await _alphaTest.ExecuteUseCaseAsync(new GenerateTemporaryPasswordUseCaseRequest(userID));
             return Ok();
+        }
+
+        [HttpPost("users/bulkImport")]
+        public async Task<IActionResult> BulkImport([FromBody] List<ImportStudentRequestData> request)
+        {
+            List<BulkImportReportLine> report = await _alphaTest.ExecuteUseCaseAsync(new BulkImportUseCaseRequest(request));
+            return new JsonResult(report);
         }
     }
 }

@@ -60,10 +60,16 @@ namespace AlphaTest.Core.Groups
         {
             CheckRule(new DisbandedGroupCannotBeModifiedRule(this));
             CheckRule(new InactiveGroupCannotBeModifiedRule(this));
+            CheckRule(new StudentCanBeAddedToGroupOnlyOnceRule(this, student));
             CheckRule(new GroupSizeIsLimitedRule(_members));
             Membership membership = new(this, student);
             _members.Add(membership);
             // ToDo domain event
+        }
+
+        public bool HasMember(IAlphaTestUser student)
+        {
+            return Memberships.Any(m => m.StudentID == student.ID);
         }
 
         public void ExcludeStudent(IAlphaTestUser student)

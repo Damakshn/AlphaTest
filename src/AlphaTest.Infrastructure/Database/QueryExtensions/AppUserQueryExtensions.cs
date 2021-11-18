@@ -2,6 +2,7 @@
 using AlphaTest.Infrastructure.Database.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,6 +29,11 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
             if (user is null)
                 throw new EntityNotFoundException($"Пользователь с ID={id} не зарегистрирован в системе.");
             return user;
+        }
+
+        public static IQueryable<AppUser> FilterByEmailsList(this IQueryable<AppUser> query, List<string> emails) 
+        {
+            return query.Where(u => emails.Contains(u.Email));
         }
     }
 }
