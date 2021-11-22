@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.TestSettings.Checking;
 using AlphaTest.Core.Tests.TestSettings.TestFlow;
@@ -6,7 +7,6 @@ using AlphaTest.Core.Tests.TestSettings.TestFlow;
 namespace AlphaTest.Application.Models.Tests
 {
     // ToDo QuestionCount
-    // ToDo list of contributors
     public class TestInfo
     {
         public Guid ID { get; set; }
@@ -38,5 +38,7 @@ namespace AlphaTest.Application.Models.Tests
         public ScoreDistributionMethod ScoreDistributionMethod { get; set; }
 
         public QuestionScore ScorePerQuestion { get; set; }
+
+        public List<ContributorInfo> ContributorsInfo { get; set; }
     }
 }
