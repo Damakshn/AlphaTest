@@ -8,6 +8,7 @@ using AlphaTest.Application.UseCases.Schedule.Commands.ChangeExaminationTerms;
 using AlphaTest.Application.UseCases.Schedule.Commands.CancelExamination;
 using AlphaTest.Application.UseCases.Admin.Commands.Examinations.SwitchExaminer;
 using AlphaTest.WebApi.Models.Schedule;
+using AlphaTest.WebApi.Utils.Security;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -31,7 +32,7 @@ namespace AlphaTest.WebApi.Controllers
                     request.TestID, 
                     request.StartsAt,
                     request.EndsAt, 
-                    Guid.NewGuid(), // ToDo current user
+                    User.GetID(),
                     request.Groups));
             // todo return url
             return Ok(examID);

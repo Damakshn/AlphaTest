@@ -5,10 +5,17 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.CreateTest
 {
     public class CreateTestUseCaseRequest : IUseCaseRequest<Guid>
     {
-        public string Title { get; set; }
+        public CreateTestUseCaseRequest(string title, string topic, Guid authorID)
+        {
+            Title = title;
+            Topic = Topic;
+            AuthorID = authorID;
+        }
 
-        public string Topic { get; set; }
+        public string Title { get; private set; }
 
-        public string Username { get; set; }
+        public string Topic { get; private set; }
+
+        public Guid AuthorID { get; private set; }
     }
 }

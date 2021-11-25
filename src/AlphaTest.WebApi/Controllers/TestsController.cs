@@ -26,6 +26,7 @@ using AlphaTest.Application.UseCases.Tests.Commands.SwitchAuthor;
 using AlphaTest.Application.UseCases.Tests.Commands.EditQuestion;
 using AlphaTest.Application.UseCases.Tests.Commands.NewEdition;
 using AlphaTest.WebApi.Models.Tests.AddQuestion;
+using AlphaTest.WebApi.Utils.Security;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -42,9 +43,9 @@ namespace AlphaTest.WebApi.Controllers
 
         #region Создание тестов
         [HttpPost]
-        public async Task<IActionResult> CreateTest([FromBody]CreateTestUseCaseRequest request)
+        public async Task<IActionResult> CreateTest([FromBody]CreateTestRequest request)
         {
-            var testID =  await _alphaTest.ExecuteUseCaseAsync<Guid>(request);
+            var testID =  await _alphaTest.ExecuteUseCaseAsync(new CreateTestUseCaseRequest(request.Title, request.Topic, User.GetID()));
             // ToDo return url
             return Content(testID.ToString());
              

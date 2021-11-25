@@ -15,12 +15,12 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.CreateTest
     {
         public CreateTestUseCaseHandler(AlphaTestContext db) : base(db) { }
 
-        public override Task<Guid> Handle(CreateTestUseCaseRequest request, CancellationToken cancellationToken)
+        public override async Task<Guid> Handle(CreateTestUseCaseRequest request, CancellationToken cancellationToken)
         {
-            AppUser author = _db.Users.Aggregates().Where(user => user.UserName == request.Username).FirstOrDefault();
+            AppUser author = await _db.Users.Aggregates().FindByID(request.AuthorID);
             if (author is null)
             {
-                throw new AlphaTestApplicationException($"Пользователь {request.Username} не зарегистрирован в системе.");
+                throw new AlphaTestApplicationException($"Пользователь {request.AuthorID} не зарегистрирован в системе.");
             }
             bool testAlreadyExists = _db.Tests
                 .Aggregates()
@@ -28,7 +28,7 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.CreateTest
             Test test = new(request.Title, request.Topic, author.ID, testAlreadyExists);
             _db.Tests.Add(test);
             _db.SaveChanges();
-            return Task.FromResult(test.ID);
+            return test.ID;
         }
     }
 }
