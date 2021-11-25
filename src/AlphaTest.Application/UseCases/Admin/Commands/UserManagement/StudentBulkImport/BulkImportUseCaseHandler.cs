@@ -1,6 +1,5 @@
 ﻿using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Core.Groups;
-using AlphaTest.Infrastructure.Auth;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 using MediatR;
@@ -15,6 +14,7 @@ using AlphaTest.Core.Users.BulkImportReport;
 using AlphaTest.Core.Common.Exceptions;
 using AlphaTest.Core.Groups.Rules;
 using AlphaTest.Infrastructure.Auth.UserManagement;
+using AlphaTest.Infrastructure.Auth.Security;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBulkImport
 {

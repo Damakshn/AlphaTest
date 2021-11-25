@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
-using AlphaTest.Infrastructure.Auth;
 using AlphaTest.Infrastructure.Auth.UserManagement;
+using AlphaTest.Infrastructure.Auth.Security;
 
 namespace AlphaTest.Infrastructure.Plugins
 {

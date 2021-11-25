@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
 
-namespace AlphaTest.Infrastructure.Auth
+namespace AlphaTest.Infrastructure.Auth.Security
 {
     public static class PasswordGenerator
     {
