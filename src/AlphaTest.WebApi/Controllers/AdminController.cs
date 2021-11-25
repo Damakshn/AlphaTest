@@ -10,7 +10,7 @@ using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.GenerateTempo
 using System.Collections.Generic;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBulkImport;
 using AlphaTest.Core.Users.BulkImportReport;
-using System.Text.Json;
+using AlphaTest.WebApi.Utils.Security;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -53,7 +53,7 @@ namespace AlphaTest.WebApi.Controllers
             await _alphaTest.ExecuteUseCaseAsync(
                 new SuspendUserUseCaseRequest(
                     userID,
-                    Guid.NewGuid())); // ToDo костыль (аутентификация)
+                    User.GetID()));
             return Ok();
         }
 

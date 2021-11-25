@@ -22,17 +22,12 @@ namespace AlphaTest.Application.UseCases.Checking.CheckAnswerManually
         public override async Task<Unit> Handle(CheckAnswerManuallyUseCaseRequest request, CancellationToken cancellationToken)
         {
             // ToDo определить, что должно произойти, если ответ на вопрос уже был оценён (тем же преподавателем, или другим)
-            // ToDo auth
-            #region Костыль
-            AppUser dummyTeacher = await _db.Users.Aggregates().FindByUsername("dummyteacher@mail.ru");
-            Guid teacherID = dummyTeacher.ID;
-            #endregion
             Answer answerToCheck = await _db.Answers.Aggregates().FindByID(request.AnswerID);
             Question questionOfAnswer = await _db.Questions.Aggregates().FindByID(answerToCheck.QuestionID);
             PreliminaryResult preliminaryResult = new(questionOfAnswer, answerToCheck, request.Score, request.CheckResultType);
             Test test = await _db.Tests.Aggregates().FindByID(questionOfAnswer.TestID);
             AdjustedResult adjustedResult = preliminaryResult.AdjustWithCheckingPolicy(test.CheckingPolicy);
-            CheckResult finalResult = new(adjustedResult, /*request.TeacherID*/teacherID);
+            CheckResult finalResult = new(adjustedResult, request.TeacherID);
             _db.Results.Add(finalResult);
             _db.SaveChanges();
             return Unit.Value;

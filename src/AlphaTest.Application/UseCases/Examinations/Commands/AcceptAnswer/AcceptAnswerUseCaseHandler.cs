@@ -30,12 +30,6 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
             
             Examination currentExamination = await _db.Examinations.Aggregates().FindByID(request.ExaminationID);
 
-            // ToDo auth
-            #region костыль
-            AppUser dummyStudent = await _db.Users.Aggregates().FindByUsername("dummystudent@mail.ru");
-            Guid studentID = dummyStudent.Id;
-            #endregion
-
             /*
             ToDo есть несколько сценариев, почему ответ нельзя принять
                 - тестирование завершено;
@@ -45,10 +39,10 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
                 * вариант с несуществующим пользователем не рассматриваем, потому что ID пользователя приходит через механизм аутентификации;
                 * Если экзамен не существует, в самом начале вылетет исключение
             */
-            Work currentWorkOfTheStudent = await _db.Works.Aggregates().GetActiveWork(request.ExaminationID, studentID);
+            Work currentWorkOfTheStudent = await _db.Works.Aggregates().GetActiveWork(request.ExaminationID, request.StudentID);
             if (currentWorkOfTheStudent is null)
             {
-                throw new AlphaTestApplicationException($"Работа учащегося с ID={studentID} для экзамена ID={request.ExaminationID} не найдена.");
+                throw new AlphaTestApplicationException($"Работа учащегося с ID={request.StudentID} для экзамена ID={request.ExaminationID} не найдена.");
             }
 
             Test test = await _db.Tests.Aggregates().FindByID(currentExamination.TestID);
