@@ -122,6 +122,11 @@ namespace AlphaTest.Infrastructure.Auth.UserManagement
                 throw new BusinessException(rule);
         }
 
+        public bool IsTemporaryPasswordExpired()
+        {
+            return !_isPasswordChanged && _temporaryPasswordExpirationDate <= DateTime.Now;
+        }
+
         private bool HasRole(string roleName)
         {
             return _userRoles.Where(userRole => userRole.Role.Name == roleName).FirstOrDefault() is not null;
