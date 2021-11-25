@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using AlphaTest.Core.Tests;
 using System.Threading.Tasks;
 using AlphaTest.Infrastructure.Database.Exceptions;
-using MediatR;
 
 namespace AlphaTest.Infrastructure.Database.QueryExtensions
 {
@@ -12,7 +11,7 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
     {
         public static IQueryable<Test> Aggregates(this DbSet<Test> query)
         {
-            return query;
+            return query.Include("_contributions");            
         }
 
         public static async Task<Test> FindByID(this IQueryable<Test> query, Guid id)

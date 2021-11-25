@@ -18,6 +18,7 @@ namespace AlphaTest.Infrastructure.Database
 
             #region Тесты, группы, экзамены, работы
             modelBuilder.ApplyConfiguration(new TestEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ContributionEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GroupEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ExaminationEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new WorkEntityTypeConfiguration());

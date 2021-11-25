@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -10,17 +10,19 @@ using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Groups;
 using AlphaTest.Core.Tests.Publishing;
+using AlphaTest.Core.Tests.Ownership;
 using AlphaTest.Infrastructure.Auth.UserManagement;
-
 namespace AlphaTest.Infrastructure.Database
 {
-    public partial class AlphaTestContext : 
-        IdentityDbContext<AppUser, AppRole, Guid, IdentityUserClaim<Guid>, 
+    public partial class AlphaTestContext :
+        IdentityDbContext<AppUser, AppRole, Guid, IdentityUserClaim<Guid>,
             AppUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
     {
-       
+
         #region DbSets
         public DbSet<Test> Tests { get; set; }
+
+        public DbSet<Contribution> Contributions {get; set;}
 
         public DbSet<Question> Questions { get; set; }
 
