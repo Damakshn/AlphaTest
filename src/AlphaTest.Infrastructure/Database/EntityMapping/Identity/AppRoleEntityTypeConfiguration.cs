@@ -1,4 +1,4 @@
-﻿using AlphaTest.Infrastructure.Auth;
+﻿using AlphaTest.Infrastructure.Auth.UserManagement;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

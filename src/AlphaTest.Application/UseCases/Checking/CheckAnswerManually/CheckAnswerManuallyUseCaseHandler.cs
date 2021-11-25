@@ -3,7 +3,7 @@ using AlphaTest.Core.Answers;
 using AlphaTest.Core.Checking;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
-using AlphaTest.Infrastructure.Auth;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 using MediatR;

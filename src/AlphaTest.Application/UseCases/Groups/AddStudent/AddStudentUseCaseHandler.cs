@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Core.Groups;
-using AlphaTest.Infrastructure.Auth;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 using MediatR;

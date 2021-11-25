@@ -7,11 +7,10 @@ using AlphaTest.Core.Users;
 using AlphaTest.Core.Users.Rules;
 using AlphaTest.Core.Common;
 using AlphaTest.Core.Common.Exceptions;
-using AlphaTest.Core.Users.Rules;
 
-namespace AlphaTest.Infrastructure.Auth
+namespace AlphaTest.Infrastructure.Auth.UserManagement
 {
-    public class AppUser: IdentityUser<Guid>, IAlphaTestUser, ICanCheckRules
+    public class AppUser : IdentityUser<Guid>, IAlphaTestUser, ICanCheckRules
     {
         #region Поля
         public static readonly TimeSpan TemporaryPasswordLifetime = new(1, 0, 0, 0);
@@ -41,7 +40,7 @@ namespace AlphaTest.Infrastructure.Auth
         #endregion
 
         public AppUser(string firstName, string lastName, string middleName, string temporaryPassword, string email)
-            :base()
+            : base()
         {
             _firstName = firstName;
             _lastName = lastName;
@@ -62,7 +61,7 @@ namespace AlphaTest.Infrastructure.Auth
         }
 
         #region Свойства
-        public Guid ID => this.Id;
+        public Guid ID => Id;
 
         public string FirstName => _firstName;
 
@@ -81,7 +80,7 @@ namespace AlphaTest.Infrastructure.Auth
         public bool IsPasswordChanged => _isPasswordChanged;
 
         public bool IsSuspended => _isSuspended;
-        
+
         public bool IsAdmin => HasRole("Admin");
 
         public bool IsStudent => HasRole("Student");

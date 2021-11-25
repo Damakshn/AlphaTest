@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 using AlphaTest.Core.Tests;
-using AlphaTest.Infrastructure.Auth;
 using AlphaTest.Application.Exceptions;
 using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.CreateTest
 {

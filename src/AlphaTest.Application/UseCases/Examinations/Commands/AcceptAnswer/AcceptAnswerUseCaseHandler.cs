@@ -8,7 +8,7 @@ using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Works;
-using AlphaTest.Infrastructure.Auth;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 using MediatR;

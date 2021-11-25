@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 
-namespace AlphaTest.Infrastructure.Auth
-{   
+namespace AlphaTest.Infrastructure.Auth.UserManagement
+{
     public class AppUserStore : UserStore<AppUser, AppRole, AlphaTestContext, Guid, IdentityUserClaim<Guid>, AppUserRole, IdentityUserLogin<Guid>, IdentityUserToken<Guid>, IdentityRoleClaim<Guid>>
     {
         public AppUserStore(AlphaTestContext context, IdentityErrorDescriber describer = null) : base(context, describer)
@@ -47,7 +47,7 @@ namespace AlphaTest.Infrastructure.Auth
         }
 
         protected override Task<AppUser> FindUserAsync(Guid userId, CancellationToken cancellationToken)
-        {   
+        {
             return Context.Users.Aggregates().SingleOrDefaultAsync(u => u.Id.Equals(userId), cancellationToken);
         }
         #endregion

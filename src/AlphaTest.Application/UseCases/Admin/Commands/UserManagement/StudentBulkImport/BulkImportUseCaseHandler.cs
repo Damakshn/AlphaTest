@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using AlphaTest.Core.Users.BulkImportReport;
 using AlphaTest.Core.Common.Exceptions;
 using AlphaTest.Core.Groups.Rules;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBulkImport
 {
