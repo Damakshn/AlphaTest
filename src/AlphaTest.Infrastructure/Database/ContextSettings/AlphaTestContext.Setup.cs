@@ -1,5 +1,6 @@
 ﻿using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace AlphaTest.Infrastructure.Database
 {
@@ -8,28 +9,30 @@ namespace AlphaTest.Infrastructure.Database
         private static string DATABASE_NAME => "AlphaTest";
 
         // TODO добавить в документацию пояснение - для чего используется такая схема
-        public AlphaTestContext(string login, string password) :
-            base(BuildOptions(login, password))
+        public AlphaTestContext(IConfiguration configuration) :
+            base(BuildOptions(configuration))
         {
 
         }
 
-        private static DbContextOptions BuildOptions(string login, string password)
+        private static DbContextOptions BuildOptions(IConfiguration configuration)
         {
             DbContextOptionsBuilder<AlphaTestContext> builder = new();
+            string login = configuration["ALPHATEST_MIGRATOR_LOGIN"];
+            string password = configuration["ALPHATEST_MIGRATOR_PASSWORD"];
+            string server = configuration["ALPHATEST_SERVER"];
 
-            builder.UseSqlServer(BuildConnectionString(login, password));
+            builder.UseSqlServer(BuildConnectionString(login, password, server));
             builder.EnableSensitiveDataLogging();
             return builder.Options;
         }
 
-        private static string BuildConnectionString(string login, string password)
+        private static string BuildConnectionString(string login, string password, string server)
         {
             SqlConnectionStringBuilder builder = new();
             builder.InitialCatalog = DATABASE_NAME;
-            string serverAddress = VariableStorage.ReadVariable(VariableStorage.DatabaseServer);
 
-            builder.DataSource = serverAddress;
+            builder.DataSource = server;
             builder.UserID = login;
             builder.Password = password;
             return builder.ConnectionString;

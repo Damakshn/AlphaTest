@@ -6,6 +6,7 @@ using AlphaTest.Application.UseCases.Admin.Commands.Proposals.Publishing.AproveP
 using AlphaTest.Application.UseCases.Admin.Commands.Proposals.Publishing.AssignProposal;
 using AlphaTest.Application.UseCases.Admin.Commands.Proposals.Publishing.DeclineProposal;
 using AlphaTest.WebApi.Models.Proposals;
+using AlphaTest.WebApi.Utils.Security;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -22,10 +23,8 @@ namespace AlphaTest.WebApi.Controllers
 
         [HttpPost("{proposalID}/assign")]
         public async Task<IActionResult> AssignProposal([FromRoute] Guid proposalID)
-        {
-            // todo auth
-            Guid currentUserID = Guid.NewGuid();
-            await _alphaTest.ExecuteUseCaseAsync(new AssignProposalUseCaseRequest(proposalID, currentUserID));
+        {   
+            await _alphaTest.ExecuteUseCaseAsync(new AssignProposalUseCaseRequest(proposalID, User.GetID()));
             return Ok();
         }
 

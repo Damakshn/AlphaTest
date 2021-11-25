@@ -7,7 +7,7 @@ using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Groups;
 using AlphaTest.Core.Tests;
-using AlphaTest.Infrastructure.Auth;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 
@@ -22,10 +22,7 @@ namespace AlphaTest.Application.UseCases.Schedule.Commands.CreateExamination
         public override async Task<Guid> Handle(CreateExaminationUseCaseRequest request, CancellationToken cancellationToken)
         {
             Test test = await _db.Tests.Aggregates().FindByID(request.TestID);
-            // ToDo костыль (все экзамены записаны на первого админа), убрать после того, как будет готова аутентификация
-            AppUser examiner = _db.Users.Aggregates().FirstOrDefault(u => u.Email == "admin@mail.ru");
-            // ToDo take current user from controller
-            // AppUser examiner = await _db.Users.Aggregates().FindByID(request.UserID);
+            AppUser examiner = await _db.Users.Aggregates().FindByID(request.UserID);
 
             List<Group> groups =
                 request.Groups.Any()

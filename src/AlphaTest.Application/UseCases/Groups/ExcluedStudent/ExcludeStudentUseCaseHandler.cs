@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using MediatR;
 using AlphaTest.Core.Groups;
 using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Infrastructure.Auth;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 
 namespace AlphaTest.Application.UseCases.Groups.ExcluedStudent
 {

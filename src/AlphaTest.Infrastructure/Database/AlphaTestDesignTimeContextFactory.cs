@@ -1,15 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace AlphaTest.Infrastructure.Database
 {
     public class AlphaTestDesignTimeContextFactory : IDesignTimeDbContextFactory<AlphaTestContext>
     {
-        public AlphaTestContext CreateDbContext(string[] args)
-        {   
-            string migratorLogin = VariableStorage.ReadVariable(VariableStorage.MigratorLogin);
-            string migratorPassword = VariableStorage.ReadVariable(VariableStorage.MigratorPassword);
+        private IConfiguration _configuration;
+        
+        public AlphaTestDesignTimeContextFactory(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
-            return new AlphaTestContext(migratorLogin, migratorPassword);
+        public AlphaTestContext CreateDbContext(string[] args)
+        {
+            return new AlphaTestContext(_configuration);
         }
     }
 }

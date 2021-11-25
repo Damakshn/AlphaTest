@@ -7,6 +7,7 @@ using AlphaTest.WebApi.Models.Profile;
 
 namespace AlphaTest.WebApi.Controllers
 {
+    // Todo access control profile owner only
     [Route("api/[controller]")]
     [ApiController]
     public class ProfileController : ControllerBase
@@ -20,8 +21,7 @@ namespace AlphaTest.WebApi.Controllers
 
         [HttpPost("{userID}/changePassword")]
         public async Task<IActionResult> ChangePassword([FromRoute] Guid userID, [FromBody] ChangePasswordRequest request)
-        {
-            // Todo auth
+        {   
             await _alphaTest.ExecuteUseCaseAsync(new ChangePasswordUseCaseRequest(userID, request.OldPassword, request.NewPassword, request.NewPasswordRepeat));
             return Ok();
         }

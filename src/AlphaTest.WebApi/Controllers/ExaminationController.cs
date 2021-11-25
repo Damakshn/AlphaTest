@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using AlphaTest.Application.UseCases.Examinations.Commands.RevokeAnswer;
 using AlphaTest.Application.UseCases.Examinations.Commands.FinishWork;
+using AlphaTest.WebApi.Utils.Security;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -24,24 +25,21 @@ namespace AlphaTest.WebApi.Controllers
         [HttpPost("{examinationID}/start")]
         public async Task<IActionResult> StartTesting([FromRoute] Guid examinationID)
         {
-            // ToDo auth
-            Guid dummyUserID = Guid.NewGuid();
-            await _alphaTest.ExecuteUseCaseAsync(new StartWorkUseCaseRequest(dummyUserID, examinationID));
+            await _alphaTest.ExecuteUseCaseAsync(new StartWorkUseCaseRequest(User.GetID(), examinationID));
             return Ok();
         }
 
         [HttpPost("{examinationID}/finish")]
         public async Task<IActionResult> FinishTesting([FromRoute] Guid examinationID)
         {
-            // ToDo auth
-            await _alphaTest.ExecuteUseCaseAsync(new FinishCurrentWorkUseCaseRequest(examinationID, Guid.NewGuid()));
+            await _alphaTest.ExecuteUseCaseAsync(new FinishCurrentWorkUseCaseRequest(examinationID, User.GetID()));
             return Ok();
         }
 
         [HttpPost("{examinationID}/questions/{questionID}/answer")]
         public async Task<IActionResult> AcceptAnswer([FromRoute] Guid examinationID, [FromRoute] Guid questionID, [FromBody] AcceptAnswerRequest request)
         {
-            Guid studentID = Guid.NewGuid();
+            Guid studentID = User.GetID();
             AcceptAnswerUseCaseRequest useCaseRequest = request switch
             {
                 AcceptSingleChoiceAnswerRequest acceptSingleChoiceAnswerRequest =>
@@ -83,9 +81,11 @@ namespace AlphaTest.WebApi.Controllers
         [HttpDelete("{examinationID}/questions/{questionID}/answer")]
         public async Task<IActionResult> RevokeAnswer([FromRoute] Guid examinationID, [FromRoute] Guid questionID)
         {
-            // ToDo auth
-            Guid studentID = Guid.NewGuid();
-            await _alphaTest.ExecuteUseCaseAsync(new RevokeAnswerUseCaseRequest(examinationID, questionID, studentID));
+            await _alphaTest.ExecuteUseCaseAsync(
+                new RevokeAnswerUseCaseRequest(
+                    examinationID, 
+                    questionID, 
+                    User.GetID()));
             return Ok();
         }
     }

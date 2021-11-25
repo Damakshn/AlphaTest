@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Tests;
-using AlphaTest.Infrastructure.Auth;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 using MediatR;

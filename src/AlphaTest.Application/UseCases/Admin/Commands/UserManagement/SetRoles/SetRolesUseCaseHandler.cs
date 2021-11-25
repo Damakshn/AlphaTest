@@ -5,10 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MediatR;
-using AlphaTest.Infrastructure.Auth;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Application.Exceptions;
 using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SetRoles
 {

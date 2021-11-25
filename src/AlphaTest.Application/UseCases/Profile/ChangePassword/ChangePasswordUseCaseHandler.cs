@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using MediatR;
 using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Infrastructure.Auth;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 using Microsoft.AspNetCore.Identity;
 using AlphaTest.Application.Exceptions;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 
 namespace AlphaTest.Application.UseCases.Profile.ChangePassword
 {

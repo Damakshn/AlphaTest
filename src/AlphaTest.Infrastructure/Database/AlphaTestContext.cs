@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using AlphaTest.Infrastructure.Auth;
 using AlphaTest.Core.Answers;
 using AlphaTest.Core.Works;
 using AlphaTest.Core.Checking;
@@ -12,7 +11,7 @@ using AlphaTest.Core.Tests;
 using AlphaTest.Core.Groups;
 using AlphaTest.Core.Tests.Publishing;
 using AlphaTest.Core.Tests.Ownership;
-
+using AlphaTest.Infrastructure.Auth.UserManagement;
 namespace AlphaTest.Infrastructure.Database
 {
     public partial class AlphaTestContext :

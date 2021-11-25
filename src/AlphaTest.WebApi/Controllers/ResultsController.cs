@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using AlphaTest.Application;
 using AlphaTest.Application.UseCases.Checking.CheckAnswerManually;
 using AlphaTest.WebApi.Models.Results;
+using AlphaTest.WebApi.Utils.Security;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -21,12 +22,10 @@ namespace AlphaTest.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CheckAnswerManually([FromBody] CheckResultManuallyRequest request)
         {
-            // ToDo auth
-            Guid teacherID = Guid.NewGuid();
             await _alphaTest.ExecuteUseCaseAsync(
                 new CheckAnswerManuallyUseCaseRequest(
                     request.AnswerID,
-                    teacherID,
+                    User.GetID(),
                     request.Score,
                     request.CheckResultTypeID));
             return Ok();

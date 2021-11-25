@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using AlphaTest.Infrastructure.Auth;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AlphaTest.Infrastructure.Database

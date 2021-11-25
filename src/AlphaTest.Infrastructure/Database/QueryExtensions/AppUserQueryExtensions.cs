@@ -1,4 +1,4 @@
-﻿using AlphaTest.Infrastructure.Auth;
+﻿using AlphaTest.Infrastructure.Auth.UserManagement;
 using AlphaTest.Infrastructure.Database.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;

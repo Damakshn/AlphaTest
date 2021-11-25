@@ -1,6 +1,6 @@
 ﻿using AlphaTest.Application.Models.Tests;
 using AlphaTest.Core.Tests;
-using AlphaTest.Infrastructure.Auth;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 
 namespace AlphaTest.Application.Mapping.Configuration
 {
