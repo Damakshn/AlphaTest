@@ -13,5 +13,8 @@ namespace AlphaTest.Infrastructure.Auth.Security
                 RequireUppercase = true,
                 RequiredLength = 8
             };
+
+        // MAYBE убрать в json-конфигурацию?
+        public static int TokenLifetimeInDays => 5;
     }
 }

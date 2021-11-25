@@ -27,6 +27,7 @@ namespace AlphaTest.WebApi
         {
             services.AddEntityFramework(_configuration);
             services.AddConfiguredUserManagement();
+            services.AddJwtAuth(_configuration);
             services.AddUtilityServices();
             services.AddApplicationLayer();
             services.AddControllers();
