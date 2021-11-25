@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
 
-namespace AlphaTest.Infrastructure.Auth
+namespace AlphaTest.Infrastructure.Auth.UserManagement
 {
     public class AppRoleStore : RoleStore<AppRole, AlphaTestContext, Guid, AppUserRole, IdentityRoleClaim<Guid>>
     {

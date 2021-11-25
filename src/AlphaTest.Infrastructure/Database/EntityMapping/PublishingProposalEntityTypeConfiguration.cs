@@ -2,7 +2,7 @@
 using AlphaTest.Core.Tests.Publishing;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AlphaTest.Core.Tests;
-using AlphaTest.Infrastructure.Auth;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping
 {

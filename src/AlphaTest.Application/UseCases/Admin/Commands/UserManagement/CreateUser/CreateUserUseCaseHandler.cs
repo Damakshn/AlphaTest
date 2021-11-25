@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AlphaTest.Application.Exceptions;
 using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Infrastructure.Auth;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 using AlphaTest.Infrastructure.Database;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.CreateUser

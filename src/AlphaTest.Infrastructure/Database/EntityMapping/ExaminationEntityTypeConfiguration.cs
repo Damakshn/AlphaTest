@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Tests;
-using AlphaTest.Infrastructure.Auth;
 using AlphaTest.Core.Groups;
+using AlphaTest.Infrastructure.Auth.UserManagement;
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping
 {
