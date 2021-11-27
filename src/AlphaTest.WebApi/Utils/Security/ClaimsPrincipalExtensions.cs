@@ -10,8 +10,9 @@ namespace AlphaTest.WebApi.Utils.Security
         {
             if (!user.Identity.IsAuthenticated)
             {
-                return default(Guid);
+                return Guid.Empty;
             }
+            // ToDo иногда id не распознаётся, узнать ЧЗХ
             return Guid.Parse(user.FindFirst("user_id").Value);
         }
     }

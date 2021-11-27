@@ -27,9 +27,11 @@ using AlphaTest.Application.UseCases.Tests.Commands.EditQuestion;
 using AlphaTest.Application.UseCases.Tests.Commands.NewEdition;
 using AlphaTest.WebApi.Models.Tests.AddQuestion;
 using AlphaTest.WebApi.Utils.Security;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AlphaTest.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TestsController : ControllerBase
@@ -60,6 +62,7 @@ namespace AlphaTest.WebApi.Controllers
         #endregion
 
         #region Просмотр информации
+        [Authorize(Policy = "CanViewTestContents")]
         [HttpGet("{testID}")]
         public async Task<TestInfo> ViewTestInfo(Guid testID)
         {
