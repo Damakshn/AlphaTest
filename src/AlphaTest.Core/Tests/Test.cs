@@ -254,6 +254,17 @@ namespace AlphaTest.Core.Tests
             AuthorID = newAuthor.ID;
         }
 
+        public bool IsAuthor(Guid userID)
+        {
+            return this.AuthorID == userID;
+        }
+
+        public bool IsContributor(Guid userID)
+        {
+            // ToDo использовать этот метод в проверках бизнес-правил
+            return this._contributions.Any(contribution => contribution.TeacherID == userID);
+        }
+
         public void AddContributor(IAlphaTestUser contributor)
         {
             CheckRule(new TeacherCanBeAddedToContributorsOnlyOnceRule(contributor, this));

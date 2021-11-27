@@ -11,6 +11,7 @@ using AlphaTest.Infrastructure.Plugins;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Application;
 using Microsoft.Extensions.Configuration;
+using AlphaTest.WebApi.AccessControl;
 
 namespace AlphaTest.WebApi
 {
@@ -28,6 +29,7 @@ namespace AlphaTest.WebApi
             services.AddEntityFramework(_configuration);
             services.AddConfiguredUserManagement();
             services.AddJwtAuth(_configuration);
+            services.AddAccessControlRules();
             services.AddUtilityServices();
             services.AddApplicationLayer();
             services.AddControllers();
