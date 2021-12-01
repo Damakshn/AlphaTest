@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AlphaTest.WebApi.Models.Tests;
 using AlphaTest.Application;
 using AlphaTest.Application.Models.Tests;
+using AlphaTest.Application.Models.Questions;
 using AlphaTest.Application.UseCases.Tests.Commands.CreateTest;
 using AlphaTest.Application.UseCases.Tests.Queries.ViewTestInfo;
 using AlphaTest.Application.UseCases.Tests.Commands.ChangeTitleAndTopic;
@@ -25,6 +27,7 @@ using AlphaTest.Application.UseCases.Tests.Commands.RemoveContributor;
 using AlphaTest.Application.UseCases.Tests.Commands.SwitchAuthor;
 using AlphaTest.Application.UseCases.Tests.Commands.EditQuestion;
 using AlphaTest.Application.UseCases.Tests.Commands.NewEdition;
+using AlphaTest.Application.UseCases.Tests.Queries.ViewQuestionsList;
 using AlphaTest.WebApi.Models.Tests.AddQuestion;
 using AlphaTest.WebApi.Utils.Security;
 using Microsoft.AspNetCore.Authorization;
@@ -68,6 +71,15 @@ namespace AlphaTest.WebApi.Controllers
         {
             var request = new ViewTestInfoQuery() { TestID = testID };
             return await _alphaTest.ExecuteUseCaseAsync(request);
+        }
+
+        [Authorize(Policy = "CanViewTestContents")]
+        [HttpGet("{testID}/questions")]
+        public async Task<List<QuestionListItemDto>> ViewQuestionList([FromRoute] Guid testID)
+        {
+            ViewQuestionsListQuery request = new(testID);
+            List<QuestionListItemDto> questionsInTest = await _alphaTest.ExecuteUseCaseAsync(request);
+            return questionsInTest;
         }
         #endregion
 
