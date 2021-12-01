@@ -31,6 +31,7 @@ using AlphaTest.Application.UseCases.Tests.Queries.ViewQuestionsList;
 using AlphaTest.WebApi.Models.Tests.AddQuestion;
 using AlphaTest.WebApi.Utils.Security;
 using Microsoft.AspNetCore.Authorization;
+using AlphaTest.Application.UseCases.Tests.Queries.ViewQuestionInfo;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -80,6 +81,14 @@ namespace AlphaTest.WebApi.Controllers
             ViewQuestionsListQuery request = new(testID);
             List<QuestionListItemDto> questionsInTest = await _alphaTest.ExecuteUseCaseAsync(request);
             return questionsInTest;
+        }
+
+        [Authorize(Policy = "CanViewTestContents")]
+        [HttpGet("{testID}/questions/{questionID}")]
+        public async Task<QuestionInfoDto> ViewSingleQuestion([FromRoute] Guid testID, [FromRoute] Guid questionID)
+        {
+            ViewQuestionInfoQuery query = new(testID, questionID);
+            return await _alphaTest.ExecuteUseCaseAsync(query);
         }
         #endregion
 
