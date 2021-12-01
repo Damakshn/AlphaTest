@@ -1,19 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Threading.Tasks;
-using AlphaTest.WebApi.Models.Admin.UserManagement;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using AlphaTest.Core.Users.BulkImportReport;
 using AlphaTest.Application;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.CreateUser;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SetRoles;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SuspendUser;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.GenerateTemporaryPassword;
-using System.Collections.Generic;
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBulkImport;
-using AlphaTest.Core.Users.BulkImportReport;
 using AlphaTest.WebApi.Utils.Security;
+using AlphaTest.WebApi.Models.Admin.UserManagement;
 
 namespace AlphaTest.WebApi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
@@ -27,8 +29,7 @@ namespace AlphaTest.WebApi.Controllers
 
         [HttpPost("users")]
         public async Task<IActionResult> CreateNewUser(CreateUserRequest request)
-        {
-
+        {   
             Guid userID = await _alphaTest.ExecuteUseCaseAsync(
                 new CreateUserUseCaseRequest(
                     request.FirstName, 
