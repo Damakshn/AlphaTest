@@ -39,7 +39,7 @@ namespace AlphaTest.Application.UseCases.Auth.Commands.Login
             {
                 throw new AlphaTestApplicationException($"Ошибка входа в систему - неправильный пароль.");
             }
-            return _jwtGenerator.GetToken(user);
+            return await _jwtGenerator.GetTokenAsync(user);
         }
     }
 }
