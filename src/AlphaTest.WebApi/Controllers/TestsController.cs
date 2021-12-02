@@ -32,6 +32,7 @@ using AlphaTest.WebApi.Models.Tests.AddQuestion;
 using AlphaTest.WebApi.Utils.Security;
 using Microsoft.AspNetCore.Authorization;
 using AlphaTest.Application.UseCases.Tests.Queries.ViewQuestionInfo;
+using AlphaTest.Application.UseCases.Tests.Queries.TestsList;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -72,6 +73,21 @@ namespace AlphaTest.WebApi.Controllers
         {
             var request = new ViewTestInfoQuery() { TestID = testID };
             return await _alphaTest.ExecuteUseCaseAsync(request);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public async Task<List<TestsListItemDto>> ViewFullTestsList(
+            string title, 
+            string topic, 
+            Guid? authorID, 
+            Guid? authorOrContributorID,
+            [FromQuery]List<int> statuses,
+            int pageSize = 20,
+            int pageNumber = 1)
+        {
+            TestsListQuery query = new(title, topic, authorID, authorOrContributorID, statuses, pageSize, pageNumber);
+            return await _alphaTest.ExecuteUseCaseAsync(query);
         }
 
         [Authorize(Policy = "CanViewTestContents")]
