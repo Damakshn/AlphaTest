@@ -18,6 +18,7 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
             builder.Property(t => t.Title).HasMaxLength(500).IsRequired();
             builder.Property(t => t.Topic).HasMaxLength(500).IsRequired();
             builder.Property(t => t.Version).HasDefaultValue(Test.INITIAL_VERSION);
+            builder.Property(t => t.Contributions).HasField("_contributions");
             #endregion
 
             #region Собственные типы
