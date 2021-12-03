@@ -49,6 +49,7 @@ namespace AlphaTest.WebApi.Controllers
         }
 
         #region Создание тестов
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         public async Task<IActionResult> CreateTest([FromBody]CreateTestRequest request)
         {
@@ -109,6 +110,7 @@ namespace AlphaTest.WebApi.Controllers
         #endregion
 
         #region Редактирование
+        [Authorize(Policy = "CanEditTest")]
         [HttpPost("{testID}/rename")]
         public async Task<IActionResult> Rename([FromRoute] Guid testID, [FromBody] ChangeTitleAndTopicRequest request)
         {
@@ -117,6 +119,7 @@ namespace AlphaTest.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "CanEditTest")]
         [HttpPost("{testID}")]
         public async Task<IActionResult> ChangeNavigationMode([FromRoute] Guid testID, [FromBody] ChangeNavigationModeRequest request)
         {
@@ -124,6 +127,7 @@ namespace AlphaTest.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "CanEditTest")]
         [HttpPost("{testID}/revokePolicy")]
         public async Task<IActionResult> ChangeRevokePolicy([FromRoute] Guid testID, [FromBody] ChangeRevokePolicyRequest request)
         {
@@ -132,6 +136,7 @@ namespace AlphaTest.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "CanEditTest")]
         [HttpPost("{testID}/timeLimit")]
         public async Task<IActionResult> ChangeTimeLimit([FromRoute] Guid testID, [FromBody] ChangeTimeLimitRequest request)
         {
@@ -139,6 +144,7 @@ namespace AlphaTest.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "CanEditTest")]
         [HttpPost("{testID}/attemptsLimit")]
         public async Task<IActionResult> ChangeAttemptsLimit([FromRoute]Guid testID, ChangeAttemptsLimitRequest request)
         {
@@ -146,6 +152,7 @@ namespace AlphaTest.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "CanEditTest")]
         [HttpPost("{testID}/checkingPolicy")]
         public async Task<IActionResult> ChangeCheckingPolicy([FromRoute] Guid testID, [FromBody] ChangeCheckingPolicyRequest request)
         {
@@ -153,6 +160,7 @@ namespace AlphaTest.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "CanEditTest")]
         [HttpPost("{testID}/passingScore")]
         public async Task<IActionResult> ChangePassingScore([FromRoute] Guid testID, [FromBody] ChangePassingScoreRequest request)
         {
@@ -160,6 +168,7 @@ namespace AlphaTest.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "CanEditTest")]
         [HttpPost("{testID}/workCheckingMethod")]
         public async Task<IActionResult> ChangeWorkCheckingMethod([FromRoute] Guid testID, [FromBody] ChangeWorkCheckingMethodRequest request)
         {
@@ -167,6 +176,7 @@ namespace AlphaTest.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "CanEditTest")]
         [HttpPost("{testID}/scoreDistribution")]
         public async Task<IActionResult> ConfigureScoreDistribution([FromRoute] Guid testID, [FromBody] ConfigureScoreDistributionRequest request)
         {
@@ -179,6 +189,7 @@ namespace AlphaTest.WebApi.Controllers
         #endregion
 
         #region Вопросы
+        [Authorize(Policy = "CanEditTest")]
         [HttpPost("{testID}/questions")]
         public async Task<IActionResult> AddQuestion([FromRoute] Guid testID, [FromBody] AddQuestionRequest request)
         {
@@ -227,6 +238,7 @@ namespace AlphaTest.WebApi.Controllers
 
         }
 
+        [Authorize(Policy = "CanEditTest")]
         [HttpDelete("{testID}/questions/{questionID}")]
         public async Task<IActionResult> DeleteQuestion([FromRoute] Guid testID, [FromRoute] Guid questionID)
         {
@@ -234,6 +246,7 @@ namespace AlphaTest.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "CanEditTest")]
         [HttpPatch("{testID}/questions/{questionID}")]
         public async Task<IActionResult> EditQuestion([FromRoute] Guid testID, [FromRoute] Guid questionID, [FromBody] EditQuestionRequest request)
         {
@@ -262,6 +275,7 @@ namespace AlphaTest.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "CanEditTest")]
         [HttpPost("{testID}/questions/reorder")]
         public async Task<IActionResult> ReorderQuestions([FromRoute] Guid testID, [FromBody] ReorderQuestionsRequest request)
         {
