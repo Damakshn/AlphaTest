@@ -20,8 +20,8 @@ namespace AlphaTest.WebApi.AccessControl
                     "CanViewTestContents", 
                     policy => policy.Requirements.Add(new CanViewTestContentsRequirement()));
                 options.AddPolicy(
-                    "CanEditTest",
-                    policy => policy.Requirements.Add(new CanEditTestRequirement()));
+                    "AuthorOrContributorsOnly",
+                    policy => policy.Requirements.Add(new AuthorOrContributorRequirement()));
                 options.AddPolicy(
                     "AuthorOnly",
                     policy => policy.Requirements.Add(new AuthorRequirement()));
