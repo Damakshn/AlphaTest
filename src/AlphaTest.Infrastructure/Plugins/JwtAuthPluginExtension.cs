@@ -11,7 +11,7 @@ namespace AlphaTest.Infrastructure.Plugins
     {
         public static void AddJwtAuth(this IServiceCollection services, IConfiguration configuration)
         {
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["ALPHATEST_TOKEN_KEY"]));
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["ALPHATEST:TOKEN_KEY"]));
             services.AddScoped<JwtGenerator>();
 
             services

@@ -18,9 +18,9 @@ namespace AlphaTest.Infrastructure.Database
         private static DbContextOptions BuildOptions(IConfiguration configuration)
         {
             DbContextOptionsBuilder<AlphaTestContext> builder = new();
-            string login = configuration["ALPHATEST_MIGRATOR_LOGIN"];
-            string password = configuration["ALPHATEST_MIGRATOR_PASSWORD"];
-            string server = configuration["ALPHATEST_SERVER"];
+            string login = configuration["ALPHATEST:MIGRATOR_LOGIN"];
+            string password = configuration["ALPHATEST:MIGRATOR_PASSWORD"];
+            string server = configuration["ALPHATEST:SERVER"];
 
             builder.UseSqlServer(BuildConnectionString(login, password, server));
             builder.EnableSensitiveDataLogging();
