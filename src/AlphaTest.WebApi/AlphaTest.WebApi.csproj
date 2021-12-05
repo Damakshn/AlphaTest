@@ -10,8 +10,4 @@
     <ProjectReference Include="..\AlphaTest.Infrastructure\AlphaTest.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="AccessControl\SharedRequirements\IsAuthor\" />
-  </ItemGroup>
-
 </Project>
