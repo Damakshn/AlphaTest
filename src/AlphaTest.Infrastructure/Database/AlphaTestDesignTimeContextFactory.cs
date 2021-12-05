@@ -12,7 +12,10 @@ namespace AlphaTest.Infrastructure.Database
             IConfiguration configuration = new ConfigurationBuilder()
                     .AddEnvironmentVariables()
                     .Build();
-            return new AlphaTestContext(configuration);
+            string login = configuration["ALPHATEST:MIGRATOR_LOGIN"];
+            string password = configuration["ALPHATEST:MIGRATOR_PASSWORD"];
+            string server = configuration["ALPHATEST:SERVER"];
+            return new AlphaTestContext(login, password, server);
         }
     }
 }
