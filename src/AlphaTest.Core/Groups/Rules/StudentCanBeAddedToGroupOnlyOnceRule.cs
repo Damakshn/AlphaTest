@@ -19,6 +19,6 @@ namespace AlphaTest.Core.Groups.Rules
 
         public string Message => $"Студент {_studentToAdd.LastName} {_studentToAdd.FirstName} {_studentToAdd.MiddleName} уже состоит в группе {_group.Name}";
 
-        public bool IsBroken => _group.Memberships.Any(m => m.StudentID == _studentToAdd.ID);
+        public bool IsBroken => _group.Memberships.Any(m => m.StudentID == _studentToAdd.Id);
     }
 }

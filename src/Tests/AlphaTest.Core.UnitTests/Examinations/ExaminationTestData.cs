@@ -15,7 +15,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             Mock<IAlphaTestUser> createTeacher() 
             {
                 var mockedTeacher = new Mock<IAlphaTestUser>();
-                mockedTeacher.Setup(m => m.ID).Returns(Guid.NewGuid());
+                mockedTeacher.Setup(m => m.Id).Returns(Guid.NewGuid());
                 mockedTeacher.Setup(m => m.IsTeacher).Returns(true);
                 mockedTeacher.Setup(m => m.IsSuspended).Returns(false);
                 return mockedTeacher;
@@ -25,7 +25,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             Contributor = createTeacher().Object;
             Examiner = TestAuthor;
             // MAYBE перенести в HelpersForTests с возможностью настраивать автора
-            Test = new(It.IsAny<string>(), It.IsAny<string>(), TestAuthor.ID, false);
+            Test = new(It.IsAny<string>(), It.IsAny<string>(), TestAuthor.Id, false);
             Test.AddContributor(Contributor);
             HelpersForTests.SetNewStatusForTest(Test, TestStatus.Published);
             Group group1 = new(

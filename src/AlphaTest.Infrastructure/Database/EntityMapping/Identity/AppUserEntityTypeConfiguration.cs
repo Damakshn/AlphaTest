@@ -10,44 +10,33 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping.Identity
         public void Configure(EntityTypeBuilder<AppUser> builder)
         {
             builder
-                .Property("_firstName")
+                .Property(user => user.FirstName)
                 .HasMaxLength(300)
-                .HasColumnName("FirstName")
                 .IsRequired();
             builder
-                .Property("_lastName")
+                .Property(user => user.LastName)
                 .HasMaxLength(300)
-                .HasColumnName("LastName")
                 .IsRequired(); ;
             builder
-                .Property("_middleName")
+                .Property(user => user.MiddleName)
                 .HasMaxLength(300)
-                .HasColumnName("MiddleName")
                 .IsRequired(); ;
             builder
-                .Property("_temporaryPassword")
-                .HasMaxLength(50)
-                .HasColumnName("TemporaryPassword")
+                .Property(user => user.TemporaryPassword)
+                .HasMaxLength(50) // ToDo validate password length
                 .IsRequired();
             builder
-                .Property("_temporaryPasswordExpirationDate")
-                .HasColumnName("TemporaryPasswordExpirationDate")
+                .Property(user => user.TemporaryPasswordExpirationDate)
                 .IsRequired();
             builder
-                .Property("_registeredAt")
-                .HasDefaultValueSql("getdate()")
-                .HasColumnName("RegisteredAt")
+                .Property(user => user.RegisteredAt)
+                .HasDefaultValueSql("getdate()") // ToDo datetime.now?
                 .IsRequired();
             builder
-                .Property("_lastVisitedAt")
-                .HasColumnName("LastVisitedAt");
-            builder
-                .Property("_isPasswordChanged")
-                .HasColumnName("IsPasswordChanged")
+                .Property(user => user.IsPasswordChanged)
                 .IsRequired();
             builder
-                .Property("_isSuspended")
-                .HasColumnName("IsSuspended")
+                .Property(user => user.IsSuspended)
                 .IsRequired();
             builder
                 .HasMany<AppUserRole>("_userRoles")

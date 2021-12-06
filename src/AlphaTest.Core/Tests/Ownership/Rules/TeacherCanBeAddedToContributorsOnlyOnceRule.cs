@@ -19,6 +19,6 @@ namespace AlphaTest.Core.Tests.Ownership.Rules
         // ToDo сделать красиво
         public string Message => "Преподаватель уже включён в список составителей";
 
-        public bool IsBroken => _test.Contributions.Count(c => c.TeacherID == _candidate.ID) > 0;
+        public bool IsBroken => _test.Contributions.Count(c => c.TeacherID == _candidate.Id) > 0;
     }
 }

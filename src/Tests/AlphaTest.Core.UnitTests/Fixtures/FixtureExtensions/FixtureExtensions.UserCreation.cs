@@ -37,7 +37,7 @@ namespace AlphaTest.Core.UnitTests.Fixtures.FixtureExtensions
         public static Mock<IAlphaTestUser> CreateUserMock(this IFixture fixture)
         {
             var mockedUser = new Mock<IAlphaTestUser>();
-            mockedUser.Setup(u => u.ID).Returns(Guid.NewGuid());
+            mockedUser.Setup(u => u.Id).Returns(Guid.NewGuid());
             mockedUser.Setup(u => u.IsSuspended).Returns(false);
             return mockedUser;
         }

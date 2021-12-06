@@ -139,8 +139,8 @@ namespace AlphaTest.Core.UnitTests.Testmaking
             HelpersForTests.SetNewStatusForTest(sut, TestStatus.Published);
             Test replica = sut.Replicate();
 
-            Assert.Equal(1, replica.Contributions.Count(c => c.TeacherID == user1.ID));
-            Assert.Equal(1, replica.Contributions.Count(c => c.TeacherID == user2.ID));
+            Assert.Equal(1, replica.Contributions.Count(c => c.TeacherID == user1.Id));
+            Assert.Equal(1, replica.Contributions.Count(c => c.TeacherID == user2.Id));
         }
 
         [Theory, TestmakingTestsData]

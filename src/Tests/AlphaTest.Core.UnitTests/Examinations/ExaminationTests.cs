@@ -71,7 +71,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
         public void Examiner_must_be_teacher()
         {
             var mockedUser = new Mock<IAlphaTestUser>();
-            mockedUser.Setup(u => u.ID).Returns(Guid.NewGuid());
+            mockedUser.Setup(u => u.Id).Returns(Guid.NewGuid());
             mockedUser.Setup(u => u.IsSuspended).Returns(false);
             mockedUser.Setup(u => u.IsTeacher).Returns(false);
 
@@ -88,7 +88,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
         public void Examiner_must_be_author_or_contributor_of_the_test()
         {
             var mockedUser = new Mock<IAlphaTestUser>();
-            mockedUser.Setup(u => u.ID).Returns(Guid.NewGuid());
+            mockedUser.Setup(u => u.Id).Returns(Guid.NewGuid());
             mockedUser.Setup(u => u.IsSuspended).Returns(false);
             mockedUser.Setup(u => u.IsTeacher).Returns(true);
 
@@ -225,7 +225,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
             
             var mockedUser = new Mock<IAlphaTestUser>();
-            mockedUser.Setup(u => u.ID).Returns(Guid.NewGuid());
+            mockedUser.Setup(u => u.Id).Returns(Guid.NewGuid());
             mockedUser.Setup(u => u.IsSuspended).Returns(false);
             mockedUser.Setup(u => u.IsTeacher).Returns(false);
             IAlphaTestUser examiner = mockedUser.Object;
@@ -242,7 +242,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
             ExaminationTestData data = new();
             Examination sut = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
             var mockedUser = new Mock<IAlphaTestUser>();
-            mockedUser.Setup(u => u.ID).Returns(Guid.NewGuid());
+            mockedUser.Setup(u => u.Id).Returns(Guid.NewGuid());
             mockedUser.Setup(u => u.IsSuspended).Returns(false);
             mockedUser.Setup(u => u.IsTeacher).Returns(true);
             IAlphaTestUser examiner = mockedUser.Object;
@@ -261,7 +261,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
 
             sut.SwitchExaminer(data.TestAuthor, data.Test);
 
-            Assert.Equal(data.TestAuthor.ID, sut.ExaminerID);
+            Assert.Equal(data.TestAuthor.Id, sut.ExaminerID);
         }
 
         [Fact]
@@ -273,7 +273,7 @@ namespace AlphaTest.Core.UnitTests.Examinations
 
             sut.SwitchExaminer(data.Contributor, data.Test);
 
-            Assert.Equal(data.Contributor.ID, sut.ExaminerID);
+            Assert.Equal(data.Contributor.Id, sut.ExaminerID);
         }
 
         [Fact]

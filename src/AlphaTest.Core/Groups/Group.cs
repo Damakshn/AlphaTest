@@ -30,7 +30,7 @@ namespace AlphaTest.Core.Groups
             EndDate = endDate;
             IsDisbanded = false;
             _members = new List<Membership>();
-            CuratorID = curator?.ID;
+            CuratorID = curator?.Id;
         }
         #endregion
 
@@ -69,7 +69,7 @@ namespace AlphaTest.Core.Groups
 
         public bool HasMember(IAlphaTestUser student)
         {
-            return Memberships.Any(m => m.StudentID == student.ID);
+            return Memberships.Any(m => m.StudentID == student.Id);
         }
 
         public void ExcludeStudent(IAlphaTestUser student)
@@ -77,7 +77,7 @@ namespace AlphaTest.Core.Groups
             CheckRule(new DisbandedGroupCannotBeModifiedRule(this));
             CheckRule(new InactiveGroupCannotBeModifiedRule(this));
             CheckRule(new NonMemberStudentsCannotBeExcludedFromGroupRule(this, student));
-            Membership membershipToRemove = _members.Where(m => m.StudentID == student.ID).FirstOrDefault();
+            Membership membershipToRemove = _members.Where(m => m.StudentID == student.Id).FirstOrDefault();
             _members.Remove(membershipToRemove);
             // ToDo domain event
         }
@@ -118,7 +118,7 @@ namespace AlphaTest.Core.Groups
             // Todo unit test
             CheckRule(new CuratorMustBeProvidedForAssignmentRule(curator));
             CheckRule(new OnlyTeacherCanBeAssignedAsCurator(curator));
-            CuratorID = curator.ID;
+            CuratorID = curator.Id;
         }
 
         public void UnsetCurator()

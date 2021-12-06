@@ -25,7 +25,7 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.CreateTest
             bool testAlreadyExists = _db.Tests
                 .Aggregates()
                 .Any(test => test.Title == request.Title && test.Topic == request.Topic);
-            Test test = new(request.Title, request.Topic, author.ID, testAlreadyExists);
+            Test test = new(request.Title, request.Topic, author.Id, testAlreadyExists);
             _db.Tests.Add(test);
             _db.SaveChanges();
             return test.ID;

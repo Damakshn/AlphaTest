@@ -22,7 +22,7 @@ namespace AlphaTest.Core.UnitTests.Fixtures.Examinations
                     {
                         var examiner = fixture.CreateUserMock();
                         examiner.Setup(e => e.IsTeacher).Returns(true);
-                        examiner.Setup(e => e.ID).Returns(test.AuthorID);
+                        examiner.Setup(e => e.Id).Returns(test.AuthorID);
                         HelpersForTests.SetNewStatusForTest(test, TestStatus.Published);
                         var exam = new Examination(test, start, end, examiner.Object, noGroups);
                         HelpersForTests.SetNewStatusForTest(test, TestStatus.Draft);

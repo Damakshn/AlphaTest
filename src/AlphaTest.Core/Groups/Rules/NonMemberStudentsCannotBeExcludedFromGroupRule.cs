@@ -19,6 +19,6 @@ namespace AlphaTest.Core.Groups.Rules
 
         public string Message => "Нельзя исключить учащегося из группы, так как он в ней не состоит.";
 
-        public bool IsBroken => _group.Memberships.Count(m => m.StudentID == _studentToExclude.ID) == 0;
+        public bool IsBroken => _group.Memberships.Count(m => m.StudentID == _studentToExclude.Id) == 0;
     }
 }
