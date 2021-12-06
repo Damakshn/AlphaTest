@@ -12,6 +12,8 @@ using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.GenerateTempo
 using AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBulkImport;
 using AlphaTest.WebApi.Utils.Security;
 using AlphaTest.WebApi.Models.Admin.UserManagement;
+using AlphaTest.Application.UseCases.Users.Queries.UsersList;
+using AlphaTest.Application.Models.Users;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -25,6 +27,13 @@ namespace AlphaTest.WebApi.Controllers
         public AdminController(ISystemGateway alphaTest)
         {
             _alphaTest = alphaTest;
+        }
+
+        [HttpGet("users")]
+        public async Task<List<UsersListItemDto>> ViewUsersList(string fio, string email, bool? isSuspended, [FromQuery] List<string> roles, [FromQuery] List<Guid> groups)
+        {
+            UsersListQuery query = new(roles, fio, isSuspended, email, groups);
+            return await _alphaTest.ExecuteUseCaseAsync(query);
         }
 
         [HttpPost("users")]

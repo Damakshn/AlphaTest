@@ -35,5 +35,64 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
         {
             return query.Where(u => emails.Contains(u.Email));
         }
+
+        public static IQueryable<AppUser> FilterByFIO(this IQueryable<AppUser> query, string fio)
+        {
+            return
+                string.IsNullOrWhiteSpace(fio)
+                ? query
+                : query.Where(u => EF.Functions.Like(u.LastName + " " + u.FirstName + " " + u.MiddleName, "%" + fio + "%"));
+        }
+
+        public static IQueryable<AppUser> FilterByLockStatus(this IQueryable<AppUser> query, bool? isSuspended)
+        {
+            return
+                isSuspended is null
+                ? query
+                : query.Where(u => u.IsSuspended == isSuspended);
+        }
+
+        public static IQueryable<AppUser> FilterByEmail(this IQueryable<AppUser> query, string email)
+        {
+            return
+                string.IsNullOrWhiteSpace(email)
+                ? query
+                : query.Where(u => EF.Functions.Like(u.Email, "%" + email + "%"));
+        }
+
+        public static IQueryable<AppUser> FilterByRoles(this IQueryable<AppUser> query, List<string> roles, AlphaTestContext db)
+{
+            return roles.Count == 0
+            ? query
+            : from user in query
+              where (from userRole in db.UserRoles
+                     join role in db.Roles on userRole.RoleId equals role.Id
+                     where userRole.UserId == user.Id
+                     select role.Name).Any(roleName => roles.Any(r => r == roleName))
+              select user;
+        }
+
+        public static IQueryable<AppUser> FilterByGroups(this IQueryable<AppUser> query, List<Guid> groups, AlphaTestContext db)
+        {
+            return groups.Count == 0
+                ? query
+                : from user in query
+                  where (from g in db.Groups
+                         join membership in db.Memberships on g.ID equals membership.GroupID
+                         where
+                            membership.StudentID == user.Id &&
+                            groups.Any(groupID => groupID == g.ID)
+                         select g.ID).Count() == groups.Count
+                  select user;
+        }
+
+        public static IQueryable<AppUser> StudiesInGroup(this IQueryable<AppUser> query, Guid groupID, AlphaTestContext db)
+        {
+            return from user in query
+                   join membership in db.Memberships on user.Id equals membership.StudentID
+                   join g in db.Groups on membership.GroupID equals g.ID
+                   where g.ID == groupID
+                   select user;
+        }
     }
 }

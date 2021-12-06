@@ -8,6 +8,7 @@ namespace AlphaTest.Application.Mapping.Configuration
         {
             CreateMappingForTestAndTestSettings();
             CreateMappingForQuestions();
+            CreateMappingForUsers();
         }
     }
 }

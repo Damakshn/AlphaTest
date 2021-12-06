@@ -13,7 +13,7 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
     {
         public static IQueryable<Group> Aggregates(this DbSet<Group> query)
         {
-            return query;
+            return query.Include("_members");
         }
 
         public static async Task<List<Group>> FindManyByIds(this IQueryable<Group> query, List<Guid> ids)

@@ -10,6 +10,9 @@ using AlphaTest.Application.UseCases.Groups.ExcluedStudent;
 using AlphaTest.Application.UseCases.Groups.EditGroupInfo;
 using AlphaTest.Application.UseCases.Groups.AssignCurator;
 using AlphaTest.Application.UseCases.Groups.UnsetCurator;
+using AlphaTest.Application.Models.Users;
+using System.Collections.Generic;
+using AlphaTest.Application.UseCases.Groups.Queries.StudentsInGroup;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -79,6 +82,15 @@ namespace AlphaTest.WebApi.Controllers
         {
             await _alphaTest.ExecuteUseCaseAsync(new UnsetCuratorUseCaseRequest(groupID));
             return Ok();
+        }
+        #endregion
+
+        #region Просмотр информации
+        [HttpGet("{groupID}/students")]
+        public async Task<List<StudentListItemDto>> ViewStudentsInGroup([FromRoute] Guid groupID)
+        {
+            StudentsListQuery query = new(groupID);
+            return await _alphaTest.ExecuteUseCaseAsync(query);
         }
         #endregion
     }

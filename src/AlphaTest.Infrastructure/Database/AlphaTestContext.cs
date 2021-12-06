@@ -30,6 +30,8 @@ namespace AlphaTest.Infrastructure.Database
 
         public DbSet<Group> Groups { get; set; }
 
+        public DbSet<Membership> Memberships { get; set; }
+
         public DbSet<Examination> Examinations { get; set; }
 
         public DbSet<Work> Works { get; set; }

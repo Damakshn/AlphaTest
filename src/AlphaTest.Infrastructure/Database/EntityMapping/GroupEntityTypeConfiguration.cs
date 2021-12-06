@@ -21,16 +21,6 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
                 .HasForeignKey(g => g.CuratorID)
                 .IsRequired(false);
 
-            // список членов группы входит в агрегат
-            builder.OwnsMany<Membership>(
-                "_members", y => 
-                {
-                    y.WithOwner().HasForeignKey(m => m.GroupID);
-                    y.HasOne<AppUser>().WithMany().HasForeignKey(m => m.StudentID);
-                    y.HasKey(m => new { m.GroupID, m.StudentID });
-                    y.ToTable("GroupMembership");
-                });
-
             builder.Ignore(g => g.Memberships);
         }
     }

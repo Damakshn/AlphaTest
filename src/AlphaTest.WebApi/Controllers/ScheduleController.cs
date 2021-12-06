@@ -9,6 +9,7 @@ using AlphaTest.Application.UseCases.Schedule.Commands.CancelExamination;
 using AlphaTest.Application.UseCases.Admin.Commands.Examinations.SwitchExaminer;
 using AlphaTest.WebApi.Models.Schedule;
 using AlphaTest.WebApi.Utils.Security;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AlphaTest.WebApi.Controllers
 {
@@ -23,6 +24,7 @@ namespace AlphaTest.WebApi.Controllers
             _alphaTest = alphaTest;
         }
 
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         public async Task<IActionResult> CreateNewExamination([FromBody] CreateExaminationRequest request)
         {
@@ -38,6 +40,7 @@ namespace AlphaTest.WebApi.Controllers
             return Ok(examID);
         }
 
+        [Authorize(Policy = "CanEditSchedule")]
         [HttpPut("{examinationID}/terms")]
         public async Task<IActionResult> ChangeExaminationTerms([FromRoute] Guid examinationID, [FromBody] ChangeExaminationTermsRequest request)
         {
@@ -45,6 +48,7 @@ namespace AlphaTest.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "CanEditSchedule")]
         [HttpDelete("{examinationID}")]
         public async Task<IActionResult> CancelExamination([FromRoute] Guid examinationID)
         {
@@ -52,6 +56,7 @@ namespace AlphaTest.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "CanEditSchedule")]
         [HttpPut("{examinationID}/examiner")]
         public async Task<IActionResult> SwitchExaminer([FromRoute] Guid examinationID, [FromBody] SwitchExaminerRequest request)
         {
