@@ -85,5 +85,14 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
                          select g.ID).Count() == groups.Count
                   select user;
         }
+
+        public static IQueryable<AppUser> StudiesInGroup(this IQueryable<AppUser> query, Guid groupID, AlphaTestContext db)
+        {
+            return from user in query
+                   join membership in db.Memberships on user.Id equals membership.StudentID
+                   join g in db.Groups on membership.GroupID equals g.ID
+                   where g.ID == groupID
+                   select user;
+        }
     }
 }
