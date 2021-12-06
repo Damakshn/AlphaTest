@@ -42,7 +42,7 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
             
             sut.AddContributor(contributor);
 
-            Assert.Equal(1, sut.Contributions.Count(c => c.TeacherID == contributor.ID));
+            Assert.Equal(1, sut.Contributions.Count(c => c.TeacherID == contributor.Id));
         }
 
         [Theory, TestmakingTestsData]
@@ -71,9 +71,9 @@ namespace AlphaTest.Core.UnitTests.Testmaking.Ownership
             var contributor = fixture.CreateTeacher();
             sut.AddContributor(contributor);
 
-            Assert.Equal(1, sut.Contributions.Count(c => c.TeacherID == contributor.ID));
-            sut.RemoveContributor(contributor.ID);
-            Assert.Equal(0, sut.Contributions.Count(c => c.TeacherID == contributor.ID));
+            Assert.Equal(1, sut.Contributions.Count(c => c.TeacherID == contributor.Id));
+            sut.RemoveContributor(contributor.Id);
+            Assert.Equal(0, sut.Contributions.Count(c => c.TeacherID == contributor.Id));
         }
     }
 }

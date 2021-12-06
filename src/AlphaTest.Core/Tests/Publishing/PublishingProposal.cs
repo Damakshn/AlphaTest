@@ -42,7 +42,7 @@ namespace AlphaTest.Core.Tests.Publishing
 			CheckRule(new ProposalCanBeAssignedOnlyToAdminUsersRule(admin));
 			CheckRule(new OnlyNewProposalsCanBeAssignedToAdminRule(this));
 			AssignedAt = DateTime.Now;
-			AssigneeID = admin.ID;
+			AssigneeID = admin.Id;
 			Status = ProposalStatus.PENDING;
         }
 

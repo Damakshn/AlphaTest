@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -9,19 +10,16 @@ namespace AlphaTest.Infrastructure.Database
         private static string DATABASE_NAME => "AlphaTest";
 
         // TODO добавить в документацию пояснение - для чего используется такая схема
-        public AlphaTestContext(IConfiguration configuration) :
-            base(BuildOptions(configuration))
+        public AlphaTestContext(string login, string password, string server) :
+            base(BuildOptions(login, password, server))
         {
-
+            
         }
 
-        private static DbContextOptions BuildOptions(IConfiguration configuration)
+        private static DbContextOptions BuildOptions(string login, string password, string server)
         {
             DbContextOptionsBuilder<AlphaTestContext> builder = new();
-            string login = configuration["ALPHATEST_MIGRATOR_LOGIN"];
-            string password = configuration["ALPHATEST_MIGRATOR_PASSWORD"];
-            string server = configuration["ALPHATEST_SERVER"];
-
+            
             builder.UseSqlServer(BuildConnectionString(login, password, server));
             builder.EnableSensitiveDataLogging();
             return builder.Options;
@@ -37,6 +35,11 @@ namespace AlphaTest.Infrastructure.Database
             builder.Password = password;
             return builder.ConnectionString;
         }
-        
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+        }
+
     }
 }

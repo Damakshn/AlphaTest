@@ -19,7 +19,7 @@ namespace AlphaTest.Infrastructure.Auth.JWT
 
         public JwtGenerator(IConfiguration configuration, UserManager<AppUser> userManager)
         {
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["ALPHATEST_TOKEN_KEY"]));
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["ALPHATEST:TOKEN_KEY"]));
             _userManager = userManager;
         }
 

@@ -98,7 +98,7 @@ namespace AlphaTest.Core.UnitTests.Groups
             var candidate = fixture.CreateStudent();
             group.AddStudent(candidate);
 
-            Assert.Equal(1, group.Memberships.Count(m => m.StudentID == candidate.ID));
+            Assert.Equal(1, group.Memberships.Count(m => m.StudentID == candidate.Id));
         }
 
         [Theory, GroupTestsData]
@@ -127,7 +127,7 @@ namespace AlphaTest.Core.UnitTests.Groups
             var student = fixture.CreateStudent();
             group.AddStudent(student);
 
-            Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.ID));
+            Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.Id));
             AssertBrokenRule<StudentCanBeAddedToGroupOnlyOnceRule>(() => group.AddStudent(student));
             
         }
@@ -204,9 +204,9 @@ namespace AlphaTest.Core.UnitTests.Groups
             var student = fixture.CreateStudent();
             group.AddStudent(student);
 
-            Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.ID));
+            Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.Id));
             group.ExcludeStudent(student);
-            Assert.Equal(0, group.Memberships.Count(m => m.StudentID == student.ID));
+            Assert.Equal(0, group.Memberships.Count(m => m.StudentID == student.Id));
         }
 
         [Theory, GroupTestsData]
@@ -214,7 +214,7 @@ namespace AlphaTest.Core.UnitTests.Groups
         {
             var student = fixture.CreateStudent();
             group.AddStudent(student);
-            Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.ID));
+            Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.Id));
             group.Disband();
 
             AssertBrokenRule<DisbandedGroupCannotBeModifiedRule>(() => group.ExcludeStudent(student));
@@ -225,7 +225,7 @@ namespace AlphaTest.Core.UnitTests.Groups
         {
             var student = fixture.CreateStudent();
             group.AddStudent(student);
-            Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.ID));
+            Assert.Equal(1, group.Memberships.Count(m => m.StudentID == student.Id));
             HelpersForGroups.SetGroupDates(group, DateTime.Now.AddDays(-365), DateTime.Now.AddDays(-100));
 
             AssertBrokenRule<InactiveGroupCannotBeModifiedRule>(() => group.ExcludeStudent(student));

@@ -33,7 +33,7 @@ namespace AlphaTest.Core.Examinations
             // ToDo группы должны существовать на момент проведения экзамена
             ID = Guid.NewGuid();
             TestID = test.ID;
-            ExaminerID = examiner.ID;
+            ExaminerID = examiner.Id;
             StartsAt = startsAt;
             EndsAt = endsAt;
             IsCanceled = false;
@@ -97,7 +97,7 @@ namespace AlphaTest.Core.Examinations
         {
             CheckCommonRulesForModification();
             CheckCommonRulesForExaminer(newExaminer, test);
-            ExaminerID = newExaminer.ID;
+            ExaminerID = newExaminer.Id;
             // ToDo domain event
         }
 

@@ -14,7 +14,7 @@ namespace AlphaTest.Core.Groups
             CheckRule(new OnlyStudentsCanBeIncludedIntoGroupRule(student));
             CheckRule(new SuspendedUsersCannotBeIncludedIntoGroupRule(student));
             GroupID = group.ID;
-            StudentID = student.ID;
+            StudentID = student.Id;
         }
 
         public Guid GroupID { get; private set; }

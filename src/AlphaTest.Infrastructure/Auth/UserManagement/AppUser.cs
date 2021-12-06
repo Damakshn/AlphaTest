@@ -15,23 +15,6 @@ namespace AlphaTest.Infrastructure.Auth.UserManagement
         #region Поля
         public static readonly TimeSpan TemporaryPasswordLifetime = new(1, 0, 0, 0);
 
-        private string _firstName;
-
-        private string _lastName;
-
-        private string _middleName;
-
-        private string _temporaryPassword;
-
-        private DateTime _temporaryPasswordExpirationDate;
-
-        private DateTime _registeredAt;
-
-        private DateTime? _lastVisitedAt;
-
-        private bool _isPasswordChanged;
-
-        private bool _isSuspended;
 
         // TBD
         // https://stackoverflow.com/questions/47767267/ef-core-2-how-to-include-roles-navigation-property-on-identityuser/47772406
@@ -41,45 +24,43 @@ namespace AlphaTest.Infrastructure.Auth.UserManagement
 
         public AppUser(string firstName, string lastName, string middleName, string temporaryPassword, string email)
             : base()
-        {
-            _firstName = firstName;
-            _lastName = lastName;
-            _middleName = middleName;
+        {   
+            FirstName = firstName;
+            LastName = lastName;
+            MiddleName = middleName;
             Email = email;
             UserName = email;
             NormalizedEmail = email.ToUpper();
             NormalizedUserName = NormalizedEmail;
-            _temporaryPassword = temporaryPassword;
+            TemporaryPassword = temporaryPassword;
             PasswordHash = new PasswordHasher<AppUser>().HashPassword(this, temporaryPassword);
-            _isPasswordChanged = false;
-            _isSuspended = false;
-            _registeredAt = DateTime.Now;
-            _lastVisitedAt = null;
+            IsPasswordChanged = false;
+            IsSuspended = false;
+            RegisteredAt = DateTime.Now;
+            LastVisitedAt = null;
             _userRoles = new List<AppUserRole>();
-            _temporaryPasswordExpirationDate = CalculateTemporaryPasswordExpirationDate();
+            TemporaryPasswordExpirationDate = CalculateTemporaryPasswordExpirationDate();
             SecurityStamp = Guid.NewGuid().ToString();
         }
 
         #region Свойства
-        public Guid ID => Id;
+        public string FirstName { get; private set; }
 
-        public string FirstName => _firstName;
+        public string LastName { get; private set; }
 
-        public string LastName => _lastName;
+        public string MiddleName { get; private set; }
 
-        public string MiddleName => _middleName;
+        public string TemporaryPassword { get; private set; }
 
-        public string TemporaryPassword => _temporaryPassword;
+        public DateTime TemporaryPasswordExpirationDate { get; private set; }
 
-        public DateTime TemporaryPasswordExpirationDate => _temporaryPasswordExpirationDate;
+        public DateTime RegisteredAt { get; private set; }
 
-        public DateTime RegisteredAt => _registeredAt;
+        public DateTime? LastVisitedAt { get; private set; }
 
-        public DateTime? LastVisitedAt => _lastVisitedAt;
+        public bool IsPasswordChanged { get; private set; }
 
-        public bool IsPasswordChanged => _isPasswordChanged;
-
-        public bool IsSuspended => _isSuspended;
+        public bool IsSuspended { get; private set; }
 
         public bool IsAdmin => HasRole("Admin");
 
@@ -91,9 +72,9 @@ namespace AlphaTest.Infrastructure.Auth.UserManagement
         #region Методы
         public void ResetTemporaryPassword(string newPassword)
         {
-            _temporaryPassword = newPassword;
+            TemporaryPassword = newPassword;
             PasswordHash = new PasswordHasher<AppUser>().HashPassword(this, newPassword);
-            _temporaryPasswordExpirationDate = CalculateTemporaryPasswordExpirationDate();
+            TemporaryPasswordExpirationDate = CalculateTemporaryPasswordExpirationDate();
         }
 
         public void ChangePassword(string oldPassword, string newPassword, string newPasswordRepeat)
@@ -102,18 +83,18 @@ namespace AlphaTest.Infrastructure.Auth.UserManagement
             CheckRule(new NewPermanentPasswordMustBeRepeatedCorrectlyRule(newPassword, newPasswordRepeat));
             // ToDo check system password options
             PasswordHash = hasher.HashPassword(this, newPassword);
-            _isPasswordChanged = true;
+            IsPasswordChanged = true;
         }
 
         public void Suspend()
         {
             CheckRule(new AdminUserCannotBeSuspendedRule(this));
-            _isSuspended = true;
+            IsSuspended = true;
         }
 
         public void Unlock()
         {
-            _isSuspended = false;
+            IsSuspended = false;
         }
 
         public void CheckRule(IBusinessRule rule)
@@ -124,7 +105,7 @@ namespace AlphaTest.Infrastructure.Auth.UserManagement
 
         public bool IsTemporaryPasswordExpired()
         {
-            return !_isPasswordChanged && _temporaryPasswordExpirationDate <= DateTime.Now;
+            return !IsPasswordChanged && TemporaryPasswordExpirationDate <= DateTime.Now;
         }
 
         private bool HasRole(string roleName)

@@ -4,17 +4,18 @@ using Microsoft.Extensions.Configuration;
 namespace AlphaTest.Infrastructure.Database
 {
     public class AlphaTestDesignTimeContextFactory : IDesignTimeDbContextFactory<AlphaTestContext>
-    {
-        private IConfiguration _configuration;
-        
-        public AlphaTestDesignTimeContextFactory(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+    {   
+        public AlphaTestDesignTimeContextFactory(){ }
 
         public AlphaTestContext CreateDbContext(string[] args)
         {
-            return new AlphaTestContext(_configuration);
+            IConfiguration configuration = new ConfigurationBuilder()
+                    .AddEnvironmentVariables()
+                    .Build();
+            string login = configuration["ALPHATEST:MIGRATOR_LOGIN"];
+            string password = configuration["ALPHATEST:MIGRATOR_PASSWORD"];
+            string server = configuration["ALPHATEST:SERVER"];
+            return new AlphaTestContext(login, password, server);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace AlphaTest.Core.Examinations.Rules
         public string Message => "Экзаменатор должен быть автором теста или входить в число составителей.";
         
         public bool IsBroken => 
-            _test.AuthorID != _examiner.ID && 
-            _test.Contributions.Count(c => c.TeacherID == _examiner.ID) == 0;
+            _test.AuthorID != _examiner.Id && 
+            _test.Contributions.Count(c => c.TeacherID == _examiner.Id) == 0;
     }
 }
