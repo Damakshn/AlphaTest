@@ -4,6 +4,8 @@ using AlphaTest.WebApi.AccessControl.SharedRequirements.IsAuthorOrContributor;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using AlphaTest.WebApi.AccessControl.SharedRequirements.IsAuthor;
+using AlphaTest.WebApi.AccessControl.SharedRequirements.IsExaminer;
+using AlphaTest.WebApi.AccessControl.Schedule;
 
 namespace AlphaTest.WebApi.AccessControl
 {
@@ -14,6 +16,7 @@ namespace AlphaTest.WebApi.AccessControl
             services.AddTransient<IAuthorizationHandler, AdminHandler>();
             services.AddTransient<IAuthorizationHandler, AuthorOrContributorHandler>();
             services.AddTransient<IAuthorizationHandler, AuthorOfTestHandler>();
+            services.AddTransient<IAuthorizationHandler, ExaminerHandler>();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(
@@ -28,6 +31,9 @@ namespace AlphaTest.WebApi.AccessControl
                 options.AddPolicy(
                     "CanSwitchAuthor",
                     policy => policy.Requirements.Add(new CanSwitchAuthorRequirement()));
+                options.AddPolicy(
+                    "CanEditSchedule",
+                    policy => policy.Requirements.Add(new CanEditScheduleRequirement()));
             });
         }
     }
