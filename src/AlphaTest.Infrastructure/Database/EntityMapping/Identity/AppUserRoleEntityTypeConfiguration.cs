@@ -1,12 +1,12 @@
-﻿using AlphaTest.Infrastructure.Auth.UserManagement;
+﻿using AlphaTest.Core.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping.Identity
 {
-    internal class AppUserRoleEntityTypeConfiguration : IEntityTypeConfiguration<AppUserRole>
+    internal class AppUserRoleEntityTypeConfiguration : IEntityTypeConfiguration<AlphaTestUserRole>
     {
-        public void Configure(EntityTypeBuilder<AppUserRole> builder)
+        public void Configure(EntityTypeBuilder<AlphaTestUserRole> builder)
         {
             builder.HasKey(userRole => new { userRole.UserId, userRole.RoleId });
 
