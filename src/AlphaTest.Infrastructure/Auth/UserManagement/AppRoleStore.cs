@@ -1,11 +1,12 @@
-﻿using AlphaTest.Infrastructure.Database;
+﻿using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using System;
+using AlphaTest.Core.Users;
+using AlphaTest.Infrastructure.Database;
 
 namespace AlphaTest.Infrastructure.Auth.UserManagement
 {
-    public class AppRoleStore : RoleStore<AppRole, AlphaTestContext, Guid, AppUserRole, IdentityRoleClaim<Guid>>
+    public class AppRoleStore : RoleStore<AlphaTestRole, AlphaTestContext, Guid, AlphaTestUserRole, IdentityRoleClaim<Guid>>
     {
         public AppRoleStore(AlphaTestContext context, IdentityErrorDescriber describer = null) : base(context, describer)
         {
