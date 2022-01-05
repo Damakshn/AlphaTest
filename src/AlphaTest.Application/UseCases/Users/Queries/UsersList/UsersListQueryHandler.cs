@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.Models.Users;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
 
 namespace AlphaTest.Application.UseCases.Users.Queries.UsersList
 {

@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using AlphaTest.Application.UseCases.Common;
+using Microsoft.EntityFrameworkCore;
+using MediatR;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
+using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.QuestionList
 {

@@ -1,10 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
 using AlphaTest.Core.Tests;
 using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
+using AlphaTest.Infrastructure.Database;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.ChangeRevokePolicy
 {

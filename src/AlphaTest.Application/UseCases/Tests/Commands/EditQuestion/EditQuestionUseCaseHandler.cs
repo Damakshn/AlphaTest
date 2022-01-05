@@ -1,12 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using AlphaTest.Application.Exceptions;
-using AlphaTest.Application.UseCases.Common;
+using MediatR;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
+using AlphaTest.Application.Exceptions;
+using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
-using MediatR;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.EditQuestion
 {

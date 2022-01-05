@@ -4,8 +4,8 @@ using AutoMapper;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Application.Models.Questions;
 using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
 
 namespace AlphaTest.Application.UseCases.Tests.Queries.ViewQuestionInfo
 {

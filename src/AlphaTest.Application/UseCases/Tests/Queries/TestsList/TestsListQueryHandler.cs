@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.Models.Tests;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
 
 namespace AlphaTest.Application.UseCases.Tests.Queries.TestsList
 {
