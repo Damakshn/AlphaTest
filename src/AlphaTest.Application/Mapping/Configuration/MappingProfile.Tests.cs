@@ -1,6 +1,6 @@
 ﻿using AlphaTest.Application.Models.Tests;
-using AlphaTest.Core.Tests;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+using AlphaTest.Core.Users;
+
 
 namespace AlphaTest.Application.Mapping.Configuration
 {
@@ -8,7 +8,7 @@ namespace AlphaTest.Application.Mapping.Configuration
     {
         private void CreateMappingForTestAndTestSettings()
         {
-            CreateMap<AppUser, ContributorInfo>()
+            CreateMap<AlphaTestUser, ContributorInfo>()
                 .ForMember(dto => dto.FIO, opt => opt.MapFrom(u => $"{u.LastName} {u.FirstName} {u.MiddleName}"));
         }
     }

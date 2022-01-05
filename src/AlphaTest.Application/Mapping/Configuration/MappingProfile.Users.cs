@@ -1,5 +1,6 @@
 ﻿using AlphaTest.Application.Models.Users;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+using AlphaTest.Core.Users;
+
 
 namespace AlphaTest.Application.Mapping.Configuration
 {
@@ -8,7 +9,7 @@ namespace AlphaTest.Application.Mapping.Configuration
         private void CreateMappingForUsers()
         {
             // ToDo перенести ContributorInfo сюда
-            CreateMap<AppUser, StudentListItemDto>()
+            CreateMap<AlphaTestUser, StudentListItemDto>()
                 .ForMember(
                     dest => dest.LastNameAndInitials,
                     opt => opt.MapFrom(source =>
