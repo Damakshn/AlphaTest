@@ -7,24 +7,25 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using AlphaTest.Core.Users;
 using AlphaTest.Infrastructure.Auth.Security;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+
 
 namespace AlphaTest.Infrastructure.Auth.JWT
 {
     public class JwtGenerator
     {
         private readonly SymmetricSecurityKey _key;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<AlphaTestUser> _userManager;
 
-        public JwtGenerator(IConfiguration configuration, UserManager<AppUser> userManager)
+        public JwtGenerator(IConfiguration configuration, UserManager<AlphaTestUser> userManager)
         {
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["ALPHATEST:TOKEN_KEY"]));
             _userManager = userManager;
         }
 
-        public async Task<string> GetTokenAsync(AppUser user)
-        {   
+        public async Task<string> GetTokenAsync(AlphaTestUser user)
+        {
             List<Claim> claims = new()
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.Email),

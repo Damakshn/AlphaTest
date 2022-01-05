@@ -9,7 +9,7 @@ using AlphaTest.Core.Users.Rules;
 
 namespace AlphaTest.Core.Users
 {
-    public class AppUser : IdentityUser<Guid>, IAlphaTestUser, ICanCheckRules
+    public class AlphaTestUser : IdentityUser<Guid>, IAlphaTestUser, ICanCheckRules
     {
         #region Поля
         public static readonly TimeSpan TemporaryPasswordLifetime = new(1, 0, 0, 0);
@@ -21,7 +21,7 @@ namespace AlphaTest.Core.Users
         private ICollection<AppUserRole> _userRoles;
         #endregion
 
-        public AppUser(string firstName, string lastName, string middleName, string temporaryPassword, string email)
+        public AlphaTestUser(string firstName, string lastName, string middleName, string temporaryPassword, string email)
             : base()
         {
             FirstName = firstName;
@@ -32,7 +32,7 @@ namespace AlphaTest.Core.Users
             NormalizedEmail = email.ToUpper();
             NormalizedUserName = NormalizedEmail;
             TemporaryPassword = temporaryPassword;
-            PasswordHash = new PasswordHasher<AppUser>().HashPassword(this, temporaryPassword);
+            PasswordHash = new PasswordHasher<AlphaTestUser>().HashPassword(this, temporaryPassword);
             IsPasswordChanged = false;
             IsSuspended = false;
             RegisteredAt = DateTime.Now;
@@ -72,13 +72,13 @@ namespace AlphaTest.Core.Users
         public void ResetTemporaryPassword(string newPassword)
         {
             TemporaryPassword = newPassword;
-            PasswordHash = new PasswordHasher<AppUser>().HashPassword(this, newPassword);
+            PasswordHash = new PasswordHasher<AlphaTestUser>().HashPassword(this, newPassword);
             TemporaryPasswordExpirationDate = CalculateTemporaryPasswordExpirationDate();
         }
 
         public void ChangePassword(string oldPassword, string newPassword, string newPasswordRepeat)
         {
-            var hasher = new PasswordHasher<AppUser>();
+            var hasher = new PasswordHasher<AlphaTestUser>();
             CheckRule(new NewPermanentPasswordMustBeRepeatedCorrectlyRule(newPassword, newPasswordRepeat));
             // ToDo check system password options
             PasswordHash = hasher.HashPassword(this, newPassword);
