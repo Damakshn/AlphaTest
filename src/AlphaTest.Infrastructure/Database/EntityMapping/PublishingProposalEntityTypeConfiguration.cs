@@ -2,7 +2,7 @@
 using AlphaTest.Core.Tests.Publishing;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AlphaTest.Core.Tests;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+using AlphaTest.Core.Users;
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping
 {
@@ -16,7 +16,7 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
                 .WithMany()
                 .HasForeignKey(p => p.TestID)
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne<AppUser>()
+            builder.HasOne<AlphaTestUser>()
                 .WithMany()
                 .HasForeignKey(p => p.AssigneeID)
                 .IsRequired(false)
