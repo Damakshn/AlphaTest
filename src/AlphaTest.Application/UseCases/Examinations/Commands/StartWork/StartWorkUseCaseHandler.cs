@@ -6,9 +6,9 @@ using AlphaTest.Core.Tests;
 using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Works;
 using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+
 
 namespace AlphaTest.Application.UseCases.Examinations.Commands.StartWork
 {
