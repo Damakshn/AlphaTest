@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Works;
-using AlphaTest.Infrastructure.Auth.UserManagement;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using MediatR;
 
 namespace AlphaTest.Application.UseCases.Examinations.Commands.FinishWork
