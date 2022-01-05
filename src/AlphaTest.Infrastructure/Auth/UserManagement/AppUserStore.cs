@@ -10,7 +10,7 @@ using AlphaTest.Core.Users;
 
 namespace AlphaTest.Infrastructure.Auth.UserManagement
 {
-    public class AppUserStore : UserStore<AlphaTestUser, AppRole, AlphaTestContext, Guid, IdentityUserClaim<Guid>, AppUserRole, IdentityUserLogin<Guid>, IdentityUserToken<Guid>, IdentityRoleClaim<Guid>>
+    public class AppUserStore : UserStore<AlphaTestUser, AlphaTestRole, AlphaTestContext, Guid, IdentityUserClaim<Guid>, AlphaTestUserRole, IdentityUserLogin<Guid>, IdentityUserToken<Guid>, IdentityRoleClaim<Guid>>
     {
         public AppUserStore(AlphaTestContext context, IdentityErrorDescriber describer = null) : base(context, describer)
         {
