@@ -1,7 +1,7 @@
 ﻿using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Core.Groups;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -5,7 +5,7 @@ using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Users;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using MediatR;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.Examinations.SwitchExaminer

@@ -5,7 +5,7 @@ using AlphaTest.Core.Users;
 using AlphaTest.Application.Exceptions;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SuspendUser
 {

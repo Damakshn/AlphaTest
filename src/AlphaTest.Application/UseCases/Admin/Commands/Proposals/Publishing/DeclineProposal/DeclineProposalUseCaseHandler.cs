@@ -4,7 +4,7 @@ using MediatR;
 using AlphaTest.Core.Tests.Publishing;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.Proposals.Publishing.DeclineProposal
 {
