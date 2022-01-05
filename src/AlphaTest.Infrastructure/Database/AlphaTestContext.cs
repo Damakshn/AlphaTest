@@ -12,7 +12,7 @@ using AlphaTest.Core.Groups;
 using AlphaTest.Core.Tests.Publishing;
 using AlphaTest.Core.Tests.Ownership;
 using AlphaTest.Core.Users;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+
 namespace AlphaTest.Infrastructure.Database
 {
     public partial class AlphaTestContext :

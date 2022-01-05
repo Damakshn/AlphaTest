@@ -1,42 +1,42 @@
-﻿using AlphaTest.Infrastructure.Auth.UserManagement;
-using AlphaTest.Infrastructure.Database.Exceptions;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using AlphaTest.Core.Users;
+using AlphaTest.Infrastructure.Database.Exceptions;
 
 namespace AlphaTest.Infrastructure.Database.QueryExtensions
 {
     public static class AppUserQueryExtensions
     {
-        public static IQueryable<AppUser> Aggregates(this DbSet<AppUser> query)
+        public static IQueryable<AlphaTestUser> Aggregates(this DbSet<AlphaTestUser> query)
         {
             return query.Include("_userRoles.Role");
         }
 
-        public static async Task<AppUser> FindByUsername(this IQueryable<AppUser> query, string username)
+        public static async Task<AlphaTestUser> FindByUsername(this IQueryable<AlphaTestUser> query, string username)
         {
-            AppUser user = await query.FirstOrDefaultAsync(u => u.UserName == username);
+            AlphaTestUser user = await query.FirstOrDefaultAsync(u => u.UserName == username);
             if (user is null)
                 throw new EntityNotFoundException($"Пользователь {username} не зарегистрирован в системе.");
             return user;
         }
 
-        public static async Task<AppUser> FindByID(this IQueryable<AppUser> query, Guid id)
+        public static async Task<AlphaTestUser> FindByID(this IQueryable<AlphaTestUser> query, Guid id)
         {
-            AppUser user = await query.FirstOrDefaultAsync(u => u.Id == id);
+            AlphaTestUser user = await query.FirstOrDefaultAsync(u => u.Id == id);
             if (user is null)
                 throw new EntityNotFoundException($"Пользователь с ID={id} не зарегистрирован в системе.");
             return user;
         }
 
-        public static IQueryable<AppUser> FilterByEmailsList(this IQueryable<AppUser> query, List<string> emails) 
+        public static IQueryable<AlphaTestUser> FilterByEmailsList(this IQueryable<AlphaTestUser> query, List<string> emails) 
         {
             return query.Where(u => emails.Contains(u.Email));
         }
 
-        public static IQueryable<AppUser> FilterByFIO(this IQueryable<AppUser> query, string fio)
+        public static IQueryable<AlphaTestUser> FilterByFIO(this IQueryable<AlphaTestUser> query, string fio)
         {
             return
                 string.IsNullOrWhiteSpace(fio)
@@ -44,7 +44,7 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
                 : query.Where(u => EF.Functions.Like(u.LastName + " " + u.FirstName + " " + u.MiddleName, "%" + fio + "%"));
         }
 
-        public static IQueryable<AppUser> FilterByLockStatus(this IQueryable<AppUser> query, bool? isSuspended)
+        public static IQueryable<AlphaTestUser> FilterByLockStatus(this IQueryable<AlphaTestUser> query, bool? isSuspended)
         {
             return
                 isSuspended is null
@@ -52,7 +52,7 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
                 : query.Where(u => u.IsSuspended == isSuspended);
         }
 
-        public static IQueryable<AppUser> FilterByEmail(this IQueryable<AppUser> query, string email)
+        public static IQueryable<AlphaTestUser> FilterByEmail(this IQueryable<AlphaTestUser> query, string email)
         {
             return
                 string.IsNullOrWhiteSpace(email)
@@ -60,7 +60,7 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
                 : query.Where(u => EF.Functions.Like(u.Email, "%" + email + "%"));
         }
 
-        public static IQueryable<AppUser> FilterByRoles(this IQueryable<AppUser> query, List<string> roles, AlphaTestContext db)
+        public static IQueryable<AlphaTestUser> FilterByRoles(this IQueryable<AlphaTestUser> query, List<string> roles, AlphaTestContext db)
 {
             return roles.Count == 0
             ? query
@@ -72,7 +72,7 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
               select user;
         }
 
-        public static IQueryable<AppUser> FilterByGroups(this IQueryable<AppUser> query, List<Guid> groups, AlphaTestContext db)
+        public static IQueryable<AlphaTestUser> FilterByGroups(this IQueryable<AlphaTestUser> query, List<Guid> groups, AlphaTestContext db)
         {
             return groups.Count == 0
                 ? query
@@ -86,7 +86,7 @@ namespace AlphaTest.Infrastructure.Database.QueryExtensions
                   select user;
         }
 
-        public static IQueryable<AppUser> StudiesInGroup(this IQueryable<AppUser> query, Guid groupID, AlphaTestContext db)
+        public static IQueryable<AlphaTestUser> StudiesInGroup(this IQueryable<AlphaTestUser> query, Guid groupID, AlphaTestContext db)
         {
             return from user in query
                    join membership in db.Memberships on user.Id equals membership.StudentID
