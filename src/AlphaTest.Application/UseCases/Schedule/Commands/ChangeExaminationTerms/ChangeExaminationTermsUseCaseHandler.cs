@@ -1,11 +1,11 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using AlphaTest.Application.UseCases.Common;
+using MediatR;
 using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Tests;
+using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
-using MediatR;
 
 namespace AlphaTest.Application.UseCases.Schedule.Commands.ChangeExaminationTerms
 {

@@ -8,8 +8,8 @@ using AlphaTest.Core.Groups;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Users;
 using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
 
 namespace AlphaTest.Application.UseCases.Schedule.Commands.CreateExamination
 {
