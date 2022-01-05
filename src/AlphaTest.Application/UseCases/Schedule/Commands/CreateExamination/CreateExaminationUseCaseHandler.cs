@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Groups;
 using AlphaTest.Core.Tests;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+using AlphaTest.Core.Users;
+using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 
@@ -22,7 +22,7 @@ namespace AlphaTest.Application.UseCases.Schedule.Commands.CreateExamination
         public override async Task<Guid> Handle(CreateExaminationUseCaseRequest request, CancellationToken cancellationToken)
         {
             Test test = await _db.Tests.Aggregates().FindByID(request.TestID);
-            AppUser examiner = await _db.Users.Aggregates().FindByID(request.UserID);
+            AlphaTestUser examiner = await _db.Users.Aggregates().FindByID(request.UserID);
 
             List<Group> groups =
                 request.Groups.Any()

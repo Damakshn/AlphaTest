@@ -1,11 +1,11 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
+using AlphaTest.Core.Users;
 using AlphaTest.Application.Exceptions;
 using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Infrastructure.Auth.UserManagement;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
-using MediatR;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SuspendUser
 {
@@ -19,7 +19,7 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SuspendUs
         {
             if (request.CurrentUserID == request.SuspendedUserID)
                 throw new AlphaTestApplicationException("Ошибка - невозможно заблокировать самого себя.");
-            AppUser suspendedUser = await _db.Users.Aggregates().FindByID(request.SuspendedUserID);
+            AlphaTestUser suspendedUser = await _db.Users.Aggregates().FindByID(request.SuspendedUserID);
             suspendedUser.Suspend();
             _db.SaveChanges();
             return Unit.Value;

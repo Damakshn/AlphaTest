@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
 using AlphaTest.Core.Tests;
+using AlphaTest.Core.Users;
 using AlphaTest.Application.Exceptions;
 using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+using AlphaTest.Infrastructure.Database;
+using AlphaTest.Infrastructure.Database.QueryExtensions;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.CreateTest
 {
@@ -17,7 +17,7 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.CreateTest
 
         public override async Task<Guid> Handle(CreateTestUseCaseRequest request, CancellationToken cancellationToken)
         {
-            AppUser author = await _db.Users.Aggregates().FindByID(request.AuthorID);
+            AlphaTestUser author = await _db.Users.Aggregates().FindByID(request.AuthorID);
             if (author is null)
             {
                 throw new AlphaTestApplicationException($"Пользователь {request.AuthorID} не зарегистрирован в системе.");

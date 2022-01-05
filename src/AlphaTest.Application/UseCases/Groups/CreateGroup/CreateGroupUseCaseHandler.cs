@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Core.Groups;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+using AlphaTest.Core.Users;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
 
@@ -20,7 +20,7 @@ namespace AlphaTest.Application.UseCases.Groups.CreateGroup
         public override async Task<Guid> Handle(CreateGroupUseCaseRequest request, CancellationToken cancellationToken)
         {
             bool groupAlreadyExists = _uniquenessChecker.CheckIfGroupExists(request.Name, request.BeginDate, request.EndDate);
-            AppUser curator =
+            AlphaTestUser curator =
                 request.CuratorID is null
                 ? null
                 : await _db.Users.Aggregates().FindByID((Guid)request.CuratorID);

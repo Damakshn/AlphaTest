@@ -5,21 +5,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MediatR;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Core.Users;
 using AlphaTest.Application.Exceptions;
 using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+using AlphaTest.Infrastructure.Database;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SetRoles
 {
     public class SetRolesUseCaseHandler : UseCaseHandlerBase<SetRoleUseCaseRequest>
     {
-        private AppUserManager _userManager;
-        private RoleManager<AppRole> _roleManager;
+        private UserManager<AlphaTestUser> _userManager;
+        private RoleManager<AlphaTestRole> _roleManager;
 
-        public SetRolesUseCaseHandler(AlphaTestContext db, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager) : base(db)
+        public SetRolesUseCaseHandler(AlphaTestContext db, UserManager<AlphaTestUser> userManager, RoleManager<AlphaTestRole> roleManager) : base(db)
         {
-            _userManager = userManager as AppUserManager;
+            _userManager = userManager;
             _roleManager = roleManager;
         }
 
@@ -30,9 +30,9 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SetRoles
             {
                 throw new AlphaTestApplicationException(BuildErrorMessageForNonExistingRoles(request.Roles.Except(allRoles).ToList()));
             }
-            
-            
-            AppUser user = await _userManager.FindByIdAsync(request.UserID.ToString());
+
+
+            AlphaTestUser user = await _userManager.FindByIdAsync(request.UserID.ToString());
 
             var currentRoles = await _userManager.GetRolesAsync(user);
             var addedRoles = request.Roles.Except(currentRoles);

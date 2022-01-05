@@ -2,7 +2,6 @@
 using AlphaTest.Core.Groups;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
-using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,10 +10,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AlphaTest.Core.Users.BulkImportReport;
-using AlphaTest.Core.Common.Exceptions;
-using AlphaTest.Core.Groups.Rules;
-using AlphaTest.Infrastructure.Auth.UserManagement;
 using AlphaTest.Infrastructure.Auth.Security;
+using AlphaTest.Core.Users;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBulkImport
 {
@@ -28,16 +25,16 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBu
         private List<ImportStudentRequestData> _importedUsersWithOutdatedGroup;
         private List<ImportStudentRequestData> _importedUsersWithDisbandedGroup;
         private List<ImportStudentRequestData> _newUsersToImport;
-        private List<AppUser> _existingValidUsers;
-        private List<AppUser> _undistributedStudents;
+        private List<AlphaTestUser> _existingValidUsers;
+        private List<AlphaTestUser> _undistributedStudents;
         #endregion
         private List<BulkImportReportLine> _reportLines;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<AlphaTestUser> _userManager;
 
-        public BulkImportUseCaseHandler(AlphaTestContext db, UserManager<AppUser> userManager) : base(db)
+        public BulkImportUseCaseHandler(AlphaTestContext db, UserManager<AlphaTestUser> userManager) : base(db)
         {
             _userManager = userManager;
-            _undistributedStudents = new List<AppUser>();
+            _undistributedStudents = new List<AlphaTestUser>();
             _reportLines = new List<BulkImportReportLine>();
         }
 
@@ -87,7 +84,7 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBu
                 try
                 {
                     string temporaryPassword = PasswordGenerator.GeneratePassword(SecuritySettings.PasswordOptions);
-                    AppUser newStudent = new(
+                    AlphaTestUser newStudent = new(
                             studentInfo.FirstName,
                             studentInfo.LastName,
                             studentInfo.MiddleName,
@@ -112,7 +109,7 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBu
 
         private async Task AddExistingUsersToStudentsIfNeeded()
         {
-            foreach (AppUser existingUser in _existingValidUsers)
+            foreach (AlphaTestUser existingUser in _existingValidUsers)
             {
                 string reportContent;
                 BulkImportEventType eventType;

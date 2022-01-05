@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using MediatR;
 using AlphaTest.Core.Groups;
+using AlphaTest.Core.Users;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Infrastructure.Database;
 using AlphaTest.Infrastructure.Database.QueryExtensions;
-using AlphaTest.Infrastructure.Auth.UserManagement;
 
 namespace AlphaTest.Application.UseCases.Groups.ExcluedStudent
 {
@@ -18,7 +18,7 @@ namespace AlphaTest.Application.UseCases.Groups.ExcluedStudent
         public override async Task<Unit> Handle(ExcludeStudentUseCaseRequest request, CancellationToken cancellationToken)
         {
             Group group = await _db.Groups.Aggregates().FindByID(request.GroupID);
-            AppUser student = await _db.Users.Aggregates().FindByID(request.StudentID);
+            AlphaTestUser student = await _db.Users.Aggregates().FindByID(request.StudentID);
             group.ExcludeStudent(student);
             _db.SaveChanges();
             return Unit.Value;
