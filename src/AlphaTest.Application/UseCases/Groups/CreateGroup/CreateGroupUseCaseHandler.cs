@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Core.Groups;
 using AlphaTest.Core.Users;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
 
 namespace AlphaTest.Application.UseCases.Groups.CreateGroup
 {

@@ -6,8 +6,8 @@ using AutoMapper;
 using AlphaTest.Core.Users;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.Models.Users;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
 
 namespace AlphaTest.Application.UseCases.Groups.Queries.StudentsInGroup
 {
