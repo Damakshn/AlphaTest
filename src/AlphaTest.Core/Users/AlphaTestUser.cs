@@ -18,7 +18,7 @@ namespace AlphaTest.Core.Users
         // TBD
         // https://stackoverflow.com/questions/47767267/ef-core-2-how-to-include-roles-navigation-property-on-identityuser/47772406
         // https://docs.microsoft.com/en-us/aspnet/core/migration/1x-to-2x/identity-2x?view=aspnetcore-5.0#add-identityuser-poco-navigation-properties
-        private ICollection<AppUserRole> _userRoles;
+        private ICollection<AlphaTestUserRole> _userRoles;
         #endregion
 
         public AlphaTestUser(string firstName, string lastName, string middleName, string temporaryPassword, string email)
@@ -37,7 +37,7 @@ namespace AlphaTest.Core.Users
             IsSuspended = false;
             RegisteredAt = DateTime.Now;
             LastVisitedAt = null;
-            _userRoles = new List<AppUserRole>();
+            _userRoles = new List<AlphaTestUserRole>();
             TemporaryPasswordExpirationDate = CalculateTemporaryPasswordExpirationDate();
             SecurityStamp = Guid.NewGuid().ToString();
         }

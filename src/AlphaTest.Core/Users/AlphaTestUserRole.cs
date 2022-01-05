@@ -1,9 +1,9 @@
 ﻿namespace AlphaTest.Core.Users
 {
-    public class AppUserRole
+    public class AlphaTestUserRole
     {
         public AlphaTestUser User { get; set; }
 
-        public AppRole Role { get; set; }
+        public AlphaTestRole Role { get; set; }
     }
 }

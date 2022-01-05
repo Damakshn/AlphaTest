@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AlphaTest.Core.Users
 {
-    public class AppRole : IdentityRole<Guid>
+    public class AlphaTestRole : IdentityRole<Guid>
     {
-        public AppRole(string name, string nameInRussian) : base()
+        public AlphaTestRole(string name, string nameInRussian) : base()
         {
             Name = name;
             NormalizedName = name.ToUpper();
