@@ -11,7 +11,7 @@ using AlphaTest.Core.Users.BulkImportReport;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using AlphaTest.Application.DataAccess.EF.Abstractions;
-using AlphaTest.Infrastructure.Auth.Security;
+using AlphaTest.Application.UtilityServices.Security;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBulkImport
 {
@@ -28,14 +28,17 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBu
         private List<AlphaTestUser> _existingValidUsers;
         private List<AlphaTestUser> _undistributedStudents;
         #endregion
+
         private List<BulkImportReportLine> _reportLines;
         private readonly UserManager<AlphaTestUser> _userManager;
+        private readonly IPasswordGenerator _passwordGenerator;
 
-        public BulkImportUseCaseHandler(IDbContext db, UserManager<AlphaTestUser> userManager) : base(db)
+        public BulkImportUseCaseHandler(IDbContext db, UserManager<AlphaTestUser> userManager, IPasswordGenerator passwordGenerator) : base(db)
         {
             _userManager = userManager;
             _undistributedStudents = new List<AlphaTestUser>();
             _reportLines = new List<BulkImportReportLine>();
+            _passwordGenerator = passwordGenerator;
         }
 
         public override async Task<List<BulkImportReportLine>> Handle(BulkImportUseCaseRequest request, CancellationToken cancellationToken)
@@ -83,7 +86,7 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBu
                 BulkImportEventType eventType;
                 try
                 {
-                    string temporaryPassword = PasswordGenerator.GeneratePassword(SecuritySettings.PasswordOptions);
+                    string temporaryPassword = _passwordGenerator.GeneratePassword();
                     AlphaTestUser newStudent = new(
                             studentInfo.FirstName,
                             studentInfo.LastName,
