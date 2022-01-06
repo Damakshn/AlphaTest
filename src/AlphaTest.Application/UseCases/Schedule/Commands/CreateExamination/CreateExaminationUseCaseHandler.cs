@@ -9,13 +9,13 @@ using AlphaTest.Core.Tests;
 using AlphaTest.Core.Users;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Schedule.Commands.CreateExamination
 {
     public class CreateExaminationUseCaseHandler : UseCaseHandlerBase<CreateExaminationUseCaseRequest, Guid>
     {
-        public CreateExaminationUseCaseHandler(AlphaTestContext db) : base(db)
+        public CreateExaminationUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
@@ -31,7 +31,7 @@ namespace AlphaTest.Application.UseCases.Schedule.Commands.CreateExamination
 
             Examination examination = new(test, request.StartsAt, request.EndsAt, examiner, groups);
             _db.Examinations.Add(examination);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return examination.ID;
         }
     }
