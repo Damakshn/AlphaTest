@@ -1,17 +1,17 @@
-﻿using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Core.Groups;
-using AlphaTest.Infrastructure.Database;
-using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AlphaTest.Core.Users.BulkImportReport;
-using AlphaTest.Infrastructure.Auth.Security;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using AlphaTest.Core.Groups;
 using AlphaTest.Core.Users;
+using AlphaTest.Core.Users.BulkImportReport;
+using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
+using AlphaTest.Infrastructure.Auth.Security;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBulkImport
 {
@@ -31,7 +31,7 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBu
         private List<BulkImportReportLine> _reportLines;
         private readonly UserManager<AlphaTestUser> _userManager;
 
-        public BulkImportUseCaseHandler(AlphaTestContext db, UserManager<AlphaTestUser> userManager) : base(db)
+        public BulkImportUseCaseHandler(IDbContext db, UserManager<AlphaTestUser> userManager) : base(db)
         {
             _userManager = userManager;
             _undistributedStudents = new List<AlphaTestUser>();
@@ -45,7 +45,7 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBu
             await AddExistingUsersToStudentsIfNeeded();
             DistributeStudentsIntoGroups(request);
             ReportLosers(request);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return _reportLines;
 
         }

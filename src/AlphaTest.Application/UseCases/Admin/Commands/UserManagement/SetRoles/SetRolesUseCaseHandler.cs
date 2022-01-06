@@ -8,7 +8,7 @@ using MediatR;
 using AlphaTest.Core.Users;
 using AlphaTest.Application.Exceptions;
 using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SetRoles
 {
@@ -17,7 +17,7 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.SetRoles
         private UserManager<AlphaTestUser> _userManager;
         private RoleManager<AlphaTestRole> _roleManager;
 
-        public SetRolesUseCaseHandler(AlphaTestContext db, UserManager<AlphaTestUser> userManager, RoleManager<AlphaTestRole> roleManager) : base(db)
+        public SetRolesUseCaseHandler(IDbContext db, UserManager<AlphaTestUser> userManager, RoleManager<AlphaTestRole> roleManager) : base(db)
         {
             _userManager = userManager;
             _roleManager = roleManager;

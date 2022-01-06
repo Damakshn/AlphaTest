@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using AlphaTest.Core.Users;
 using AlphaTest.Application.Exceptions;
 using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.CreateUser
 {
     public class CreateUserUseCaseHandler : UseCaseHandlerBase<CreateUserUseCaseRequest, Guid>
     {
-        public CreateUserUseCaseHandler(AlphaTestContext db) : base(db)
+        public CreateUserUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
@@ -35,7 +35,7 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.CreateUse
             _db.Users.Add(newUser);
             AlphaTestUserRole newUserInRole = new() { Role = initialRole, User = newUser };
             _db.UserRoles.Add(newUserInRole);
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(cancellationToken);
             return newUser.Id;
         }
     }

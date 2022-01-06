@@ -3,14 +3,14 @@ using System.Threading.Tasks;
 using MediatR;
 using AlphaTest.Core.Tests.Publishing;
 using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Infrastructure.Database;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.Proposals.Publishing.DeclineProposal
 {
     public class DeclineProposalUseCaseHandler : UseCaseHandlerBase<DeclineProposalUseCaseRequest>
     {
-        public DeclineProposalUseCaseHandler(AlphaTestContext db) : base(db)
+        public DeclineProposalUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
@@ -19,7 +19,7 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.Proposals.Publishing.Dec
             // ToDo обработать может только тот же пользователь, что взял заявку в работу
             PublishingProposal proposal = await _db.PublishingProposals.Aggregates().FindByID(request.ProposalID);
             proposal.Decline(request.Remark);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

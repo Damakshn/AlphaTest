@@ -5,13 +5,13 @@ using AlphaTest.Core.Users;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using AlphaTest.Infrastructure.Auth.Security;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.GenerateTemporaryPassword
 {
     public class GenerateTemporaryPasswordUseCaseHandler : UseCaseHandlerBase<GenerateTemporaryPasswordUseCaseRequest>
     {
-        public GenerateTemporaryPasswordUseCaseHandler(AlphaTestContext db) : base(db)
+        public GenerateTemporaryPasswordUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
