@@ -7,14 +7,13 @@ using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Works;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using AlphaTest.Infrastructure.Database;
-
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Examinations.Commands.StartWork
 {
     public class StartWorkUseCaseHandler : UseCaseHandlerBase<StartWorkUseCaseRequest>
     {
-        public StartWorkUseCaseHandler(AlphaTestContext db) : base(db)
+        public StartWorkUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
@@ -25,7 +24,7 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.StartWork
             uint attemptsSpent = (uint)await _db.Works.CountAsync(w => w.ExaminationID == examination.ID && w.StudentID == request.StudentID);
             Work work = new(test, examination, request.StudentID, attemptsSpent);
             _db.Works.Add(work);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

@@ -9,7 +9,7 @@ using AlphaTest.Core.Works;
 using AlphaTest.Application.Exceptions;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
 {
@@ -19,7 +19,7 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
         where TAcceptAnswerUseCaseRequest : AcceptAnswerUseCaseRequest
         where TQuestion : Question
     {
-        public AcceptAnswerUseCaseHandler(AlphaTestContext db) : base(db)
+        public AcceptAnswerUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
@@ -68,7 +68,7 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
                 numberOfAnswersAlreadyAccepted);
 
             _db.Answers.Add(registeredAnswer);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
 

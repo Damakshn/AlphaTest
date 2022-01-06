@@ -2,14 +2,14 @@
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Works;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 
 namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
 {
     public class AcceptTextualAnswerUseCaseHandler : AcceptAnswerUseCaseHandler<ExactTextualAnswer, QuestionWithTextualAnswer, AcceptTextualAnswerUseCaseRequest>
     {
-        public AcceptTextualAnswerUseCaseHandler(AlphaTestContext db) : base(db)
+        public AcceptTextualAnswerUseCaseHandler(IDbContext db) : base(db)
         {
         }
 

@@ -7,13 +7,13 @@ using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Checking.CheckAnswerManually
 {
     public class CheckAnswerManuallyUseCaseHandler : UseCaseHandlerBase<CheckAnswerManuallyUseCaseRequest>
     {
-        public CheckAnswerManuallyUseCaseHandler(AlphaTestContext db) : base(db)
+        public CheckAnswerManuallyUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
@@ -27,7 +27,7 @@ namespace AlphaTest.Application.UseCases.Checking.CheckAnswerManually
             AdjustedResult adjustedResult = preliminaryResult.AdjustWithCheckingPolicy(test.CheckingPolicy);
             CheckResult finalResult = new(adjustedResult, request.TeacherID);
             _db.Results.Add(finalResult);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

@@ -2,13 +2,13 @@
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Core.Works;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Examinations.Commands.AcceptAnswer
 {
     public class AcceptMultiChoiceAnswerUseCaseHandler : AcceptAnswerUseCaseHandler<MultiChoiceAnswer, MultiChoiceQuestion, AcceptMultiChoiceAnswerUseCaseRequest>
     {
-        public AcceptMultiChoiceAnswerUseCaseHandler(AlphaTestContext db) : base(db)
+        public AcceptMultiChoiceAnswerUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
