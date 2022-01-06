@@ -4,13 +4,13 @@ using MediatR;
 using AlphaTest.Core.Groups;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
-namespace AlphaTest.Application.UseCases.Groups.UnsetCurator
+namespace AlphaTest.Application.UseCases.Groups.Commands.UnsetCurator
 {
     public class UnsetCuratorUseCaseHandler : UseCaseHandlerBase<UnsetCuratorUseCaseRequest>
     {
-        public UnsetCuratorUseCaseHandler(AlphaTestContext db) : base(db)
+        public UnsetCuratorUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
@@ -18,7 +18,7 @@ namespace AlphaTest.Application.UseCases.Groups.UnsetCurator
         {
             Group group = await _db.Groups.Aggregates().FindByID(request.GroupID);
             group.UnsetCurator();
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

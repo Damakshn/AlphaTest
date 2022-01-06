@@ -7,13 +7,13 @@ using AlphaTest.Core.Users;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.Models.Users;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Groups.Queries.StudentsInGroup
 {
     public class StudentsListQueryHandler : UseCaseReportingHandlerBase<StudentsListQuery, List<StudentListItemDto>>
     {
-        public StudentsListQueryHandler(AlphaTestContext db, IMapper mapper) : base(db, mapper)
+        public StudentsListQueryHandler(IDbReportingContext db, IMapper mapper) : base(db, mapper)
         {
         }
 

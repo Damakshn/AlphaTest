@@ -4,13 +4,13 @@ using MediatR;
 using AlphaTest.Core.Groups;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
-namespace AlphaTest.Application.UseCases.Groups.DisbandGroup
+namespace AlphaTest.Application.UseCases.Groups.Commands.DisbandGroup
 {
     public class DisbandGroupUseCaseHandler : UseCaseHandlerBase<DisbandGroupUseCaseRequest>
     {
-        public DisbandGroupUseCaseHandler(AlphaTestContext db) : base(db)
+        public DisbandGroupUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
@@ -18,7 +18,7 @@ namespace AlphaTest.Application.UseCases.Groups.DisbandGroup
         {
             Group groupToDisband = await _db.Groups.Aggregates().FindByID(request.GroupID);
             groupToDisband.Disband();
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

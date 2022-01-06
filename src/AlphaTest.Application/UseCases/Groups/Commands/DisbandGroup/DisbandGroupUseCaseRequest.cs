@@ -1,7 +1,7 @@
 ﻿using System;
 using AlphaTest.Application.UseCases.Common;
 
-namespace AlphaTest.Application.UseCases.Groups.DisbandGroup
+namespace AlphaTest.Application.UseCases.Groups.Commands.DisbandGroup
 {
     public class DisbandGroupUseCaseRequest : IUseCaseRequest
     {

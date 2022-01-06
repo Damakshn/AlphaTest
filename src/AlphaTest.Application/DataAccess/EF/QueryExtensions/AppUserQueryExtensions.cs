@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AlphaTest.Core.Users;
 using AlphaTest.Application.DataAccess.Exceptions;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.DataAccess.EF.QueryExtensions
 {
@@ -60,7 +61,7 @@ namespace AlphaTest.Application.DataAccess.EF.QueryExtensions
                 : query.Where(u => EF.Functions.Like(u.Email, "%" + email + "%"));
         }
 
-        public static IQueryable<AlphaTestUser> FilterByRoles(this IQueryable<AlphaTestUser> query, List<string> roles, AlphaTestContext db)
+        public static IQueryable<AlphaTestUser> FilterByRoles(this IQueryable<AlphaTestUser> query, List<string> roles, IDbContext db)
 {
             return roles.Count == 0
             ? query
@@ -72,7 +73,7 @@ namespace AlphaTest.Application.DataAccess.EF.QueryExtensions
               select user;
         }
 
-        public static IQueryable<AlphaTestUser> FilterByGroups(this IQueryable<AlphaTestUser> query, List<Guid> groups, AlphaTestContext db)
+        public static IQueryable<AlphaTestUser> FilterByGroups(this IQueryable<AlphaTestUser> query, List<Guid> groups, IDbContext db)
         {
             return groups.Count == 0
                 ? query
@@ -86,7 +87,7 @@ namespace AlphaTest.Application.DataAccess.EF.QueryExtensions
                   select user;
         }
 
-        public static IQueryable<AlphaTestUser> StudiesInGroup(this IQueryable<AlphaTestUser> query, Guid groupID, AlphaTestContext db)
+        public static IQueryable<AlphaTestUser> StudiesInGroup(this IQueryable<AlphaTestUser> query, Guid groupID, IDbContext db)
         {
             return from user in query
                    join membership in db.Memberships on user.Id equals membership.StudentID

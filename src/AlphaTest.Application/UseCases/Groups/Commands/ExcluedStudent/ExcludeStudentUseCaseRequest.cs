@@ -1,11 +1,12 @@
 ﻿using System;
 using AlphaTest.Application.UseCases.Common;
 
-namespace AlphaTest.Application.UseCases.Groups.AddStudent
+
+namespace AlphaTest.Application.UseCases.Groups.Commands.ExcluedStudent
 {
-    public class AddStudentUseCaseRequest : IUseCaseRequest
+    public class ExcludeStudentUseCaseRequest : IUseCaseRequest
     {
-        public AddStudentUseCaseRequest(Guid groupID, Guid studentID)
+        public ExcludeStudentUseCaseRequest(Guid groupID, Guid studentID)
         {
             GroupID = groupID;
             StudentID = studentID;

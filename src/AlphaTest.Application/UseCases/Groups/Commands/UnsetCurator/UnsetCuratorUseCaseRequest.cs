@@ -2,7 +2,7 @@
 using AlphaTest.Application.UseCases.Common;
 
 
-namespace AlphaTest.Application.UseCases.Groups.UnsetCurator
+namespace AlphaTest.Application.UseCases.Groups.Commands.UnsetCurator
 {
     public class UnsetCuratorUseCaseRequest : IUseCaseRequest
     {

@@ -5,14 +5,14 @@ using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Core.Groups;
 using AlphaTest.Core.Users;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
-namespace AlphaTest.Application.UseCases.Groups.CreateGroup
+namespace AlphaTest.Application.UseCases.Groups.Commands.CreateGroup
 {
     public class CreateGroupUseCaseHandler : UseCaseHandlerBase<CreateGroupUseCaseRequest, Guid>
     {
         private readonly IGroupUniquenessChecker _uniquenessChecker;
-        public CreateGroupUseCaseHandler(AlphaTestContext db, IGroupUniquenessChecker uniquenessChecker) : base(db)
+        public CreateGroupUseCaseHandler(IDbContext db, IGroupUniquenessChecker uniquenessChecker) : base(db)
         {
             _uniquenessChecker = uniquenessChecker;
         }
@@ -26,7 +26,7 @@ namespace AlphaTest.Application.UseCases.Groups.CreateGroup
                 : await _db.Users.Aggregates().FindByID((Guid)request.CuratorID);
             Group group = new(request.Name, request.BeginDate, request.EndDate, curator, groupAlreadyExists);
             _db.Groups.Add(group);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return group.ID;
         }
     }

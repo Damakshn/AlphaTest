@@ -1,24 +1,24 @@
 ﻿using System;
 using AlphaTest.Application.UseCases.Common;
 
-namespace AlphaTest.Application.UseCases.Groups.CreateGroup
+namespace AlphaTest.Application.UseCases.Groups.Commands.EditGroupInfo
 {
-    public class CreateGroupUseCaseRequest : IUseCaseRequest<Guid>
+    public class EditGroupInfoUseCaseRequest : IUseCaseRequest
     {
-        public CreateGroupUseCaseRequest(string name, DateTime beginDate, DateTime endDate, Guid? curatorID)
+        public EditGroupInfoUseCaseRequest(Guid groupID, string name, DateTime beginDate, DateTime endDate)
         {
+            GroupID = groupID;
             Name = name;
             BeginDate = beginDate;
             EndDate = endDate;
-            CuratorID = curatorID;
         }
+
+        public Guid GroupID { get; private set; }
 
         public string Name { get; private set; }
 
         public DateTime BeginDate { get; private set; }
 
         public DateTime EndDate { get; private set; }
-
-        public Guid? CuratorID { get; private set; }
     }
 }

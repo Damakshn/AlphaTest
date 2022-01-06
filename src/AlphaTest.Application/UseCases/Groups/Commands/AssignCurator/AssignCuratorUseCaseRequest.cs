@@ -2,7 +2,7 @@
 using AlphaTest.Application.UseCases.Common;
 
 
-namespace AlphaTest.Application.UseCases.Groups.AssignCurator
+namespace AlphaTest.Application.UseCases.Groups.Commands.AssignCurator
 {
     public class AssignCuratorUseCaseRequest : IUseCaseRequest
     {
