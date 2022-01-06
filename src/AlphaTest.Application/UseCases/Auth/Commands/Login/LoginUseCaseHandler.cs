@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using AlphaTest.Core.Users;
 using AlphaTest.Application.Exceptions;
 using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Infrastructure.Auth.JWT;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
+using AlphaTest.Application.UtilityServices.Authorization;
 
 namespace AlphaTest.Application.UseCases.Auth.Commands.Login
 {
@@ -13,10 +13,10 @@ namespace AlphaTest.Application.UseCases.Auth.Commands.Login
     {
         private readonly UserManager<AlphaTestUser> _userManager;
         private readonly SignInManager<AlphaTestUser> _signInManager;
-        private readonly JwtGenerator _jwtGenerator;
+        private readonly IJwtGenerator _jwtGenerator;
 
 
-        public LoginUseCaseHandler(AlphaTestContext db, UserManager<AlphaTestUser> userManager, SignInManager<AlphaTestUser> signInManager, JwtGenerator jwtGenerator) : base(db)
+        public LoginUseCaseHandler(IDbContext db, UserManager<AlphaTestUser> userManager, SignInManager<AlphaTestUser> signInManager, IJwtGenerator jwtGenerator) : base(db)
         {
             _userManager = userManager;
             _signInManager = signInManager;

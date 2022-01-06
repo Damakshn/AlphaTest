@@ -9,11 +9,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using AlphaTest.Core.Users;
 using AlphaTest.Infrastructure.Auth.Security;
-
+using AlphaTest.Application.UtilityServices.Authorization;
 
 namespace AlphaTest.Infrastructure.Auth.JWT
 {
-    public class JwtGenerator
+    public class JwtGenerator : IJwtGenerator
     {
         private readonly SymmetricSecurityKey _key;
         private readonly UserManager<AlphaTestUser> _userManager;
