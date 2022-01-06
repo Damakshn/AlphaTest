@@ -1,6 +1,6 @@
 ﻿using AlphaTest.Application.Exceptions;
 using AlphaTest.Core.Tests.Questions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.QuestionList
 {
     public class MoveQuestionUseCaseHandler : EditQuestionListUseCaseHandler<MoveQuestionsUseCaseRequest>
     {
-        public MoveQuestionUseCaseHandler(AlphaTestContext db) : base(db) { }
+        public MoveQuestionUseCaseHandler(IDbContext db) : base(db) { }
 
         public override void ExecuteAction(List<Question> questions, MoveQuestionsUseCaseRequest request)
         {

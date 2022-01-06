@@ -1,6 +1,6 @@
 ﻿using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.EditQuestion
@@ -8,7 +8,7 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.EditQuestion
     public class EditQuestionWithDetailedAnswerUseCaseHandler
         : EditQuestionUseCaseHandler<EditQuestionWithDetailedAnswerUseCaseRequest, QuestionWithDetailedAnswer>
     {
-        public EditQuestionWithDetailedAnswerUseCaseHandler(AlphaTestContext db) : base(db)
+        public EditQuestionWithDetailedAnswerUseCaseHandler(IDbContext db) : base(db)
         {
         }
 

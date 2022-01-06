@@ -7,13 +7,13 @@ using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.QuestionList
 {
     public abstract class EditQuestionListUseCaseHandler<TRequest> : UseCaseHandlerBase<TRequest> where TRequest : EditQuestionListUseCaseRequest
     {
-        public EditQuestionListUseCaseHandler(AlphaTestContext db) : base(db) { }
+        public EditQuestionListUseCaseHandler(IDbContext db) : base(db) { }
 
         public override async Task<Unit> Handle(TRequest request, CancellationToken cancellationToken)
         {
@@ -21,7 +21,7 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.QuestionList
             List<Question> questions = await _db.Questions.Aggregates().FilterByTest(test.ID).SortByNumber().ToListAsync();
             ExecuteAction(questions, request);
             ReorderQuestions(questions);
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
 

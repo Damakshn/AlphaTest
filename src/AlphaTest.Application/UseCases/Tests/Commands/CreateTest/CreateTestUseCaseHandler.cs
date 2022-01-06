@@ -7,13 +7,13 @@ using AlphaTest.Core.Users;
 using AlphaTest.Application.Exceptions;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.CreateTest
 {
     public class CreateTestUseCaseHandler : UseCaseHandlerBase<CreateTestUseCaseRequest, Guid>
     {
-        public CreateTestUseCaseHandler(AlphaTestContext db) : base(db) { }
+        public CreateTestUseCaseHandler(IDbContext db) : base(db) { }
 
         public override async Task<Guid> Handle(CreateTestUseCaseRequest request, CancellationToken cancellationToken)
         {
@@ -27,7 +27,7 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.CreateTest
                 .Any(test => test.Title == request.Title && test.Topic == request.Topic);
             Test test = new(request.Title, request.Topic, author.Id, testAlreadyExists);
             _db.Tests.Add(test);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return test.ID;
         }
     }

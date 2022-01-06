@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using AlphaTest.Core.Tests.Questions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 using System.Collections.Generic;
 using AlphaTest.Application.Exceptions;
 
@@ -8,7 +8,7 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.QuestionList
 {
     public class DeleteQuestionUseCaseHandler : EditQuestionListUseCaseHandler<DeleteQuestionUseCaseRequest>
     {
-        public DeleteQuestionUseCaseHandler(AlphaTestContext db) : base(db) { }
+        public DeleteQuestionUseCaseHandler(IDbContext db) : base(db) { }
 
         public override void ExecuteAction(List<Question> questions, DeleteQuestionUseCaseRequest request)
         {   

@@ -1,12 +1,12 @@
 ﻿using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.AddQuestion
 {
     public class AddQuestionWithTextualAnswerUseCaseHandler : AddQuestionUseCaseHandler<AddQuestionWithTextualAnswerUseCaseRequest, QuestionWithTextualAnswer>
     {
-        public AddQuestionWithTextualAnswerUseCaseHandler(AlphaTestContext db) : base(db) { }
+        public AddQuestionWithTextualAnswerUseCaseHandler(IDbContext db) : base(db) { }
 
         protected override QuestionWithTextualAnswer AddQuestion(Test test, AddQuestionWithTextualAnswerUseCaseRequest request, uint numberOfQuestionInTest)
         {
