@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.Models.Users;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Users.Queries.UsersList
 {
     public class UsersListQueryHandler : UseCaseReportingHandlerBase<UsersListQuery, List<UsersListItemDto>>
     {
-        public UsersListQueryHandler(AlphaTestContext db) : base(db) { }
+        public UsersListQueryHandler(IDbReportingContext db) : base(db) { }
 
         public override async Task<List<UsersListItemDto>> Handle(UsersListQuery request, CancellationToken cancellationToken)
         {
