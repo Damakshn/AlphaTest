@@ -6,16 +6,16 @@ using AlphaTest.Core.Users;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.Exceptions;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
-namespace AlphaTest.Application.UseCases.Profile.ChangePassword
+namespace AlphaTest.Application.UseCases.Profile.Commands.ChangePassword
 {
     public class ChangePasswordUseCaseHandler : UseCaseHandlerBase<ChangePasswordUseCaseRequest>
-    {   
+    {
         private readonly UserManager<AlphaTestUser> _userManager;
 
-        public ChangePasswordUseCaseHandler(AlphaTestContext db, UserManager<AlphaTestUser> userManager) : base(db)
-        {   
+        public ChangePasswordUseCaseHandler(IDbContext db, UserManager<AlphaTestUser> userManager) : base(db)
+        {
             _userManager = userManager;
         }
 
@@ -30,7 +30,7 @@ namespace AlphaTest.Application.UseCases.Profile.ChangePassword
                 throw new AlphaTestApplicationException("Пароль не соответствует требованиям безопасности.");
             }
             user.ChangePassword(request.OldPassword, request.NewPassword, request.NewPasswordRepeat);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

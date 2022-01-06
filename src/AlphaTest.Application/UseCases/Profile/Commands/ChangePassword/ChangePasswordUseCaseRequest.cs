@@ -2,7 +2,7 @@
 using AlphaTest.Application.UseCases.Common;
 
 
-namespace AlphaTest.Application.UseCases.Profile.ChangePassword
+namespace AlphaTest.Application.UseCases.Profile.Commands.ChangePassword
 {
     public class ChangePasswordUseCaseRequest : IUseCaseRequest
     {
