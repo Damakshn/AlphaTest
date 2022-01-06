@@ -7,13 +7,13 @@ using AutoMapper;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.Models.Tests;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Tests.Queries.TestsList
 {
     public class TestsListQueryHandler : UseCaseReportingHandlerBase<TestsListQuery, List<TestsListItemDto>>
     {
-        public TestsListQueryHandler(AlphaTestContext db, IMapper mapper) : base(db, mapper) { }
+        public TestsListQueryHandler(IDbReportingContext db, IMapper mapper) : base(db, mapper) { }
 
         public override async Task<List<TestsListItemDto>> Handle(TestsListQuery request, CancellationToken cancellationToken)
         {

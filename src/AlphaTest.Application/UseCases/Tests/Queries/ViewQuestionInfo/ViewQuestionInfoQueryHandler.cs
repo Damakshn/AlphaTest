@@ -5,13 +5,13 @@ using AlphaTest.Core.Tests.Questions;
 using AlphaTest.Application.Models.Questions;
 using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Tests.Queries.ViewQuestionInfo
 {
     public class ViewQuestionInfoQueryHandler : UseCaseReportingHandlerBase<ViewQuestionInfoQuery, QuestionInfoDto>
     {
-        public ViewQuestionInfoQueryHandler(AlphaTestContext db, IMapper mapper) : base(db, mapper) { }
+        public ViewQuestionInfoQueryHandler(IDbReportingContext db, IMapper mapper) : base(db, mapper) { }
 
         public override async Task<QuestionInfoDto> Handle(ViewQuestionInfoQuery request, CancellationToken cancellationToken)
         {
