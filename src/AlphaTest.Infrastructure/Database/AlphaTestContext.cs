@@ -12,12 +12,14 @@ using AlphaTest.Core.Groups;
 using AlphaTest.Core.Tests.Publishing;
 using AlphaTest.Core.Tests.Ownership;
 using AlphaTest.Core.Users;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Infrastructure.Database
 {
     public partial class AlphaTestContext :
         IdentityDbContext<AlphaTestUser, AlphaTestRole, Guid, IdentityUserClaim<Guid>,
-            AlphaTestUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
+            AlphaTestUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>,
+        IDbContext
     {
 
         #region DbSets
