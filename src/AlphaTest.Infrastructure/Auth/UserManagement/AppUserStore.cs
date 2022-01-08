@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using AlphaTest.Infrastructure.Database;
 using AlphaTest.Core.Users;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
+using AlphaTest.Infrastructure.Database;
 
 namespace AlphaTest.Infrastructure.Auth.UserManagement
 {
