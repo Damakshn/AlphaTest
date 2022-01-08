@@ -2,11 +2,10 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AlphaTest.Application;
-using AlphaTest.Application.UseCases.Profile.ChangePassword;
+using AlphaTest.Application.UseCases.Profile.Commands.ChangePassword;
 using AlphaTest.WebApi.Models.Profile;
 using System.Collections.Generic;
 using AlphaTest.Application.Models.Tests;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using AlphaTest.Application.UseCases.Tests.Queries.TestsList;
 using AlphaTest.WebApi.Utils.Security;
 

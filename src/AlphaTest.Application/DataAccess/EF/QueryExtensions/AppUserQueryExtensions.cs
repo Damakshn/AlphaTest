@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using EFCore = Microsoft.EntityFrameworkCore;
 using AlphaTest.Core.Users;
 using AlphaTest.Application.DataAccess.Exceptions;
 using AlphaTest.Application.DataAccess.EF.Abstractions;
@@ -42,7 +43,7 @@ namespace AlphaTest.Application.DataAccess.EF.QueryExtensions
             return
                 string.IsNullOrWhiteSpace(fio)
                 ? query
-                : query.Where(u => EF.Functions.Like(u.LastName + " " + u.FirstName + " " + u.MiddleName, "%" + fio + "%"));
+                : query.Where(u => EFCore.EF.Functions.Like(u.LastName + " " + u.FirstName + " " + u.MiddleName, "%" + fio + "%"));
         }
 
         public static IQueryable<AlphaTestUser> FilterByLockStatus(this IQueryable<AlphaTestUser> query, bool? isSuspended)
@@ -58,7 +59,7 @@ namespace AlphaTest.Application.DataAccess.EF.QueryExtensions
             return
                 string.IsNullOrWhiteSpace(email)
                 ? query
-                : query.Where(u => EF.Functions.Like(u.Email, "%" + email + "%"));
+                : query.Where(u => EFCore.EF.Functions.Like(u.Email, "%" + email + "%"));
         }
 
         public static IQueryable<AlphaTestUser> FilterByRoles(this IQueryable<AlphaTestUser> query, List<string> roles, IDbContext db)
