@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AlphaTest.Core.Groups;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
-// ToDo
-// using AlphaTest.Application.DataAccess.EF.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 
-// MAYBE вынести в слой приложения
 namespace AlphaTest.Infrastructure.Checkers
 {
     public class EFGroupUniquenessChecker : IGroupUniquenessChecker
