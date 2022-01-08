@@ -10,10 +10,13 @@ namespace AlphaTest.Infrastructure.Database
         private static string DATABASE_NAME => "AlphaTest";
 
         // TODO добавить в документацию пояснение - для чего используется такая схема
-        public AlphaTestContext(string login, string password, string server) :
+        public AlphaTestContext(string login, string password, string server, bool reportMode = false) :
             base(BuildOptions(login, password, server))
         {
-            
+            if (reportMode)
+            {
+                ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            }
         }
 
         private static DbContextOptions BuildOptions(string login, string password, string server)

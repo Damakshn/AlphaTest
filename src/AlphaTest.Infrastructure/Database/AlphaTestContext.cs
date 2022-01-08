@@ -19,7 +19,7 @@ namespace AlphaTest.Infrastructure.Database
     public partial class AlphaTestContext :
         IdentityDbContext<AlphaTestUser, AlphaTestRole, Guid, IdentityUserClaim<Guid>,
             AlphaTestUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>,
-        IDbContext
+        IDbContext, IDbReportingContext
     {
 
         #region DbSets

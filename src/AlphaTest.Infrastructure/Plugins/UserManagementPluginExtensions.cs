@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using AlphaTest.Infrastructure.Auth.UserManagement;
 using AlphaTest.Infrastructure.Auth.Security;
 using AlphaTest.Core.Users;
+using AlphaTest.Application.UtilityServices.Security;
 
 namespace AlphaTest.Infrastructure.Plugins
 {
@@ -18,6 +19,7 @@ namespace AlphaTest.Infrastructure.Plugins
             services.AddTransient<IUserStore<AlphaTestUser>, AppUserStore>();
             services.AddTransient<IRoleStore<AlphaTestRole>, AppRoleStore>();
             services.AddScoped<UserManager<AlphaTestUser>, AppUserManager>();
+            services.AddScoped<IPasswordGenerator, PasswordGenerator>(x => new PasswordGenerator(SecuritySettings.PasswordOptions));
         }
     }
 }
