@@ -1,18 +1,17 @@
 ﻿using System.Linq;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using AlphaTest.Infrastructure.Database;
 using AlphaTest.Application.Models.Tests;
 using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Tests.Queries.ViewTestInfo
 {
     public class ViewTestInfoQueryHandler : UseCaseReportingHandlerBase<ViewTestInfoQuery, TestInfo>
     {   
-        public ViewTestInfoQueryHandler(AlphaTestContext db, IMapper mapper):base(db, mapper) { }
+        public ViewTestInfoQueryHandler(IDbReportingContext db, IMapper mapper):base(db, mapper) { }
 
         public override async Task<TestInfo> Handle(ViewTestInfoQuery request, CancellationToken cancellationToken)
         {

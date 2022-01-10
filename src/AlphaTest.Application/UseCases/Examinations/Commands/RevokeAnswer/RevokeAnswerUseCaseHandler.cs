@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using AlphaTest.Core.Answers;
@@ -8,15 +7,14 @@ using AlphaTest.Core.Tests;
 using AlphaTest.Core.Works;
 using AlphaTest.Application.Exceptions;
 using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Examinations.Commands.RevokeAnswer
 {
     public class RevokeAnswerUseCaseHandler : UseCaseHandlerBase<RevokeAnswerUseCaseRequest>
     {
-        public RevokeAnswerUseCaseHandler(AlphaTestContext db) : base(db)
+        public RevokeAnswerUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
@@ -45,7 +43,7 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.RevokeAnswer
             if (latestAnswer.IsRevoked)
                 throw new AlphaTestApplicationException("Действие невозможно последний отправленный ответ уже отозван.");
             latestAnswer.Revoke(test, currentWorkOfTheStudent);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

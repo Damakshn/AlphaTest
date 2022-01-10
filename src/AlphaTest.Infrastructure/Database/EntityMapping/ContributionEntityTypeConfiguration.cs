@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AlphaTest.Core.Tests.Ownership;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+using AlphaTest.Core.Users;
 
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping
@@ -13,7 +13,7 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
             builder.ToTable("Contributions");
             builder.HasKey(contribution => new { contribution.TestID, contribution.TeacherID });
             builder
-                .HasOne<AppUser>()
+                .HasOne<AlphaTestUser>()
                 .WithMany()
                 .HasForeignKey(contribution => contribution.TeacherID)
                 .OnDelete(DeleteBehavior.Restrict);

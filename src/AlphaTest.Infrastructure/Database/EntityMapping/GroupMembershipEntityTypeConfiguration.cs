@@ -1,7 +1,7 @@
-﻿using AlphaTest.Core.Groups;
-using AlphaTest.Infrastructure.Auth.UserManagement;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using AlphaTest.Core.Groups;
+using AlphaTest.Core.Users;
 
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping
@@ -16,7 +16,7 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
                 .WithMany("_members")
                 .HasForeignKey(m => m.GroupID)
                 .OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne<AppUser>()
+            builder.HasOne<AlphaTestUser>()
                 .WithMany()
                 .HasForeignKey(m => m.StudentID)
                 .OnDelete(DeleteBehavior.Cascade);

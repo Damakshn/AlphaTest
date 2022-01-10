@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Groups;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+using AlphaTest.Core.Users;
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping
 {
@@ -14,7 +14,7 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
             builder.ToTable("Examinations");
             builder.HasKey(e => e.ID);
             builder.HasOne<Test>().WithMany().HasForeignKey(e => e.TestID).OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne<AppUser>().WithMany().HasForeignKey(e => e.ExaminerID).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne<AlphaTestUser>().WithMany().HasForeignKey(e => e.ExaminerID).OnDelete(DeleteBehavior.Restrict);
             builder.Property(e => e.StartsAt).IsRequired();
             builder.Property(e => e.EndsAt).IsRequired();
             builder.Property(e => e.IsCanceled).IsRequired();

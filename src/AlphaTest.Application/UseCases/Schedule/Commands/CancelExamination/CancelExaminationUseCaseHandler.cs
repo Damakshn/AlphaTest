@@ -1,16 +1,16 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Core.Examinations;
-using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
 using MediatR;
+using AlphaTest.Core.Examinations;
+using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Schedule.Commands.CancelExamination
 {
     public class CancelExaminationUseCaseHandler : UseCaseHandlerBase<CancelExaminationUseCaseRequest>
     {
-        public CancelExaminationUseCaseHandler(AlphaTestContext db) : base(db)
+        public CancelExaminationUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
@@ -19,7 +19,7 @@ namespace AlphaTest.Application.UseCases.Schedule.Commands.CancelExamination
             Examination examination = await _db.Examinations.Aggregates().FindByID(request.ExaminationID);
             examination.Cancel();
             // ToDo stop current attempts
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

@@ -1,12 +1,12 @@
-﻿using AlphaTest.Core.Tests;
+﻿using AlphaTest.Application.DataAccess.EF.Abstractions;
+using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
-using AlphaTest.Infrastructure.Database;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.AddQuestion
 {
     public class AddMultiChoiceQuestionUseCaseHandler : AddQuestionUseCaseHandler<AddMultichoiceQuestionUseCaseRequest, MultiChoiceQuestion>
     {
-        public AddMultiChoiceQuestionUseCaseHandler(AlphaTestContext db) : base(db) { }
+        public AddMultiChoiceQuestionUseCaseHandler(IDbContext db) : base(db) { }
 
         protected override MultiChoiceQuestion AddQuestion(Test test, AddMultichoiceQuestionUseCaseRequest request, uint numberOfQuestionInTest)
         {

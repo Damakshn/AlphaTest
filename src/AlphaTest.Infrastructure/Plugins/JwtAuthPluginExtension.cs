@@ -4,6 +4,7 @@ using System.Text;
 using AlphaTest.Infrastructure.Auth.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using AlphaTest.Application.UtilityServices.Authorization;
 
 namespace AlphaTest.Infrastructure.Plugins
 {
@@ -12,7 +13,7 @@ namespace AlphaTest.Infrastructure.Plugins
         public static void AddJwtAuth(this IServiceCollection services, IConfiguration configuration)
         {
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["ALPHATEST:TOKEN_KEY"]));
-            services.AddScoped<JwtGenerator>();
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
 
             services
                 .AddAuthentication(options =>

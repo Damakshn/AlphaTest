@@ -1,22 +1,22 @@
-﻿using AlphaTest.Application.Exceptions;
-using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Infrastructure.Auth.JWT;
-using AlphaTest.Infrastructure.Auth.UserManagement;
-using AlphaTest.Infrastructure.Database;
-using Microsoft.AspNetCore.Identity;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using AlphaTest.Core.Users;
+using AlphaTest.Application.Exceptions;
+using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
+using AlphaTest.Application.UtilityServices.Authorization;
 
 namespace AlphaTest.Application.UseCases.Auth.Commands.Login
 {
     public class LoginUseCaseHandler : UseCaseHandlerBase<LoginUseCaseRequest, string>
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
-        private readonly JwtGenerator _jwtGenerator;
+        private readonly UserManager<AlphaTestUser> _userManager;
+        private readonly SignInManager<AlphaTestUser> _signInManager;
+        private readonly IJwtGenerator _jwtGenerator;
 
 
-        public LoginUseCaseHandler(AlphaTestContext db, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, JwtGenerator jwtGenerator) : base(db)
+        public LoginUseCaseHandler(IDbContext db, UserManager<AlphaTestUser> userManager, SignInManager<AlphaTestUser> signInManager, IJwtGenerator jwtGenerator) : base(db)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -25,7 +25,7 @@ namespace AlphaTest.Application.UseCases.Auth.Commands.Login
 
         public override async Task<string> Handle(LoginUseCaseRequest request, CancellationToken cancellationToken)
         {
-            AppUser user = await _userManager.FindByEmailAsync(request.Email);
+            AlphaTestUser user = await _userManager.FindByEmailAsync(request.Email);
             if (user is null)
             {
                 throw new AlphaTestApplicationException($"Ошибка входа в систему - пользователь {request.Email} не найден.");

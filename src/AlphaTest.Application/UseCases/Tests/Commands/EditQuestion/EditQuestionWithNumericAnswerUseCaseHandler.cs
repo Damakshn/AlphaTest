@@ -1,13 +1,13 @@
 ﻿using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
-using AlphaTest.Infrastructure.Database;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.EditQuestion
 {
     public class EditQuestionWithNumericAnswerUseCaseHandler 
         : EditQuestionUseCaseHandler<EditQuestionWithNumericAnswerUseCaseRequest, QuestionWithNumericAnswer>
     {
-        public EditQuestionWithNumericAnswerUseCaseHandler(AlphaTestContext db) : base(db)
+        public EditQuestionWithNumericAnswerUseCaseHandler(IDbContext db) : base(db)
         {
         }
 

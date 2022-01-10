@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AlphaTest.Core.Groups;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 
 namespace AlphaTest.Infrastructure.Checkers
 {

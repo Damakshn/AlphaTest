@@ -1,20 +1,17 @@
-﻿using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Core.Groups;
-using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using AlphaTest.Core.Groups;
+using AlphaTest.Core.Users;
 using AlphaTest.Core.Users.BulkImportReport;
-using AlphaTest.Core.Common.Exceptions;
-using AlphaTest.Core.Groups.Rules;
-using AlphaTest.Infrastructure.Auth.UserManagement;
-using AlphaTest.Infrastructure.Auth.Security;
+using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
+using AlphaTest.Application.UtilityServices.Security;
 
 namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBulkImport
 {
@@ -28,17 +25,20 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBu
         private List<ImportStudentRequestData> _importedUsersWithOutdatedGroup;
         private List<ImportStudentRequestData> _importedUsersWithDisbandedGroup;
         private List<ImportStudentRequestData> _newUsersToImport;
-        private List<AppUser> _existingValidUsers;
-        private List<AppUser> _undistributedStudents;
+        private List<AlphaTestUser> _existingValidUsers;
+        private List<AlphaTestUser> _undistributedStudents;
         #endregion
-        private List<BulkImportReportLine> _reportLines;
-        private readonly UserManager<AppUser> _userManager;
 
-        public BulkImportUseCaseHandler(AlphaTestContext db, UserManager<AppUser> userManager) : base(db)
+        private List<BulkImportReportLine> _reportLines;
+        private readonly UserManager<AlphaTestUser> _userManager;
+        private readonly IPasswordGenerator _passwordGenerator;
+
+        public BulkImportUseCaseHandler(IDbContext db, UserManager<AlphaTestUser> userManager, IPasswordGenerator passwordGenerator) : base(db)
         {
             _userManager = userManager;
-            _undistributedStudents = new List<AppUser>();
+            _undistributedStudents = new List<AlphaTestUser>();
             _reportLines = new List<BulkImportReportLine>();
+            _passwordGenerator = passwordGenerator;
         }
 
         public override async Task<List<BulkImportReportLine>> Handle(BulkImportUseCaseRequest request, CancellationToken cancellationToken)
@@ -48,7 +48,7 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBu
             await AddExistingUsersToStudentsIfNeeded();
             DistributeStudentsIntoGroups(request);
             ReportLosers(request);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return _reportLines;
 
         }
@@ -86,8 +86,8 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBu
                 BulkImportEventType eventType;
                 try
                 {
-                    string temporaryPassword = PasswordGenerator.GeneratePassword(SecuritySettings.PasswordOptions);
-                    AppUser newStudent = new(
+                    string temporaryPassword = _passwordGenerator.GeneratePassword();
+                    AlphaTestUser newStudent = new(
                             studentInfo.FirstName,
                             studentInfo.LastName,
                             studentInfo.MiddleName,
@@ -112,7 +112,7 @@ namespace AlphaTest.Application.UseCases.Admin.Commands.UserManagement.StudentBu
 
         private async Task AddExistingUsersToStudentsIfNeeded()
         {
-            foreach (AppUser existingUser in _existingValidUsers)
+            foreach (AlphaTestUser existingUser in _existingValidUsers)
             {
                 string reportContent;
                 BulkImportEventType eventType;

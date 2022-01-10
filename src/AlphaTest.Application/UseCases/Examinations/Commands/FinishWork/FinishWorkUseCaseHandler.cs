@@ -1,18 +1,17 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using AlphaTest.Application.UseCases.Common;
+using MediatR;
 using AlphaTest.Core.Examinations;
 using AlphaTest.Core.Works;
-using AlphaTest.Infrastructure.Auth.UserManagement;
-using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
-using MediatR;
+using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Examinations.Commands.FinishWork
 {
     public class FinishWorkUseCaseHandler : UseCaseHandlerBase<FinishCurrentWorkUseCaseRequest>
     {
-        public FinishWorkUseCaseHandler(AlphaTestContext db) : base(db)
+        public FinishWorkUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
@@ -21,7 +20,7 @@ namespace AlphaTest.Application.UseCases.Examinations.Commands.FinishWork
             Examination currentExamination = await _db.Examinations.Aggregates().FindByID(request.ExaminationID);
             Work workToFinish = await _db.Works.Aggregates().GetActiveWork(currentExamination.ID, request.StudentID);
             workToFinish.ManualFinish();
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

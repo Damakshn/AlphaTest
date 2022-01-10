@@ -1,22 +1,22 @@
-﻿using MediatR;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using AlphaTest.Infrastructure.Database;
+using MediatR;
 using AutoMapper;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Common
 {
     public abstract class UseCaseHandlerBase<TRequest> : IRequestHandler<TRequest> where TRequest : IUseCaseRequest
     {
-        protected AlphaTestContext _db;
+        protected IDbContext _db;
         protected IMapper _mapper;
 
-        public UseCaseHandlerBase(AlphaTestContext db)
+        public UseCaseHandlerBase(IDbContext db)
         {
             _db = db;
         }
 
-        public UseCaseHandlerBase(AlphaTestContext db, IMapper mapper)
+        public UseCaseHandlerBase(IDbContext db, IMapper mapper)
         {
             _db = db;
             _mapper = mapper;
@@ -28,15 +28,15 @@ namespace AlphaTest.Application.UseCases.Common
 
     public abstract class UseCaseHandlerBase<TRequest, TResponse> : IRequestHandler<TRequest, TResponse> where TRequest : IUseCaseRequest<TResponse>
     {
-        protected AlphaTestContext _db;
+        protected IDbContext _db;
         protected IMapper _mapper;
 
-        public UseCaseHandlerBase(AlphaTestContext db)
+        public UseCaseHandlerBase(IDbContext db)
         {
             _db = db;
         }
 
-        public UseCaseHandlerBase(AlphaTestContext db, IMapper mapper)
+        public UseCaseHandlerBase(IDbContext db, IMapper mapper)
         {
             _db = db;
             _mapper = mapper;
@@ -47,19 +47,17 @@ namespace AlphaTest.Application.UseCases.Common
 
     public abstract class UseCaseReportingHandlerBase<TRequest, TResponse> : IRequestHandler<TRequest, TResponse> where TRequest : IUseCaseRequest<TResponse>
     {
-        protected AlphaTestContext _db;
+        protected IDbReportingContext _db;
         protected IMapper _mapper;
 
-        public UseCaseReportingHandlerBase(AlphaTestContext db)
+        public UseCaseReportingHandlerBase(IDbReportingContext db)
         {
             _db = db;
-            _db.DisableTracking();
         }
 
-        public UseCaseReportingHandlerBase(AlphaTestContext db, IMapper mapper)
+        public UseCaseReportingHandlerBase(IDbReportingContext db, IMapper mapper)
         {
             _db = db;
-            _db.DisableTracking();
             _mapper = mapper;
         }
 

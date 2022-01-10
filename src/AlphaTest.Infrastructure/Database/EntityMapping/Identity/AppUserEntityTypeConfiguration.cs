@@ -1,13 +1,13 @@
-﻿using AlphaTest.Infrastructure.Auth.UserManagement;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using AlphaTest.Core.Users;
 
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping.Identity
 {
-    internal class AppUserEntityTypeConfiguration : IEntityTypeConfiguration<AppUser>
+    internal class AppUserEntityTypeConfiguration : IEntityTypeConfiguration<AlphaTestUser>
     {
-        public void Configure(EntityTypeBuilder<AppUser> builder)
+        public void Configure(EntityTypeBuilder<AlphaTestUser> builder)
         {
             builder
                 .Property(user => user.FirstName)
@@ -39,7 +39,7 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping.Identity
                 .Property(user => user.IsSuspended)
                 .IsRequired();
             builder
-                .HasMany<AppUserRole>("_userRoles")
+                .HasMany<AlphaTestUserRole>("_userRoles")
                 .WithOne(u => u.User)
                 .HasForeignKey(u => u.UserId);
         }

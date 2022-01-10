@@ -4,7 +4,7 @@ using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.TestSettings.Checking;
 using AlphaTest.Core.Tests.TestSettings.TestFlow;
 using AlphaTest.Core.Tests.Ownership;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+using AlphaTest.Core.Users;
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping
 {
@@ -84,7 +84,7 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
 
             #region Связи с другими сущностями
             builder
-                .HasOne<AppUser>()
+                .HasOne<AlphaTestUser>()
                 .WithMany()
                 .HasForeignKey(t => t.AuthorID)
                 .OnDelete(DeleteBehavior.Restrict);

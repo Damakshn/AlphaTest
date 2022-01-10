@@ -1,12 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using AlphaTest.Application.Exceptions;
-using AlphaTest.Application.UseCases.Common;
+using MediatR;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
-using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
-using MediatR;
+using AlphaTest.Application.Exceptions;
+using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.EditQuestion
 {
@@ -15,7 +15,7 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.EditQuestion
         where TEditQuestionRequest : EditQuestionUseCaseRequest 
         where TQuestion : Question
     {
-        public EditQuestionUseCaseHandler(AlphaTestContext db) : base(db)
+        public EditQuestionUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
@@ -25,7 +25,7 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.EditQuestion
             ThrowIfIncorrectQuestionType(question);
             Test test = await _db.Tests.Aggregates().FindByID(request.TestID);
             EditQuestion(request, question as TQuestion, test);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
 

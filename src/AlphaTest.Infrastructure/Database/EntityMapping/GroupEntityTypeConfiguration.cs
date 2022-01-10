@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using AlphaTest.Core.Groups;
-using AlphaTest.Infrastructure.Auth.UserManagement;
+using AlphaTest.Core.Users;
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping
 {
@@ -16,7 +16,7 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
             builder.Property(g => g.EndDate).IsRequired();
             builder.Property(g => g.IsDisbanded).IsRequired();
             builder
-                .HasOne<AppUser>()
+                .HasOne<AlphaTestUser>()
                 .WithMany()
                 .HasForeignKey(g => g.CuratorID)
                 .IsRequired(false);

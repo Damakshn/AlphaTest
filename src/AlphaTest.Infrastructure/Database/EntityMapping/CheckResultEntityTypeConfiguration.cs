@@ -1,8 +1,9 @@
-﻿using AlphaTest.Core.Answers;
-using AlphaTest.Core.Checking;
-using AlphaTest.Infrastructure.Auth.UserManagement;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using AlphaTest.Core.Answers;
+using AlphaTest.Core.Checking;
+using AlphaTest.Core.Users;
+
 
 namespace AlphaTest.Infrastructure.Database.EntityMapping
 {
@@ -18,7 +19,7 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping
                 .HasForeignKey(r => r.AnswerID)
                 .OnDelete(DeleteBehavior.Restrict);
             builder
-                .HasOne<AppUser>()
+                .HasOne<AlphaTestUser>()
                 .WithMany()
                 .HasForeignKey(r => r.TeacherID);
             builder

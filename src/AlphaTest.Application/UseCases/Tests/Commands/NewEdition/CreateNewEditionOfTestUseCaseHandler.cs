@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using AlphaTest.Application.UseCases.Common;
+using Microsoft.EntityFrameworkCore;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
-using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
-using Microsoft.EntityFrameworkCore;
+using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.NewEdition
 {
     public class CreateNewEditionOfTestUseCaseHandler : UseCaseHandlerBase<CreateNewEditionOfTestUseCaseRequest, Guid>
     {
-        public CreateNewEditionOfTestUseCaseHandler(AlphaTestContext db) : base(db)
+        public CreateNewEditionOfTestUseCaseHandler(IDbContext db) : base(db)
         {
         }
 
@@ -30,7 +30,7 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.NewEdition
             }
             _db.Tests.Add(newEditionOfTest);
             _db.Questions.AddRange(replicatedQuestions);
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(cancellationToken);
             return newEditionOfTest.ID;
         }
     }

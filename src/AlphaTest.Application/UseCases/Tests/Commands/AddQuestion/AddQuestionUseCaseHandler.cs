@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
-using AlphaTest.Infrastructure.Database;
-using AlphaTest.Infrastructure.Database.QueryExtensions;
+using AlphaTest.Application.UseCases.Common;
+using AlphaTest.Application.DataAccess.EF.QueryExtensions;
+using AlphaTest.Application.DataAccess.EF.Abstractions;
 
 namespace AlphaTest.Application.UseCases.Tests.Commands.AddQuestion
 {
@@ -15,7 +15,7 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.AddQuestion
         where TAddQuestionRequest : AddQuestionUseCaseRequest 
         where TQuestion : Question
     {
-        public AddQuestionUseCaseHandler(AlphaTestContext db) : base(db) { }
+        public AddQuestionUseCaseHandler(IDbContext db) : base(db) { }
 
         public override async Task<Guid> Handle(TAddQuestionRequest request, CancellationToken cancellationToken)
         {
@@ -23,7 +23,7 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.AddQuestion
             uint numberOfQuestionInTest = (uint)_db.Questions.FilterByTest(test.ID).Count();
             Question question = AddQuestion(test, request, numberOfQuestionInTest);
             _db.Questions.Add(question);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync(cancellationToken);
             return question.ID;
         }
 
