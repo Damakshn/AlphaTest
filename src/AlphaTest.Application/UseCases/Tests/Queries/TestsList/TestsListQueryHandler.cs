@@ -18,13 +18,13 @@ namespace AlphaTest.Application.UseCases.Tests.Queries.TestsList
         public override async Task<List<TestsListItemDto>> Handle(TestsListQuery request, CancellationToken cancellationToken)
         {
             var query = from test in _db.Tests
-                .FilterByTitle(request.Title)
-                .FilterByTopic(request.Topic)
-                .FilterByAuthor(request.Author)
-                .FilterByStatusList(request.Statuses)
-                .FilterByAuthorOrContributor(request.AuthorOrContributor)
-                .Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize)
-            join author in _db.Users on test.AuthorID equals author.Id
+                            .FilterByTitle(request.Title)
+                            .FilterByTopic(request.Topic)
+                            .FilterByAuthor(request.Author)
+                            .FilterByStatusList(request.Statuses)
+                            .FilterByAuthorOrContributor(request.AuthorOrContributor)
+                            .Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize)
+                        join author in _db.Users on test.AuthorID equals author.Id
             select new TestsListItemDto()
             {
                 ID = test.ID,

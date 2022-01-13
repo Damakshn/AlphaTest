@@ -8,7 +8,7 @@ namespace AlphaTest.Application.UseCases.Tests.Commands.CreateTest
         public CreateTestUseCaseRequest(string title, string topic, Guid authorID)
         {
             Title = title;
-            Topic = Topic;
+            Topic = topic;
             AuthorID = authorID;
         }
 

@@ -1,11 +1,8 @@
-﻿using AlphaTest.Application.Models.Questions;
-using AlphaTest.Application.UseCases.Common;
-using AlphaTest.Core.Tests.Questions;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AlphaTest.Application.Models.Questions;
+using AlphaTest.Application.UseCases.Common;
+
 
 namespace AlphaTest.Application.UseCases.Tests.Queries.ViewQuestionsList
 {
