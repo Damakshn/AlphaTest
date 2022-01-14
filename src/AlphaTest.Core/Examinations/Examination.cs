@@ -6,6 +6,7 @@ using AlphaTest.Core.Users;
 using System.Collections.Generic;
 using AlphaTest.Core.Groups;
 using System.Linq;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.Examinations
 {
@@ -58,11 +59,11 @@ namespace AlphaTest.Core.Examinations
 
         public TimeSpan Duration => EndsAt - StartsAt;
 
-        public TimeSpan TimeRemained => IsEnded ? TimeSpan.Zero : EndsAt - DateTime.Now;
+        public TimeSpan TimeRemained => IsEnded ? TimeSpan.Zero : EndsAt - TimeResolver.CurrentTime;
 
         public bool IsCanceled { get; private set; }
 
-        public bool IsEnded => EndsAt <= DateTime.Now;
+        public bool IsEnded => EndsAt <= TimeResolver.CurrentTime;
 
         public IReadOnlyCollection<ExamParticipation> Participations => _participations.AsReadOnly();
         #endregion

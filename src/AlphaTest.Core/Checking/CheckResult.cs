@@ -1,5 +1,6 @@
 ﻿using System;
 using AlphaTest.Core.Common.Abstractions;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.Checking
 {
@@ -9,7 +10,7 @@ namespace AlphaTest.Core.Checking
         {
             ID = Guid.NewGuid();
             TeacherID = teacherID;
-            CreatedAt = DateTime.Now;
+            CreatedAt = TimeResolver.CurrentTime;
             AnswerID = adjustedResult.AnswerID;
             Type = adjustedResult.CheckResultType;
             Score = adjustedResult.Score;

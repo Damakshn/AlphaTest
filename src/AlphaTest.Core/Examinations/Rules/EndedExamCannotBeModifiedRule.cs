@@ -1,5 +1,5 @@
-﻿using System;
-using AlphaTest.Core.Common;
+﻿using AlphaTest.Core.Common;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.Examinations.Rules
 {
@@ -14,6 +14,6 @@ namespace AlphaTest.Core.Examinations.Rules
 
         public string Message => "Операция запрещена, так как экзамен уже прошёл.";
 
-        public bool IsBroken => _exam.EndsAt < DateTime.Now;
+        public bool IsBroken => _exam.EndsAt < TimeResolver.CurrentTime;
     }
 }
