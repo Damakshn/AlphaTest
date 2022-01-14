@@ -16,11 +16,11 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping.Identity
             builder
                 .Property(user => user.LastName)
                 .HasMaxLength(300)
-                .IsRequired(); ;
+                .IsRequired();
             builder
                 .Property(user => user.MiddleName)
                 .HasMaxLength(300)
-                .IsRequired(); ;
+                .IsRequired();
             builder
                 .Property(user => user.TemporaryPassword)
                 .HasMaxLength(50) // ToDo validate password length
@@ -30,7 +30,7 @@ namespace AlphaTest.Infrastructure.Database.EntityMapping.Identity
                 .IsRequired();
             builder
                 .Property(user => user.RegisteredAt)
-                .HasDefaultValueSql("getdate()") // ToDo datetime.now?
+                .HasDefaultValueSql("GETUTCDATE()")
                 .IsRequired();
             builder
                 .Property(user => user.IsPasswordChanged)
