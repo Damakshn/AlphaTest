@@ -4,6 +4,7 @@ using System.Linq;
 using AlphaTest.Core.Common.Abstractions;
 using AlphaTest.Core.Users;
 using AlphaTest.Core.Groups.Rules;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.Groups
 {
@@ -50,7 +51,7 @@ namespace AlphaTest.Core.Groups
         public Guid? CuratorID { get; private set; }
 
         // MAYBE придумать другое название
-        public bool IsGone => EndDate <= DateTime.Now;
+        public bool IsGone => EndDate <= TimeResolver.CurrentTime;
         #endregion
 
         #region Методы

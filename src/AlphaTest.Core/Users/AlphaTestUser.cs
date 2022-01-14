@@ -6,6 +6,7 @@ using AlphaTest.Core.Common;
 using AlphaTest.Core.Common.Abstractions;
 using AlphaTest.Core.Common.Exceptions;
 using AlphaTest.Core.Users.Rules;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.Users
 {
@@ -35,7 +36,7 @@ namespace AlphaTest.Core.Users
             PasswordHash = new PasswordHasher<AlphaTestUser>().HashPassword(this, temporaryPassword);
             IsPasswordChanged = false;
             IsSuspended = false;
-            RegisteredAt = DateTime.Now;
+            RegisteredAt = TimeResolver.CurrentTime;
             LastVisitedAt = null;
             _userRoles = new List<AlphaTestUserRole>();
             TemporaryPasswordExpirationDate = CalculateTemporaryPasswordExpirationDate();
@@ -104,7 +105,7 @@ namespace AlphaTest.Core.Users
 
         public bool IsTemporaryPasswordExpired()
         {
-            return !IsPasswordChanged && TemporaryPasswordExpirationDate <= DateTime.Now;
+            return !IsPasswordChanged && TemporaryPasswordExpirationDate <= TimeResolver.CurrentTime;
         }
 
         private bool HasRole(string roleName)
@@ -114,7 +115,7 @@ namespace AlphaTest.Core.Users
 
         private static DateTime CalculateTemporaryPasswordExpirationDate()
         {
-            return DateTime.Now + TemporaryPasswordLifetime;
+            return TimeResolver.CurrentTime + TemporaryPasswordLifetime;
         }
         #endregion
     }

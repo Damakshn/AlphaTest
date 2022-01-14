@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AlphaTest.Core.Users.BulkImportReport.Rules;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.Users.BulkImportReport
 {
@@ -23,7 +24,7 @@ namespace AlphaTest.Core.Users.BulkImportReport
             CheckRule(new BulkImportReportContentMustBeProvidedRule(content));
             CheckRule(new BulkImportReportEventTypeMustBeProvidedRule(eventType));
             ID = Guid.NewGuid();
-            Timestamp = DateTime.Now;
+            Timestamp = TimeResolver.CurrentTime;
             Content = content;
             EventType = eventType;
         }

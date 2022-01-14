@@ -1,5 +1,6 @@
 ﻿using System;
 using AlphaTest.Core.Common.Abstractions;
+using AlphaTest.Core.Common.Utils;
 using AlphaTest.Core.Tests.Publishing.Rules;
 using AlphaTest.Core.Users;
 
@@ -12,8 +13,7 @@ namespace AlphaTest.Core.Tests.Publishing
 		internal PublishingProposal(Guid testID)
         {
 			TestID = testID;
-			// TBD можно ли использовать DateTime.Now
-			SentAt = DateTime.Now;
+			SentAt = TimeResolver.CurrentTime;
 			Status = ProposalStatus.NEW;
 			ID = Guid.NewGuid();
 			AssignedAt = null;
@@ -41,7 +41,7 @@ namespace AlphaTest.Core.Tests.Publishing
         {
 			CheckRule(new ProposalCanBeAssignedOnlyToAdminUsersRule(admin));
 			CheckRule(new OnlyNewProposalsCanBeAssignedToAdminRule(this));
-			AssignedAt = DateTime.Now;
+			AssignedAt = TimeResolver.CurrentTime;
 			AssigneeID = admin.Id;
 			Status = ProposalStatus.PENDING;
         }
@@ -50,7 +50,7 @@ namespace AlphaTest.Core.Tests.Publishing
         {
 			// todo unit test
 			CheckRule(new OnlyPendingProposalCanBeAprovedOrDeclinedRule(this));
-			FinishedAt = DateTime.Now;
+			FinishedAt = TimeResolver.CurrentTime;
 			Status = ProposalStatus.APPROVED;
 			// ToDo domain event
         }

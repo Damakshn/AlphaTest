@@ -1,5 +1,6 @@
 ﻿using System;
 using AlphaTest.Core.Common;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.Groups.Rules
 {
@@ -14,6 +15,6 @@ namespace AlphaTest.Core.Groups.Rules
 
         public string Message => "Группа не может быть создана задним числом.";
 
-        public bool IsBroken => _beginDate < DateTime.Now;
+        public bool IsBroken => _beginDate < TimeResolver.CurrentTime;
     }
 }
