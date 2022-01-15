@@ -12,7 +12,7 @@ namespace AlphaTest.Core.Works.Rules
             _work = work;
         }
 
-        public string Message => $"Принудительное завершение тестирования невозможно до {_work.ForceEndAt}";
+        public string Message => $"Принудительное завершение тестирования невозможно до {TimeResolver.ToLocal(_work.ForceEndAt)}";
 
         public bool IsBroken =>_work.ForceEndAt > TimeResolver.CurrentTime;
     }
