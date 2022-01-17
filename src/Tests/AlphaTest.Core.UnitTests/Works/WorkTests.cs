@@ -10,6 +10,7 @@ using AlphaTest.Core.UnitTests.Common;
 using AlphaTest.Core.UnitTests.Fixtures;
 using AlphaTest.Core.UnitTests.Common.Helpers;
 using AlphaTest.Core.Tests.TestSettings.TestFlow;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.UnitTests.Works
 {
@@ -47,7 +48,7 @@ namespace AlphaTest.Core.UnitTests.Works
             Work work = new(test, examination, Guid.NewGuid(), 0);
 
             Assert.Equal(examination.ID, work.ExaminationID);
-            Assert.Equal(DateTime.Now, work.StartedAt, TimeSpan.FromSeconds(1));
+            Assert.Equal(TimeResolver.CurrentTime, work.StartedAt, TimeSpan.FromSeconds(1));
         }
 
         [Theory]
@@ -65,13 +66,13 @@ namespace AlphaTest.Core.UnitTests.Works
             // такая ситуация (когда экзамен вот-вот закончится) возникает сама собой
             HelpersForExaminations.SetExaminationDates(
                 examination,
-                DateTime.Now,
-                DateTime.Now + examTimeRemained
+                TimeResolver.CurrentTime,
+                TimeResolver.CurrentTime + examTimeRemained
             );
 
             Work work = new(test, examination, Guid.NewGuid(), 0);
 
-            Assert.Equal(DateTime.Now + expected, work.ForceEndAt, TimeSpan.FromSeconds(10));
+            Assert.Equal(TimeResolver.CurrentTime + expected, work.ForceEndAt, TimeSpan.FromSeconds(10));
         }
 
 
@@ -81,7 +82,7 @@ namespace AlphaTest.Core.UnitTests.Works
             work.ManualFinish();
 
             Assert.True(work.IsFinished);
-            Assert.Equal(DateTime.Now, (DateTime)work.FinishedAt, TimeSpan.FromSeconds(1));
+            Assert.Equal(TimeResolver.CurrentTime, (DateTime)work.FinishedAt, TimeSpan.FromSeconds(1));
         }
 
         [Theory, WorkTestsData]
@@ -95,7 +96,7 @@ namespace AlphaTest.Core.UnitTests.Works
         [Theory, WorkTestsData]
         public void Work_can_be_finished_by_force_when_time_limit_has_expired(Work work)
         {
-            HelpersForWorks.SetWorkForcedEndDate(work, DateTime.Now);
+            HelpersForWorks.SetWorkForcedEndDate(work, TimeResolver.CurrentTime);
 
             work.ForcedFinish(WorkFinishReason.TestTimeLimitExpired);
 
@@ -105,7 +106,7 @@ namespace AlphaTest.Core.UnitTests.Works
         [Theory, WorkTestsData]
         public void Work_can_be_finished_by_force_when_examination_is_over(Work work)
         {
-            HelpersForWorks.SetWorkForcedEndDate(work, DateTime.Now);
+            HelpersForWorks.SetWorkForcedEndDate(work, TimeResolver.CurrentTime);
 
             work.ForcedFinish(WorkFinishReason.ExaminationTimeLimitExpired);
 
@@ -149,7 +150,7 @@ namespace AlphaTest.Core.UnitTests.Works
         [Theory, WorkTestsData]
         public void Work_cannot_be_finished_by_force_if_it_is_already_finished(Work work)
         {
-            HelpersForWorks.SetWorkForcedEndDate(work, DateTime.Now);
+            HelpersForWorks.SetWorkForcedEndDate(work, TimeResolver.CurrentTime);
 
             work.ManualFinish();
 

@@ -10,6 +10,7 @@ using AlphaTest.Core.Groups;
 using AlphaTest.Core.Users;
 using System.Linq;
 using Moq;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.UnitTests.Examinations
 {
@@ -138,14 +139,15 @@ namespace AlphaTest.Core.UnitTests.Examinations
         {
             ExaminationTestData data = new()
             {
-                StartsAt = DateTime.Now.AddDays(1),
-                EndsAt = DateTime.Now.AddDays(10)
+                StartsAt = TimeResolver.CurrentTime.AddDays(1),
+                EndsAt = TimeResolver.CurrentTime.AddDays(10)
             };
             Examination exam = new(data.Test, data.StartsAt, data.EndsAt, data.Examiner, data.Groups);
 
-            DateTime newStart = DateTime.Now.AddDays(1);
+            DateTime newStart = TimeResolver.CurrentTime.AddDays(1);
+            
             // с помощью рефлекссии подменяем дату начала экзамена
-            HelpersForExaminations.SetExaminationDates(exam, DateTime.Now.AddHours(-1), exam.EndsAt);
+            HelpersForExaminations.SetExaminationDates(exam, TimeResolver.CurrentTime.AddHours(-1), exam.EndsAt);
 
             AssertBrokenRule<StartOfExamCannotBeMovedIfExamAlreadyStartedRule>(() =>
                 exam.ChangeDates(newStart, data.EndsAt, data.Test)

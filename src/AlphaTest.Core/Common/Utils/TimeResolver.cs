@@ -7,7 +7,7 @@ namespace AlphaTest.Core.Common.Utils
         private static DateTime? _customizedTime;
         private static TimeZoneInfo _timeZoneInfo;
 
-        public static DateTime CurrentTime => _customizedTime.HasValue ? DateTime.UtcNow : _customizedTime.Value;
+        public static DateTime CurrentTime => _customizedTime ?? DateTime.UtcNow;
 
         public static void SetTime(DateTime customizedTime)
         {
@@ -20,17 +20,19 @@ namespace AlphaTest.Core.Common.Utils
         }
 
         public static void SetTimeZone(string serializedString)
-        {
+        {   
             _timeZoneInfo = TimeZoneInfo.FromSerializedString(serializedString);
         }
 
         public static DateTime ToUtc(DateTime input)
-        {
-            return TimeZoneInfo.ConvertTimeToUtc(input, _timeZoneInfo);
+        {   
+            return input.Kind == DateTimeKind.Unspecified 
+                ? TimeZoneInfo.ConvertTimeToUtc(input, _timeZoneInfo)
+                : input.ToUniversalTime();
         }
 
         public static DateTime ToLocal(DateTime utc)
-        {
+        {   
             return TimeZoneInfo.ConvertTimeFromUtc(utc, _timeZoneInfo);
         }
     }

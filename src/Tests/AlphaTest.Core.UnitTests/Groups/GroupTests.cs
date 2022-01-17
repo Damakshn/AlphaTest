@@ -4,12 +4,11 @@ using AlphaTest.Core.UnitTests.Common;
 using AlphaTest.Core.Groups.Rules;
 using AlphaTest.Core.Groups;
 using AlphaTest.Core.UnitTests.Common.Helpers;
-using AlphaTest.Core.Users;
 using System.Linq;
 using AlphaTest.Core.UnitTests.Fixtures;
 using AutoFixture;
-using Moq;
 using AlphaTest.Core.UnitTests.Fixtures.FixtureExtensions;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.UnitTests.Groups
 {
@@ -264,8 +263,8 @@ namespace AlphaTest.Core.UnitTests.Groups
         [Theory, GroupTestsData]
         public void Group_dates_can_be_changed(Group group)
         {
-            var newBeginDate = DateTime.Now.AddDays(10);
-            var newEndDate = DateTime.Now.AddDays(100);
+            var newBeginDate = TimeResolver.CurrentTime.AddDays(10);
+            var newEndDate = TimeResolver.CurrentTime.AddDays(100);
             group.ChangeDates(newBeginDate, newEndDate);
 
             Assert.Equal(newBeginDate, group.BeginDate);

@@ -11,6 +11,7 @@ using AlphaTest.Core.Tests.TestSettings.TestFlow;
 using AlphaTest.Core.UnitTests.Fixtures;
 using AlphaTest.Core.UnitTests.Common;
 using AlphaTest.Core.UnitTests.Common.Helpers;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.UnitTests.Answers
 {
@@ -107,7 +108,7 @@ namespace AlphaTest.Core.UnitTests.Answers
             QuestionWithTextualAnswer questionWithTextualAnswer,
             QuestionWithDetailedAnswer questionWithDetailedAnswer)
         {
-            HelpersForWorks.SetWorkForcedEndDate(work, DateTime.Now);
+            HelpersForWorks.SetWorkForcedEndDate(work, TimeResolver.CurrentTime);
             work.ForcedFinish(WorkFinishReason.TestTimeLimitExpired);
 
             // проверяем, что одно и то же правило нарушается для всех ответов
@@ -200,10 +201,10 @@ namespace AlphaTest.Core.UnitTests.Answers
             ExactNumericAnswer exactNumericAnswer,
             ExactTextualAnswer exactTextualAnswer,
             DetailedAnswer detailedAnswer)
-        {
+        {   
             List<Answer> answers = new() { singleChoiceAnswer, multiChoiceAnswer, exactNumericAnswer, exactTextualAnswer, detailedAnswer };
             test.ChangeRevokePolicy(new RevokePolicy(true, 2));
-            HelpersForWorks.SetWorkForcedEndDate(work, DateTime.Now);
+            HelpersForWorks.SetWorkForcedEndDate(work, TimeResolver.CurrentTime);
             work.ForcedFinish(WorkFinishReason.TestTimeLimitExpired);
 
             foreach (Answer answer in answers)
