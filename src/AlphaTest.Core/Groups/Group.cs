@@ -4,6 +4,7 @@ using System.Linq;
 using AlphaTest.Core.Common.Abstractions;
 using AlphaTest.Core.Users;
 using AlphaTest.Core.Groups.Rules;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.Groups
 {
@@ -19,15 +20,17 @@ namespace AlphaTest.Core.Groups
         public Group(string name, DateTime beginDate, DateTime endDate, IAlphaTestUser curator, bool groupAlreadyExists)
         {
             CheckRule(new GroupMustBeUniqueRule(groupAlreadyExists));
-            CheckCommonRulesForDates(beginDate, endDate);
+            DateTime beginDateUtc = TimeResolver.ToUtc(beginDate);
+            DateTime endDateUtc = TimeResolver.ToUtc(endDate);
+            CheckCommonRulesForDates(beginDateUtc, endDateUtc);
             CheckRule(new GroupNameMustBeProvidedRule(name));
             // ToDo unit test
             if (curator is not null)
                 CheckRule(new OnlyTeacherCanBeAssignedAsCurator(curator));
             ID = Guid.NewGuid();
             Name = name;
-            BeginDate = beginDate;
-            EndDate = endDate;
+            BeginDate = beginDateUtc;
+            EndDate = endDateUtc;
             IsDisbanded = false;
             _members = new List<Membership>();
             CuratorID = curator?.Id;
@@ -50,7 +53,7 @@ namespace AlphaTest.Core.Groups
         public Guid? CuratorID { get; private set; }
 
         // MAYBE придумать другое название
-        public bool IsGone => EndDate <= DateTime.Now;
+        public bool IsGone => EndDate <= TimeResolver.CurrentTime;
         #endregion
 
         #region Методы
@@ -97,10 +100,12 @@ namespace AlphaTest.Core.Groups
         // ToDo согласованность с расписанием экзаменов
         public void ChangeDates(DateTime newBegin, DateTime newEnd)
         {
+            DateTime newBeginUtc = TimeResolver.ToUtc(newBegin);
+            DateTime newEndUtc = TimeResolver.ToUtc(newEnd);
             CheckRule(new DisbandedGroupCannotBeModifiedRule(this));
-            CheckCommonRulesForDates(newBegin, newEnd);
-            BeginDate = newBegin;
-            EndDate = newEnd;
+            CheckCommonRulesForDates(newBeginUtc, newEndUtc);
+            BeginDate = newBeginUtc;
+            EndDate = newEndUtc;
         }
 
         // TBD - критерии уникальности группы, требуется правка документации

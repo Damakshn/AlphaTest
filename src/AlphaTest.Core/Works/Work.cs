@@ -3,6 +3,7 @@ using AlphaTest.Core.Common.Abstractions;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Works.Rules;
 using AlphaTest.Core.Examinations;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.Works
 {
@@ -18,7 +19,7 @@ namespace AlphaTest.Core.Works
             CheckRule(new NewWorkCannotBeStartedIfAttemptsLimitForTestIsExhaustedRule(test, attemptsSpent));
             ID = Guid.NewGuid();
             ExaminationID = examination.ID;
-            StartedAt = DateTime.Now;
+            StartedAt = TimeResolver.CurrentTime;
             #region Вычисляем продолжительность тестирования
             // ToDo улучшить читаемость
             if (test.TimeLimit is null)
@@ -80,7 +81,7 @@ namespace AlphaTest.Core.Works
         {
             CheckRule(new FinishedWorkCannotBeModifiedRule(this));
             CheckRule(new FinishReasonMustBeSpecifiedIfWorkIsFinishedRule(reason));
-            FinishedAt = DateTime.Now;
+            FinishedAt = TimeResolver.CurrentTime;
             FinishReason = reason;
         }
         #endregion

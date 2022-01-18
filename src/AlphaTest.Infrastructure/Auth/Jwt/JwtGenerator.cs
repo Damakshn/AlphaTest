@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using AlphaTest.Core.Users;
 using AlphaTest.Infrastructure.Auth.Security;
 using AlphaTest.Application.UtilityServices.Authorization;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Infrastructure.Auth.JWT
 {
@@ -44,7 +45,7 @@ namespace AlphaTest.Infrastructure.Auth.JWT
             {
                 Subject = new ClaimsIdentity(claims),
                 SigningCredentials = credentials,
-                Expires = DateTime.Now.AddDays(SecuritySettings.TokenLifetimeInDays)
+                Expires = TimeResolver.CurrentTime.AddDays(SecuritySettings.TokenLifetimeInDays)
             };
             JwtSecurityTokenHandler tokenHandler = new();
             var token = tokenHandler.CreateToken(tokenDescriptor);

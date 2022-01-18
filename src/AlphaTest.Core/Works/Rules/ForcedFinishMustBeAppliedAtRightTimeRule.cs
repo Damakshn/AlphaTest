@@ -1,6 +1,5 @@
-﻿using System;
-using AlphaTest.Core.Common;
-
+﻿using AlphaTest.Core.Common;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.Works.Rules
 {
@@ -13,8 +12,8 @@ namespace AlphaTest.Core.Works.Rules
             _work = work;
         }
 
-        public string Message => $"Принудительное завершение тестирования невозможно до {_work.ForceEndAt}";
+        public string Message => $"Принудительное завершение тестирования невозможно до {TimeResolver.ToLocal(_work.ForceEndAt)}";
 
-        public bool IsBroken =>_work.ForceEndAt > DateTime.Now;
+        public bool IsBroken =>_work.ForceEndAt > TimeResolver.CurrentTime;
     }
 }

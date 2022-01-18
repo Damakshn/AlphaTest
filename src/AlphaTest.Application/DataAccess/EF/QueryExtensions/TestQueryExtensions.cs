@@ -42,9 +42,11 @@ namespace AlphaTest.Application.DataAccess.EF.QueryExtensions
 
         public static IQueryable<Test> FilterByStatusList(this IQueryable<Test> query, List<TestStatus> statuses)
         {   
-            return statuses is null 
-                ? query 
-                : query.Where(test => statuses.Contains(test.Status));
+            if (statuses is null || statuses.Count == 0)
+            {
+                return query;
+            }
+            return query.Where(test => statuses.Contains(test.Status));
         }
 
         public static IQueryable<Test> FilterByAuthorOrContributor(

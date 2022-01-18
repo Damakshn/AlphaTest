@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +17,8 @@ namespace AlphaTest.Application.UseCases.Tests.Queries.ViewQuestionsList
         public ViewQuestionsListQueryHandler(IDbReportingContext db, IMapper mapper) : base(db, mapper) { }
 
         public override async Task<List<QuestionListItemDto>> Handle(ViewQuestionsListQuery request, CancellationToken cancellationToken)
-        {
-            List<Question> questions = await _db.Questions.Aggregates().FilterByTest(request.TestID).ToListAsync();
+        {            
+            List<Question> questions = await _db.Questions.Aggregates().FilterByTest(request.TestID).OrderBy(q => q.Number).ToListAsync();
             return _mapper.Map<List<Question>, List<QuestionListItemDto>>(questions);
 
         }

@@ -4,6 +4,7 @@ using AlphaTest.Core.Works;
 using AlphaTest.Core.Common.Abstractions;
 using AlphaTest.Core.Tests;
 using AlphaTest.Core.Tests.Questions;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.Answers
 {
@@ -19,7 +20,7 @@ namespace AlphaTest.Core.Answers
             ID = Guid.NewGuid();
             QuestionID = question.ID;
             WorkID = work.ID;
-            SentAt = DateTime.Now;
+            SentAt = TimeResolver.CurrentTime;
             IsRevoked = false;
             RevokedAt = null;
         }
@@ -46,7 +47,7 @@ namespace AlphaTest.Core.Answers
             // ToDo добавить в документацию
             CheckRule(new AnswerCannotBeRevokedIfWorkIsFinishedRule(work));
             IsRevoked = true;
-            RevokedAt = DateTime.Now;
+            RevokedAt = TimeResolver.CurrentTime;
         }
         #endregion
     }

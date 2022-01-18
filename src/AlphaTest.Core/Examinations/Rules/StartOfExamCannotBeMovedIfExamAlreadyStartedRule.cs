@@ -1,5 +1,5 @@
 ﻿using AlphaTest.Core.Common;
-using System;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.Examinations.Rules
 {
@@ -14,6 +14,6 @@ namespace AlphaTest.Core.Examinations.Rules
 
         public string Message => "Нельзя изменить дату начала экзамена, так как экзамен уже начался.";
 
-        public bool IsBroken => _exam.StartsAt < DateTime.Now;
+        public bool IsBroken => _exam.StartsAt < TimeResolver.CurrentTime;
     }
 }

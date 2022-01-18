@@ -6,6 +6,7 @@ using AlphaTest.Core.Users;
 using System.Collections.Generic;
 using AlphaTest.Core.Groups;
 using System.Linq;
+using AlphaTest.Core.Common.Utils;
 
 namespace AlphaTest.Core.Examinations
 {
@@ -26,16 +27,18 @@ namespace AlphaTest.Core.Examinations
 	            Система выводит пользователю сообщение об ошибке с указанием перекрывающихся периодов.
             Передача ID в конструктор
             */
+            DateTime startsAtUtc = TimeResolver.ToUtc(startsAt);
+            DateTime endsAtUtc = TimeResolver.ToUtc(endsAt);
             CheckRule(new ExaminationsCanBeCreatedOnlyForPublishedTestsRule(test));
-            CheckCommonRulesForDatesAndDuration(startsAt, endsAt, test);
+            CheckCommonRulesForDatesAndDuration(startsAtUtc, endsAtUtc, test);
             CheckCommonRulesForExaminer(examiner, test);
             CheckRule(new DisbandedOrInactiveGroupsCannotParticipateExamRule(groups));
             // ToDo группы должны существовать на момент проведения экзамена
             ID = Guid.NewGuid();
             TestID = test.ID;
             ExaminerID = examiner.Id;
-            StartsAt = startsAt;
-            EndsAt = endsAt;
+            StartsAt = startsAtUtc;
+            EndsAt = endsAtUtc;
             IsCanceled = false;
             _participations = new List<ExamParticipation>();
             foreach(var group in groups)
@@ -58,11 +61,11 @@ namespace AlphaTest.Core.Examinations
 
         public TimeSpan Duration => EndsAt - StartsAt;
 
-        public TimeSpan TimeRemained => IsEnded ? TimeSpan.Zero : EndsAt - DateTime.Now;
+        public TimeSpan TimeRemained => IsEnded ? TimeSpan.Zero : EndsAt - TimeResolver.CurrentTime;
 
         public bool IsCanceled { get; private set; }
 
-        public bool IsEnded => EndsAt <= DateTime.Now;
+        public bool IsEnded => EndsAt <= TimeResolver.CurrentTime;
 
         public IReadOnlyCollection<ExamParticipation> Participations => _participations.AsReadOnly();
         #endregion
@@ -78,11 +81,13 @@ namespace AlphaTest.Core.Examinations
              * есть другой экзамен по данному тесту и период сдачи этого 
              * экзамена перекрываются с новым сроком сдачи.
             */
+            DateTime newStartUtc = TimeResolver.ToUtc(newStart);
+            DateTime newEndUtc = TimeResolver.ToUtc(newEnd);
             CheckCommonRulesForModification();
-            CheckCommonRulesForDatesAndDuration(newStart, newEnd, test);
+            CheckCommonRulesForDatesAndDuration(newStartUtc, newEndUtc, test);
             CheckRule(new StartOfExamCannotBeMovedIfExamAlreadyStartedRule(this));
-            StartsAt = newStart;
-            EndsAt = newEnd;
+            StartsAt = newStartUtc;
+            EndsAt = newEndUtc;
             // ToDo domain event
         }
 
