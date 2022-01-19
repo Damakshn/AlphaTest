@@ -4,6 +4,6 @@ namespace AlphaTest.Application.Notifications
 {
     public interface IBroadcastNotification : INotification
     {
-        List<string> Audience { get; protected set; }
+        List<string> Audience { get; }
     }
 }
