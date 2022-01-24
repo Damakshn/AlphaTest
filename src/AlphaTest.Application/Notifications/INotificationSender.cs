@@ -4,7 +4,7 @@ namespace AlphaTest.Application.Notifications
 {
     public interface INotificationSender
     {
-        Task SendIndividualNotificationAsync(IIndividualNotification notification);
+        Task SendIndividualNotificationAsync(IPersonalNotification notification);
 
         Task SendBroadcastNotificationAsync(IBroadcastNotification notification);
     }

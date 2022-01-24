@@ -12,7 +12,6 @@ namespace AlphaTest.Application.Notifications.Messages.Examinations
         private readonly string _examinationUrl;
         private readonly DateTime _examStart;
         private readonly DateTime _examEnd;
-        private readonly List<string> _audience;
 
         public ExaminationAccessNotification(List<string> audience, string testTitle, string testTopic, string examinationUrl, DateTime examStart, DateTime examEnd)
         {
@@ -21,7 +20,7 @@ namespace AlphaTest.Application.Notifications.Messages.Examinations
             _examinationUrl = examinationUrl;
             _examStart = examStart;
             _examEnd = examEnd;
-            _audience = audience;
+            Audience = audience;
         }
 
         public string Message
@@ -38,7 +37,7 @@ namespace AlphaTest.Application.Notifications.Messages.Examinations
             }
         }
 
-        public List<string> Audience  => _audience;
+        public List<string> Audience { get; private set; }
 
         
     }

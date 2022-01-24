@@ -14,7 +14,7 @@ namespace AlphaTest.Infrastructure.BackgroundJobs.Notifications
             throw new NotImplementedException();
         }
 
-        public Task SendIndividualNotificationAsync(IIndividualNotification notification)
+        public Task SendIndividualNotificationAsync(IPersonalNotification notification)
         {
             throw new NotImplementedException();
         }
