@@ -32,6 +32,7 @@ namespace AlphaTest.WebApi
             services.AddAccessControlRules();
             services.AddUtilityServices();
             services.AddTimeResolver(_configuration);
+            services.AddBackgroundJobs();
             services.AddApplicationLayer();
             services.AddControllers();
         }
