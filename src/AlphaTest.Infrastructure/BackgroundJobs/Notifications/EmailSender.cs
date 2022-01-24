@@ -1,32 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using AlphaTest.Application.Notifications;
+using System.Threading.Channels;
 using Microsoft.Extensions.Hosting;
+using AlphaTest.Application.Notifications;
+
 
 namespace AlphaTest.Infrastructure.BackgroundJobs.Notifications
 {
-    public class EmailSender : IHostedService, IEmailSender
+    public class EmailSender : BackgroundService
     {
-        public Task SendBroadcastNotificationAsync(IBroadcastNotification notification)
+        private readonly ChannelReader<INotification> _notificationQueue;
+
+        public EmailSender(ChannelReader<INotification> notificationQueue)
         {
-            throw new NotImplementedException();
+            _notificationQueue = notificationQueue;
         }
 
-        public Task SendIndividualNotificationAsync(IPersonalNotification notification)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task StartAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                var notification = await _notificationQueue.ReadAsync(stoppingToken);
+                Console.WriteLine(notification.Message);
+            }
         }
     }
 }
