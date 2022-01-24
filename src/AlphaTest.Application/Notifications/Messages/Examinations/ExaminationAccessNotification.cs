@@ -28,10 +28,10 @@ namespace AlphaTest.Application.Notifications.Messages.Examinations
             get
             {
                 StringBuilder stringBuilder = new();
-                stringBuilder.Append("Уважаемые студенты!");
-                stringBuilder.Append($"Вам предоставлен доступ к выполнению тестового задания {_testTitle}: {_testTopic}.");
-                stringBuilder.Append($"Сроки сдачи теста - с {_examStart} по {_examEnd}");
-                stringBuilder.Append($"Чтобы приступить к сдаче теста, пройдите по ссылке - {_examinationUrl}");
+                stringBuilder.Append("Уважаемые студенты!\n");
+                stringBuilder.Append($"Вам предоставлен доступ к выполнению тестового задания {_testTitle}: {_testTopic}.\n");
+                stringBuilder.Append($"Сроки сдачи теста - с {_examStart} по {_examEnd}.\n");
+                stringBuilder.Append($"Чтобы приступить к сдаче теста, пройдите по ссылке - {_examinationUrl}\n");
                 stringBuilder.Append(MailSignature.AlphaTestSignature);
                 return stringBuilder.ToString();
             }
