@@ -13,14 +13,14 @@ namespace AlphaTest.Application.Notifications.Messages.Examinations
         private readonly DateTime _examStart;
         private readonly DateTime _examEnd;
 
-        public ExaminationAccessNotification(List<string> audience, string testTitle, string testTopic, string examinationUrl, DateTime examStart, DateTime examEnd)
+        public ExaminationAccessNotification(Dictionary<string, string> audience,  string testTitle, string testTopic, string examinationUrl, DateTime examStart, DateTime examEnd)
         {
             _testTitle = testTitle;
             _testTopic = testTopic;
             _examinationUrl = examinationUrl;
             _examStart = examStart;
             _examEnd = examEnd;
-            Audience = audience;
+            AudienceNew = audience;
         }
 
         public string Message
@@ -37,8 +37,8 @@ namespace AlphaTest.Application.Notifications.Messages.Examinations
             }
         }
 
-        public List<string> Audience { get; private set; }
+        public string Subject => $"Доступ к экзамену {_testTitle}: {_testTopic}";
 
-        
+        public Dictionary<string, string> AudienceNew { get; private set; }
     }
 }

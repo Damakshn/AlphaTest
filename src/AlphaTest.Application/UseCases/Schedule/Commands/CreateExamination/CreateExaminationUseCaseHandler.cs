@@ -12,6 +12,7 @@ using AlphaTest.Application.UseCases.Common;
 using AlphaTest.Application.DataAccess.EF.QueryExtensions;
 using AlphaTest.Application.DataAccess.EF.Abstractions;
 using AlphaTest.Application.Notifications;
+using AlphaTest.Application.Notifications.Helpers;
 using AlphaTest.Application.Notifications.Messages.Examinations;
 
 
@@ -43,10 +44,10 @@ namespace AlphaTest.Application.UseCases.Schedule.Commands.CreateExamination
             #endregion
 
             #region Отправка уведомления
-            List<string> audience = _db.Users
+            var audience = _db.Users
                 .FilterByGroups(groups.Select(g => g.ID).ToList(), _db)
-                .Select(s => s.Email)
-                .ToList();
+                .ToList()
+                .ToMailingListDictionary();
 
             ExaminationAccessNotification notification = 
                 new(audience, test.Title, test.Topic, "exam url", examination.StartsAt, examination.EndsAt);

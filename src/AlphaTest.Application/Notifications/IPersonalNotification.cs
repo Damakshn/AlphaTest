@@ -2,6 +2,8 @@
 {
     public interface IPersonalNotification : INotification
     {
-        string Addressee { get; }
+        string AddresseeEmail { get; }
+
+        string AddresseeNameAndLastname { get; }
     }
 }
