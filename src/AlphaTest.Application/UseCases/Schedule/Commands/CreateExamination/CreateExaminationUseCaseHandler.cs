@@ -14,17 +14,19 @@ using AlphaTest.Application.DataAccess.EF.Abstractions;
 using AlphaTest.Application.Notifications;
 using AlphaTest.Application.Notifications.Helpers;
 using AlphaTest.Application.Notifications.Messages.Examinations;
-
+using AlphaTest.Application.UtilityServices.API;
 
 namespace AlphaTest.Application.UseCases.Schedule.Commands.CreateExamination
 {
     public class CreateExaminationUseCaseHandler : UseCaseHandlerBase<CreateExaminationUseCaseRequest, Guid>
     {
         private readonly ChannelWriter<INotification> _notificationQueue;
+        private readonly IUrlGenerator _urlGenerator;
 
-        public CreateExaminationUseCaseHandler(IDbContext db, ChannelWriter<INotification> notificationQueue) : base(db)
+        public CreateExaminationUseCaseHandler(IDbContext db, ChannelWriter<INotification> notificationQueue, IUrlGenerator urlGenerator) : base(db)
         {
             _notificationQueue = notificationQueue;
+            _urlGenerator = urlGenerator;
         }
 
         public override async Task<Guid> Handle(CreateExaminationUseCaseRequest request, CancellationToken cancellationToken)
@@ -49,8 +51,9 @@ namespace AlphaTest.Application.UseCases.Schedule.Commands.CreateExamination
                 .ToList()
                 .ToMailingListDictionary();
 
+            string examUrl = _urlGenerator.GetFullUriByName("ExaminationInfo", new { examinationID = examination.ID });
             ExaminationAccessNotification notification = 
-                new(audience, test.Title, test.Topic, "exam url", examination.StartsAt, examination.EndsAt);
+                new(audience, test.Title, test.Topic, examUrl, examination.StartsAt, examination.EndsAt);
             await _notificationQueue.WriteAsync(notification, cancellationToken);
             #endregion
 
