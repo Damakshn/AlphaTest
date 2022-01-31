@@ -86,6 +86,7 @@ namespace AlphaTest.Core.Users
             IsPasswordChanged = true;
         }
 
+        // ToDo добавить причину блокировки
         public void Suspend()
         {
             CheckRule(new AdminUserCannotBeSuspendedRule(this));

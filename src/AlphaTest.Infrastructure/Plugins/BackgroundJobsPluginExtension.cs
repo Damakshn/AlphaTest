@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using AlphaTest.Application.Notifications;
 using AlphaTest.Infrastructure.BackgroundJobs.Notifications;
+using AlphaTest.Infrastructure.BackgroundJobs.UserManagement;
 
 namespace AlphaTest.Infrastructure.Plugins
 {
@@ -28,6 +29,7 @@ namespace AlphaTest.Infrastructure.Plugins
                 return channel.Reader;
             });
             services.AddHostedService<EmailSender>();
+            services.AddHostedService<TemporaryPasswordSupervisionService>();
         }
     }
 }
