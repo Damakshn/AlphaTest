@@ -1,0 +1,33 @@
+@startuml AlphaTest containers
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(admin, "Администратор", "Управляет учетными записями, обрабатывает заявки пользователей")
+Person(teacher, "Преподаватель", "Составляет тесты, проводит экзамены, проверяет работы")
+Person(student, "Учащийся", "Сдаёт тесты на оценку")
+
+System_Boundary(alphatest, "Система тестирования «АльфаТест»", $link="https://github.com/plantuml-stdlib/C4-PlantUML"){
+  Container(spa, "Single page application", "JavaScript", $descr="Предоставляет графический интерфейс для пользователей", $link="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md")
+  Container(webapi, "Web API", "C#, .NET 5", $descr="Реализует бизнес-логику, осуществляет контроль доступа и работу с базой данных", $link="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md")
+  ContainerDb(db, "База данных", "Microsoft SQL Server", "Хранит информацию о тестах, выполненных работах, расписании экзаменов и т.д.")
+}
+
+System_Ext(mail_service, "Сервис отправки e-mail", "Осуществляет отправку транзакционных писем пользователям")
+System_Ext(checking_service, "Сервис проверки работ", "Автоматически проверяет сданные тесты")
+System_Ext(lock_service, "Сервис блокировки пользователей", "Блокирует аккаунты пользователей, не сменивших временный пароль")
+
+Rel(admin, spa, "Использует", "HTTPS", $link="https://plantuml.com/link")
+Rel(teacher, spa, "Использует", "HTTPS", $link="https://plantuml.com/link")
+Rel(student, spa, "Использует", "HTTPS", $link="https://plantuml.com/link")
+
+Rel_D(spa, webapi, "Использует", "HTTPS", $link="https://plantuml.com/link")
+Rel_L(webapi, db, "Чтение/запись", $link="https://plantuml.com/link")
+
+Rel(webapi, mail_service, "Использует", $link="https://plantuml.com/link")
+Rel(checking_service, mail_service, "Использует", $link="https://plantuml.com/link")
+Rel_U(checking_service, db, "Чтение/запись", $link="https://plantuml.com/link")
+
+Rel(lock_service, mail_service, "Использует", $link="https://plantuml.com/link")
+Rel_R(lock_service, db, "Чтение/запись", $link="https://plantuml.com/link")
+
+
+@enduml

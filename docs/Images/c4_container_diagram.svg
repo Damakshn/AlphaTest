@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1135px" preserveAspectRatio="none" style="width:1140px;height:1135px;background:#FFFFFF;" version="1.1" viewBox="0 0 1140 1135" width="1140px" zoomAndPan="magnify"><defs/><g><!--MD5=[a8b1278143603f8adf2a8851d3e00189]
+cluster alphatest--><a href="https://github.com/plantuml-stdlib/C4-PlantUML" target="_top" title="https://github.com/plantuml-stdlib/C4-PlantUML" xlink:actuate="onRequest" xlink:href="https://github.com/plantuml-stdlib/C4-PlantUML" xlink:show="new" xlink:title="https://github.com/plantuml-stdlib/C4-PlantUML" xlink:type="simple"><rect fill="#FFFFFF" height="473" style="stroke:#444444;stroke-width:1.0;stroke-dasharray:7.0,7.0;" width="594" x="343" y="248"/><text fill="#444444" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="347" x="466.5" y="274.8516">Система тестирования «АльфаТест»</text><text fill="#444444" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="55" x="612.5" y="289.7637">[System]</text></a><!--MD5=[33573e971ff506c0f246109ca3fd77bd]
+entity spa--><a href="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md" target="_top" title="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md" xlink:actuate="onRequest" xlink:href="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md" xlink:show="new" xlink:title="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md" xlink:type="simple"><rect fill="#438DD5" height="150.375" style="stroke:#3C7FC0;stroke-width:1.5;" width="213" x="704.5" y="309"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="71" x="775.5" y="330.1387">«container»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="104" x="756" y="347.8203">Single page</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="101" x="760.5" y="366.4453">application</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="71" x="775.5" y="381.3574">[JavaScript]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="0" x="813" y="397.1826"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="118" x="752" y="413.4795">Предоставляет</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="189" x="714.5" y="429.7764">графический интерфейс</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="147" x="737.5" y="446.0732">для пользователей</text></a><!--MD5=[f9092e7e44fdedd979e7e80664acfb2a]
+entity webapi--><a href="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md" target="_top" title="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md" xlink:actuate="onRequest" xlink:href="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md" xlink:show="new" xlink:title="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md" xlink:type="simple"><rect fill="#438DD5" height="148.0469" style="stroke:#3C7FC0;stroke-width:1.5;" width="220" x="701" y="552.5"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="71" x="775.5" y="573.6387">«container»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="75" x="773.5" y="591.3203">Web API</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="76" x="773" y="606.2324">[C#, .NET 5]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="0" x="813" y="622.0576"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="196" x="715" y="638.3545">Реализует бизнес-логику,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="187" x="715.5" y="654.6514">осуществляет контроль</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="190" x="714" y="670.9482">доступа и работу с базой</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="783.5" y="687.2451">данных</text></a><!--MD5=[7468467f3b6b392f1d176d828c753b77]
+entity db--><path d="M359,558 C359,548 459,548 459,548 C459,548 559,548 559,558 L559,695.0469 C559,705.0469 459,705.0469 459,705.0469 C459,705.0469 359,705.0469 359,695.0469 L359,558 " fill="#438DD5" style="stroke:#3C7FC0;stroke-width:1.5;"/><path d="M359,558 C359,568 459,568 459,568 C459,568 559,568 559,558 " fill="none" style="stroke:#3C7FC0;stroke-width:1.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="71" x="423.5" y="583.1387">«container»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="117" x="400.5" y="600.8203">База данных</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="135" x="391.5" y="615.7324">[Microsoft SQL Server]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="0" x="461" y="631.5576"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="172" x="373" y="647.8545">Хранит информацию о</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="161" x="376.5" y="664.1514">тестах, выполненных</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="156" x="379" y="680.4482">работах, расписании</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="126" x="396" y="696.7451">экзаменов и т.д.</text><!--MD5=[79a439086b036a57b90a01d7b2f8bbd1]
+entity admin--><rect fill="#08427B" height="165.7813" style="stroke:#073B6F;stroke-width:1.5;" width="211" x="475.5" y="7"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="55" x="553.5" y="28.1387">«person»</text><image height="48" width="48" x="557" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAIAAADYYG7QAAACD0lEQVR4Xu2YoU4EMRCGT+4j8Ai8AhaH4QHgAUjQuFMECUgMIUgwJAgMhgQsAYUiJCiQIBBY+EITsjfTdme6V24v4c8vyGbb+ZjOtN0bNcvjQXmkH83WvYBWto6PLm6v7p7uH1/w2fXD+PBycX1Pv2l3IdDm/vn7x+dXQiAubRzoURa7gRZWd0iGRIiJbOnhnfYBQZNJjNbuyY2eJG8fkDE3bbG4ep6MHUAsgYxmE3nVs6VsBWJSGccsOlFPmLIViMzLOB7pCVO2AtHJMohH7Fh6zqitQK7m0rJvAVYgGcEpe//PLdDz65sM4pF9N7ICcXDKIB5Nv6j7tD0NoSdM2QrU9Gg0ewE1LqBhHR3BBdvj2vapnidjHxD/q6vd7Pvhr31AwcY8eXMTXAKECZZJFXuEq27aLgQK5uLMohCenGGuGewOxSjBvYBqeG6B+Nqiblggdjnc+ZXDy+FNFpFzw76O3UBAROuXh6FoiAcf5g9eTvUgzy0nWg6I8cXHRUpg5bOVBCo+KDpFajOf23GgPme7RSQ+lacIENUgJ6gg1k6HjgOlqnLqip4tEuhv0hNEMXUD0clyXE3p6pZA0S2nnvTlXwLJEZWlb7cTQH1+USgTN4VhAenm/wea1OCAOmqo6fE1WCb9WSKBah+rbUWPWAmE2Rvk0ApiB45eOyNAzU8xcTvj8KvkKEoOaIYeHNA3ZuygAvFMUO0AAAAASUVORK5CYII=" y="30.9688"/><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="146" x="508" y="93.8203">Администратор</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="0" x="583" y="110.5889"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="159" x="501.5" y="126.8857">Управляет учетными</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="187" x="485.5" y="143.1826">записями, обрабатывает</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="171" x="495.5" y="159.4795">заявки пользователей</text><!--MD5=[3a97ee507a2567319ae9a2f540b0a5e1]
+entity teacher--><rect fill="#08427B" height="165.7813" style="stroke:#073B6F;stroke-width:1.5;" width="179" x="721.5" y="7"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="55" x="783.5" y="28.1387">«person»</text><image height="48" width="48" x="787" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAIAAADYYG7QAAACD0lEQVR4Xu2YoU4EMRCGT+4j8Ai8AhaH4QHgAUjQuFMECUgMIUgwJAgMhgQsAYUiJCiQIBBY+EITsjfTdme6V24v4c8vyGbb+ZjOtN0bNcvjQXmkH83WvYBWto6PLm6v7p7uH1/w2fXD+PBycX1Pv2l3IdDm/vn7x+dXQiAubRzoURa7gRZWd0iGRIiJbOnhnfYBQZNJjNbuyY2eJG8fkDE3bbG4ep6MHUAsgYxmE3nVs6VsBWJSGccsOlFPmLIViMzLOB7pCVO2AtHJMohH7Fh6zqitQK7m0rJvAVYgGcEpe//PLdDz65sM4pF9N7ICcXDKIB5Nv6j7tD0NoSdM2QrU9Gg0ewE1LqBhHR3BBdvj2vapnidjHxD/q6vd7Pvhr31AwcY8eXMTXAKECZZJFXuEq27aLgQK5uLMohCenGGuGewOxSjBvYBqeG6B+Nqiblggdjnc+ZXDy+FNFpFzw76O3UBAROuXh6FoiAcf5g9eTvUgzy0nWg6I8cXHRUpg5bOVBCo+KDpFajOf23GgPme7RSQ+lacIENUgJ6gg1k6HjgOlqnLqip4tEuhv0hNEMXUD0clyXE3p6pZA0S2nnvTlXwLJEZWlb7cTQH1+USgTN4VhAenm/wea1OCAOmqo6fE1WCb9WSKBah+rbUWPWAmE2Rvk0ApiB45eOyNAzU8xcTvj8KvkKEoOaIYeHNA3ZuygAvFMUO0AAAAASUVORK5CYII=" y="30.9688"/><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="145" x="738.5" y="93.8203">Преподаватель</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="0" x="813" y="110.5889"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="143" x="739.5" y="126.8857">Составляет тесты,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="155" x="731.5" y="143.1826">проводит экзамены,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="143" x="739.5" y="159.4795">проверяет работы</text><!--MD5=[0bc547216396b1ae8e8279bf1212b736]
+entity student--><rect fill="#08427B" height="133.1875" style="stroke:#073B6F;stroke-width:1.5;" width="199" x="935.5" y="23.5"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="55" x="1007.5" y="44.6387">«person»</text><image height="48" width="48" x="1011" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAIAAADYYG7QAAACD0lEQVR4Xu2YoU4EMRCGT+4j8Ai8AhaH4QHgAUjQuFMECUgMIUgwJAgMhgQsAYUiJCiQIBBY+EITsjfTdme6V24v4c8vyGbb+ZjOtN0bNcvjQXmkH83WvYBWto6PLm6v7p7uH1/w2fXD+PBycX1Pv2l3IdDm/vn7x+dXQiAubRzoURa7gRZWd0iGRIiJbOnhnfYBQZNJjNbuyY2eJG8fkDE3bbG4ep6MHUAsgYxmE3nVs6VsBWJSGccsOlFPmLIViMzLOB7pCVO2AtHJMohH7Fh6zqitQK7m0rJvAVYgGcEpe//PLdDz65sM4pF9N7ICcXDKIB5Nv6j7tD0NoSdM2QrU9Gg0ewE1LqBhHR3BBdvj2vapnidjHxD/q6vd7Pvhr31AwcY8eXMTXAKECZZJFXuEq27aLgQK5uLMohCenGGuGewOxSjBvYBqeG6B+Nqiblggdjnc+ZXDy+FNFpFzw76O3UBAROuXh6FoiAcf5g9eTvUgzy0nWg6I8cXHRUpg5bOVBCo+KDpFajOf23GgPme7RSQ+lacIENUgJ6gg1k6HjgOlqnLqip4tEuhv0hNEMXUD0clyXE3p6pZA0S2nnvTlXwLJEZWlb7cTQH1+USgTN4VhAenm/wea1OCAOmqo6fE1WCb9WSKBah+rbUWPWAmE2Rvk0ApiB45eOyNAzU8xcTvj8KvkKEoOaIYeHNA3ZuygAvFMUO0AAAAASUVORK5CYII=" y="47.4688"/><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="94" x="988" y="110.3203">Учащийся</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="0" x="1037" y="127.0889"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="175" x="949.5" y="143.3857">Сдаёт тесты на оценку</text><!--MD5=[0f0501bbac481b7f12b408eea8d533d5]
+entity mail_service--><rect fill="#999999" height="136.4063" style="stroke:#8A8A8A;stroke-width:1.5;" width="215" x="351.5" y="993"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="112" x="403" y="1014.1387">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="158" x="377" y="1031.8203">Сервис отправки</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="56" x="431" y="1050.4453">e-mail</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="0" x="461" y="1067.2139"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="187" x="365.5" y="1083.5107">Осуществляет отправку</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="176" x="369" y="1099.8076">транзакционных писем</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="400.5" y="1116.1045">пользователям</text><!--MD5=[6bff71911d4303cdcb3a21b9100367c9]
+entity checking_service--><rect fill="#999999" height="136.4063" style="stroke:#8A8A8A;stroke-width:1.5;" width="184" x="367" y="782"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="112" x="403" y="803.1387">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="158" x="377" y="820.8203">Сервис проверки</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="57" x="430.5" y="839.4453">работ</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="0" x="461" y="856.2139"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="400.5" y="872.5107">Автоматически</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="151" x="381.5" y="888.8076">проверяет сданные</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="46" x="436" y="905.1045">тесты</text><!--MD5=[da32487fd19b242fd89c327cd3435033]
+entity lock_service--><rect fill="#999999" height="152.7031" style="stroke:#8A8A8A;stroke-width:1.5;" width="210" x="7" y="550"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="112" x="56" y="571.1387">«external_system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="184" x="17" y="588.8203">Сервис блокировки</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="142" x="41" y="607.4453">пользователей</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="0" x="114" y="624.2139"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="157" x="33.5" y="640.5107">Блокирует аккаунты</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="141" x="39.5" y="656.8076">пользователей, не</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="174" x="23" y="673.1045">сменивших временный</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54" x="85" y="689.4014">пароль</text><!--MD5=[b7fb49ca0d0ea141f9ce6ef10b97d5bd]
+link admin to spa--><path d="M645.68,173.115 C677.588,213.625 715.935,262.309 747.66,302.586 " fill="none" id="admin-to-spa" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="752.693,308.975,750.0995,300.8341,745.3861,304.5468,752.693,308.975" style="stroke:#666666;stroke-width:1.0;"/><a href="https://plantuml.com/link" target="_top" title="https://plantuml.com/link" xlink:actuate="onRequest" xlink:href="https://plantuml.com/link" xlink:show="new" xlink:title="https://plantuml.com/link" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" text-decoration="underline" textLength="85" x="690" y="215.1387">Использует</text></a><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="48" x="708.5" y="229.1074">[HTTPS]</text><!--MD5=[71122f1eb0ce21aeae67194cbf0160d9]
+link teacher to spa--><path d="M811,173.115 C811,213.042 811,260.908 811,300.84 " fill="none" id="teacher-to-spa" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="811,308.975,814,300.975,808,300.975,811,308.975" style="stroke:#666666;stroke-width:1.0;"/><a href="https://plantuml.com/link" target="_top" title="https://plantuml.com/link" xlink:actuate="onRequest" xlink:href="https://plantuml.com/link" xlink:show="new" xlink:title="https://plantuml.com/link" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" text-decoration="underline" textLength="85" x="812" y="215.1387">Использует</text></a><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="48" x="830.5" y="229.1074">[HTTPS]</text><!--MD5=[b99fc034a2fb8d69669c7770ce09f9fc]
+link student to spa--><path d="M984.73,156.53 C951.591,199.73 907.965,256.599 872.722,302.541 " fill="none" id="student-to-spa" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="867.806,308.949,875.056,304.4282,870.2958,300.7758,867.806,308.949" style="stroke:#666666;stroke-width:1.0;"/><a href="https://plantuml.com/link" target="_top" title="https://plantuml.com/link" xlink:actuate="onRequest" xlink:href="https://plantuml.com/link" xlink:show="new" xlink:title="https://plantuml.com/link" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" text-decoration="underline" textLength="85" x="944" y="215.1387">Использует</text></a><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="48" x="962.5" y="229.1074">[HTTPS]</text><!--MD5=[0bd8251de89a2c23f943f8753403a1b7]
+link spa to webapi--><path d="M811,459.12 C811,486.128 811,516.795 811,544.379 " fill="none" id="spa-to-webapi" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="811,552.451,814,544.451,808,544.451,811,552.451" style="stroke:#666666;stroke-width:1.0;"/><a href="https://plantuml.com/link" target="_top" title="https://plantuml.com/link" xlink:actuate="onRequest" xlink:href="https://plantuml.com/link" xlink:show="new" xlink:title="https://plantuml.com/link" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" text-decoration="underline" textLength="85" x="812" y="501.1387">Использует</text></a><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="48" x="830.5" y="515.1074">[HTTPS]</text><!--MD5=[e34825bf4a49ab0b8e4b61621c602183]
+reverse link db to webapi--><path d="M567.509,626.5 C609.873,626.5 658.386,626.5 700.902,626.5 " fill="none" id="db-backto-webapi" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="559.398,626.5,567.398,629.5,567.398,623.5,559.398,626.5" style="stroke:#666666;stroke-width:1.0;"/><a href="https://plantuml.com/link" target="_top" title="https://plantuml.com/link" xlink:actuate="onRequest" xlink:href="https://plantuml.com/link" xlink:show="new" xlink:title="https://plantuml.com/link" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" text-decoration="underline" textLength="105" x="577.5" y="620.6387">Чтение/запись</text></a><!--MD5=[5f2550892289d48e6e268ef9a50bd016]
+link webapi to mail_service--><path d="M759.04,700.501 C708.775,769.838 629.345,876.106 554,963 C547.171,970.876 539.865,978.926 532.453,986.855 " fill="none" id="webapi-to-mail_service" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="526.77,992.889,534.4384,989.1213,530.0702,985.0081,526.77,992.889" style="stroke:#666666;stroke-width:1.0;"/><a href="https://plantuml.com/link" target="_top" title="https://plantuml.com/link" xlink:actuate="onRequest" xlink:href="https://plantuml.com/link" xlink:show="new" xlink:title="https://plantuml.com/link" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" text-decoration="underline" textLength="85" x="698" y="854.6387">Использует</text></a><!--MD5=[fe788323365479d986e1bdac694ebcff]
+link checking_service to mail_service--><path d="M459,918.279 C459,939.442 459,962.947 459,984.633 " fill="none" id="checking_service-to-mail_service" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="459,992.847,462,984.847,456,984.847,459,992.847" style="stroke:#666666;stroke-width:1.0;"/><a href="https://plantuml.com/link" target="_top" title="https://plantuml.com/link" xlink:actuate="onRequest" xlink:href="https://plantuml.com/link" xlink:show="new" xlink:title="https://plantuml.com/link" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" text-decoration="underline" textLength="85" x="460" y="960.1387">Использует</text></a><!--MD5=[fa4b9d8c0e3f45ba09419f3bf182283f]
+reverse link db to checking_service--><path d="M459,713.542 C459,736.163 459,760.233 459,781.711 " fill="none" id="db-backto-checking_service" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="459,705.281,456,713.281,462,713.281,459,705.281" style="stroke:#666666;stroke-width:1.0;"/><a href="https://plantuml.com/link" target="_top" title="https://plantuml.com/link" xlink:actuate="onRequest" xlink:href="https://plantuml.com/link" xlink:show="new" xlink:title="https://plantuml.com/link" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" text-decoration="underline" textLength="105" x="460" y="749.1387">Чтение/запись</text></a><!--MD5=[82bd9a2af33edebdc38a4925d4fb3867]
+link lock_service to mail_service--><path d="M139.514,703.127 C164.745,765.452 206.595,853.727 262,918 C285.609,945.387 315.509,970.361 344.836,991.466 " fill="none" id="lock_service-to-mail_service" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="351.477,996.187,346.6947,989.1068,343.2184,993.9971,351.477,996.187" style="stroke:#666666;stroke-width:1.0;"/><a href="https://plantuml.com/link" target="_top" title="https://plantuml.com/link" xlink:actuate="onRequest" xlink:href="https://plantuml.com/link" xlink:show="new" xlink:title="https://plantuml.com/link" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" text-decoration="underline" textLength="85" x="263" y="854.6387">Использует</text></a><!--MD5=[50d1b458d4a148294a702e71f7b54df7]
+link lock_service to db--><path d="M217.053,626.5 C259.311,626.5 308.021,626.5 350.609,626.5 " fill="none" id="lock_service-to-db" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="358.763,626.5,350.763,623.5,350.763,629.5,358.763,626.5" style="stroke:#666666;stroke-width:1.0;"/><a href="https://plantuml.com/link" target="_top" title="https://plantuml.com/link" xlink:actuate="onRequest" xlink:href="https://plantuml.com/link" xlink:show="new" xlink:title="https://plantuml.com/link" xlink:type="simple"><text fill="#0000FF" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" text-decoration="underline" textLength="105" x="235.5" y="620.6387">Чтение/запись</text></a><!--MD5=[173b6855a99e394048e886157634136b]
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(admin, "Администратор", "Управляет учетными записями, обрабатывает заявки пользователей")
+Person(teacher, "Преподаватель", "Составляет тесты, проводит экзамены, проверяет работы")
+Person(student, "Учащийся", "Сдаёт тесты на оценку")
+
+System_Boundary(alphatest, "Система тестирования «АльфаТест»", $link="https://github.com/plantuml-stdlib/C4-PlantUML"){
+  Container(spa, "Single page application", "JavaScript", $descr="Предоставляет графический интерфейс для пользователей", $link="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md")
+  Container(webapi, "Web API", "C#, .NET 5", $descr="Реализует бизнес-логику, осуществляет контроль доступа и работу с базой данных", $link="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md")
+  ContainerDb(db, "База данных", "Microsoft SQL Server", "Хранит информацию о тестах, выполненных работах, расписании экзаменов и т.д.")
+}
+
+System_Ext(mail_service, "Сервис отправки e-mail", "Осуществляет отправку транзакционных писем пользователям")
+System_Ext(checking_service, "Сервис проверки работ", "Автоматически проверяет сданные тесты")
+System_Ext(lock_service, "Сервис блокировки пользователей", "Блокирует аккаунты пользователей, не сменивших временный пароль")
+
+Rel(admin, spa, "Использует", "HTTPS", $link="https://plantuml.com/link")
+Rel(teacher, spa, "Использует", "HTTPS", $link="https://plantuml.com/link")
+Rel(student, spa, "Использует", "HTTPS", $link="https://plantuml.com/link")
+
+Rel_D(spa, webapi, "Использует", "HTTPS", $link="https://plantuml.com/link")
+Rel_L(webapi, db, "Чтение/запись", $link="https://plantuml.com/link")
+
+Rel(webapi, mail_service, "Использует", $link="https://plantuml.com/link")
+Rel(checking_service, mail_service, "Использует", $link="https://plantuml.com/link")
+Rel_U(checking_service, db, "Чтение/запись", $link="https://plantuml.com/link")
+
+Rel(lock_service, mail_service, "Использует", $link="https://plantuml.com/link")
+Rel_R(lock_service, db, "Чтение/запись", $link="https://plantuml.com/link")
+@enduml
+
+@startuml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+skinparam defaultTextAlignment center
+
+skinparam wrapWidth 200
+skinparam maxMessageSize 150
+
+skinparam LegendBorderColor transparent
+skinparam LegendBackgroundColor transparent
+skinparam LegendFontColor #FFFFFF
+
+skinparam shadowing<<legendArea>> false
+skinparam rectangle<<legendArea>> {
+    backgroundcolor #00000000
+    bordercolor #00000000
+}
+
+skinparam rectangle {
+    StereotypeFontSize 12
+    shadowing false
+}
+
+skinparam database {
+    StereotypeFontSize 12
+    shadowing false
+}
+
+skinparam queue {
+    StereotypeFontSize 12
+    shadowing false
+}
+
+skinparam arrow {
+    Color #666666
+    FontColor #666666
+    FontSize 12
+}
+
+skinparam actor {
+    StereotypeFontSize 12
+    shadowing false
+    style awesome
+}
+
+skinparam person {
+    StereotypeFontSize 12
+    shadowing false
+}
+
+skinparam package {
+    StereotypeFontSize 6
+    StereotypeFontColor transparent
+    FontStyle plain
+    BackgroundColor transparent
+}
+
+skinparam rectangle<<boundary>> {
+    Shadowing false
+    StereotypeFontSize 6
+    StereotypeFontColor transparent
+    FontColor #444444
+    BorderColor #444444
+    BackgroundColor transparent
+    BorderStyle dashed
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+skinparam rectangle<<person>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #08427B
+    BorderColor #073B6F
+}
+skinparam database<<person>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #08427B
+    BorderColor #073B6F
+}
+skinparam queue<<person>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #08427B
+    BorderColor #073B6F
+}
+skinparam actor<<person>> {
+    StereotypeFontColor #08427B
+    FontColor #08427B
+    BackgroundColor #08427B
+    BorderColor #073B6F
+}
+skinparam person<<person>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #08427B
+    BorderColor #073B6F
+}
+
+
+skinparam rectangle<<external_person>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #686868
+    BorderColor #8A8A8A
+}
+skinparam database<<external_person>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #686868
+    BorderColor #8A8A8A
+}
+skinparam queue<<external_person>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #686868
+    BorderColor #8A8A8A
+}
+skinparam actor<<external_person>> {
+    StereotypeFontColor #686868
+    FontColor #686868
+    BackgroundColor #686868
+    BorderColor #8A8A8A
+}
+skinparam person<<external_person>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #686868
+    BorderColor #8A8A8A
+}
+
+
+skinparam rectangle<<system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #1168BD
+    BorderColor #3C7FC0
+}
+skinparam database<<system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #1168BD
+    BorderColor #3C7FC0
+}
+skinparam queue<<system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #1168BD
+    BorderColor #3C7FC0
+}
+skinparam actor<<system>> {
+    StereotypeFontColor #1168BD
+    FontColor #1168BD
+    BackgroundColor #1168BD
+    BorderColor #3C7FC0
+}
+skinparam person<<system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #1168BD
+    BorderColor #3C7FC0
+}
+
+
+skinparam rectangle<<external_system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #999999
+    BorderColor #8A8A8A
+}
+skinparam database<<external_system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #999999
+    BorderColor #8A8A8A
+}
+skinparam queue<<external_system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #999999
+    BorderColor #8A8A8A
+}
+skinparam actor<<external_system>> {
+    StereotypeFontColor #999999
+    FontColor #999999
+    BackgroundColor #999999
+    BorderColor #8A8A8A
+}
+skinparam person<<external_system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #999999
+    BorderColor #8A8A8A
+}
+
+
+
+
+
+sprite $person [48x48/16] {
+000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000
+0000000000000000000049BCCA7200000000000000000000
+0000000000000000006EFFFFFFFFB3000000000000000000
+00000000000000001CFFFFFFFFFFFF700000000000000000
+0000000000000001EFFFFFFFFFFFFFF80000000000000000
+000000000000000CFFFFFFFFFFFFFFFF6000000000000000
+000000000000007FFFFFFFFFFFFFFFFFF100000000000000
+00000000000001FFFFFFFFFFFFFFFFFFF900000000000000
+00000000000006FFFFFFFFFFFFFFFFFFFF00000000000000
+0000000000000BFFFFFFFFFFFFFFFFFFFF40000000000000
+0000000000000EFFFFFFFFFFFFFFFFFFFF70000000000000
+0000000000000FFFFFFFFFFFFFFFFFFFFF80000000000000
+0000000000000FFFFFFFFFFFFFFFFFFFFF80000000000000
+0000000000000DFFFFFFFFFFFFFFFFFFFF60000000000000
+0000000000000AFFFFFFFFFFFFFFFFFFFF40000000000000
+00000000000006FFFFFFFFFFFFFFFFFFFE00000000000000
+00000000000000EFFFFFFFFFFFFFFFFFF800000000000000
+000000000000007FFFFFFFFFFFFFFFFFF100000000000000
+000000000000000BFFFFFFFFFFFFFFFF5000000000000000
+0000000000000001DFFFFFFFFFFFFFF70000000000000000
+00000000000000000BFFFFFFFFFFFF500000000000000000
+0000000000000000005DFFFFFFFFA1000000000000000000
+0000000000000000000037ABB96100000000000000000000
+000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000
+000000000000025788300000000005886410000000000000
+000000000007DFFFFFFD9643347BFFFFFFFB400000000000
+0000000004EFFFFFFFFFFFFFFFFFFFFFFFFFFB1000000000
+000000007FFFFFFFFFFFFFFFFFFFFFFFFFFFFFD200000000
+00000006FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE10000000
+0000003FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB0000000
+000000BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5000000
+000003FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD000000
+000009FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF200000
+00000DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF600000
+00000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF800000
+00001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA00000
+00001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB00000
+00001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB00000
+00001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB00000
+00001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA00000
+00000EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF700000
+000006FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE100000
+0000008FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD3000000
+000000014555555555555555555555555555555300000000
+000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000
+}
+
+sprite $person2 [48x48/16] {
+0000000000000000000049BCCA7200000000000000000000
+0000000000000000006EFFFFFFFFB3000000000000000000
+00000000000000001CFFFFFFFFFFFF700000000000000000
+0000000000000001EFFFFFFFFFFFFFF80000000000000000
+000000000000000CFFFFFFFFFFFFFFFF6000000000000000
+000000000000007FFFFFFFFFFFFFFFFFF100000000000000
+00000000000001FFFFFFFFFFFFFFFFFFF900000000000000
+00000000000006FFFFFFFFFFFFFFFFFFFF00000000000000
+0000000000000BFFFFFFFFFFFFFFFFFFFF40000000000000
+0000000000000EFFFFFFFFFFFFFFFFFFFF70000000000000
+0000000000000FFFFFFFFFFFFFFFFFFFFF80000000000000
+0000000000000FFFFFFFFFFFFFFFFFFFFF80000000000000
+0000000000000DFFFFFFFFFFFFFFFFFFFF60000000000000
+0000000000000AFFFFFFFFFFFFFFFFFFFF40000000000000
+00000000000006FFFFFFFFFFFFFFFFFFFE00000000000000
+00000000000000EFFFFFFFFFFFFFFFFFF800000000000000
+000000000000007FFFFFFFFFFFFFFFFFF100000000000000
+000000000000000BFFFFFFFFFFFFFFFF5000000000000000
+0000000000000001DFFFFFFFFFFFFFF70000000000000000
+00000000000000000BFFFFFFFFFFFF500000000000000000
+0000000000000000005DFFFFFFFFA1000000000000000000
+0000000000000000000037ABB96100000000000000000000
+000000000002578888300000000005888864100000000000
+0000000007DFFFFFFFFD9643347BFFFFFFFFFB4000000000
+00000004EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB10000000
+0000007FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD2000000
+000006FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE100000
+00003FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB00000
+0000BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF50000
+0003FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD0000
+0009FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2000
+000DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6000
+000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8000
+001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB000
+001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB000
+001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB000
+001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA000
+000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8000
+000DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6000
+0009FFFFFFFF8FFFFFFFFFFFFFFFFFFFFFF8FFFFFFFF2000
+0003FFFFFFFF8FFFFFFFFFFFFFFFFFFFFFF8FFFFFFFD0000
+0000BFFFFFFF8FFFFFFFFFFFFFFFFFFFFFF8FFFFFFF50000
+00003FFFFFFF8FFFFFFFFFFFFFFFFFFFFFF8FFFFFFB00000
+000006FFFFFF8FFFFFFFFFFFFFFFFFFFFFF8FFFFFE100000
+0000007FFFFF8FFFFFFFFFFFFFFFFFFFFFF8FFFFD2000000
+00000004EFFF8FFFFFFFFFFFFFFFFFFFFFF8FFFB10000000
+0000000007DF8FFFFFFFFFFFFFFFFFFFFFF8FB4000000000
+000000000002578888888888888888888864100000000000
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+skinparam rectangle<<container>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #438DD5
+    BorderColor #3C7FC0
+}
+skinparam database<<container>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #438DD5
+    BorderColor #3C7FC0
+}
+skinparam queue<<container>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #438DD5
+    BorderColor #3C7FC0
+}
+skinparam actor<<container>> {
+    StereotypeFontColor #438DD5
+    FontColor #438DD5
+    BackgroundColor #438DD5
+    BorderColor #3C7FC0
+}
+skinparam person<<container>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #438DD5
+    BorderColor #3C7FC0
+}
+
+
+skinparam rectangle<<external_container>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #B3B3B3
+    BorderColor #A6A6A6
+}
+skinparam database<<external_container>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #B3B3B3
+    BorderColor #A6A6A6
+}
+skinparam queue<<external_container>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #B3B3B3
+    BorderColor #A6A6A6
+}
+skinparam actor<<external_container>> {
+    StereotypeFontColor #B3B3B3
+    FontColor #B3B3B3
+    BackgroundColor #B3B3B3
+    BorderColor #A6A6A6
+}
+skinparam person<<external_container>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #B3B3B3
+    BorderColor #A6A6A6
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+rectangle "<$person>\n==Администратор\n\n Управляет учетными записями, обрабатывает заявки пользователей" <<person>> as admin 
+rectangle "<$person>\n==Преподаватель\n\n Составляет тесты, проводит экзамены, проверяет работы" <<person>> as teacher 
+rectangle "<$person>\n==Учащийся\n\n Сдаёт тесты на оценку" <<person>> as student 
+
+rectangle "==Система тестирования «АльфаТест»\n<size:12>[System]</size>" <<boundary>> as alphatest [[https://github.com/plantuml-stdlib/C4-PlantUML]]{
+  rectangle "==Single page application\n//<size:12>[JavaScript]</size>//\n\n Предоставляет графический интерфейс для пользователей" <<container>> as spa [[https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md]]
+  rectangle "==Web API\n//<size:12>[C#, .NET 5]</size>//\n\n Реализует бизнес-логику, осуществляет контроль доступа и работу с базой данных" <<container>> as webapi [[https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md]]
+  database "==База данных\n//<size:12>[Microsoft SQL Server]</size>//\n\n Хранит информацию о тестах, выполненных работах, расписании экзаменов и т.д." <<container>> as db 
+}
+
+rectangle "==Сервис отправки e-mail\n\n Осуществляет отправку транзакционных писем пользователям" <<external_system>> as mail_service 
+rectangle "==Сервис проверки работ\n\n Автоматически проверяет сданные тесты" <<external_system>> as checking_service 
+rectangle "==Сервис блокировки пользователей\n\n Блокирует аккаунты пользователей, не сменивших временный пароль" <<external_system>> as lock_service 
+
+admin - ->> spa : **[[https://plantuml.com/link Использует]]**\n//<size:12>[HTTPS]</size>//
+teacher - ->> spa : **[[https://plantuml.com/link Использует]]**\n//<size:12>[HTTPS]</size>//
+student - ->> spa : **[[https://plantuml.com/link Использует]]**\n//<size:12>[HTTPS]</size>//
+
+spa -DOWN->> webapi : **[[https://plantuml.com/link Использует]]**\n//<size:12>[HTTPS]</size>//
+webapi -LEFT->> db : **[[https://plantuml.com/link Чтение/запись]]**
+
+webapi - ->> mail_service : **[[https://plantuml.com/link Использует]]**
+checking_service - ->> mail_service : **[[https://plantuml.com/link Использует]]**
+checking_service -UP->> db : **[[https://plantuml.com/link Чтение/запись]]**
+
+lock_service - ->> mail_service : **[[https://plantuml.com/link Использует]]**
+lock_service -RIGHT->> db : **[[https://plantuml.com/link Чтение/запись]]**
+@enduml
+
+PlantUML version 1.2022.1beta9(Unknown compile time)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
