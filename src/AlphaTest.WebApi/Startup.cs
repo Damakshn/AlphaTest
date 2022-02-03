@@ -1,17 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using AlphaTest.Application;
+using AlphaTest.Application.UtilityServices.API;
 using AlphaTest.Infrastructure.Plugins;
 using AlphaTest.Infrastructure.Database;
-using AlphaTest.Application;
-using Microsoft.Extensions.Configuration;
 using AlphaTest.WebApi.AccessControl;
+using AlphaTest.WebApi.Utils;
 
 namespace AlphaTest.WebApi
 {
@@ -31,12 +28,13 @@ namespace AlphaTest.WebApi
             services.AddJwtAuth(_configuration);
             services.AddAccessControlRules();
             services.AddUtilityServices();
+            services.AddScoped<IUrlGenerator, UrlGenerator>();
             services.AddTimeResolver(_configuration);
+            services.AddBackgroundJobs();
             services.AddApplicationLayer();
             services.AddControllers();
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

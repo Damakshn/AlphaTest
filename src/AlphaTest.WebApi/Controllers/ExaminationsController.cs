@@ -13,13 +13,19 @@ namespace AlphaTest.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExaminationController : ControllerBase
+    public class ExaminationsController : ControllerBase
     {
         private ISystemGateway _alphaTest;
 
-        public ExaminationController(ISystemGateway alphaTest)
+        public ExaminationsController(ISystemGateway alphaTest)
         {
             _alphaTest = alphaTest;
+        }
+
+        [HttpGet("{examinationID}", Name = "ExaminationInfo")]
+        public IActionResult ExaminationInfo([FromRoute] Guid examinationID)
+        {
+            return Content(examinationID.ToString());
         }
 
         [HttpPost("{examinationID}/start")]

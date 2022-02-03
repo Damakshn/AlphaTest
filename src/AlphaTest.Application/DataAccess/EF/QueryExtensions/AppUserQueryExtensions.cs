@@ -96,5 +96,10 @@ namespace AlphaTest.Application.DataAccess.EF.QueryExtensions
                    where g.ID == groupID
                    select user;
         }
+
+        public static IQueryable<AlphaTestUser> HasExpiredTemporaryPassword(this IQueryable<AlphaTestUser> query)
+        {
+            return query.Where(u => u.IsPasswordChanged == false && u.TemporaryPasswordExpirationDate <= DateTime.UtcNow);
+        }
     }
 }
